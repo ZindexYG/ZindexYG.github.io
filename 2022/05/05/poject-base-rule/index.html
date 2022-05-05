@@ -1,0 +1,421 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+  
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-z-16x16.ico " />
+  
+  
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-z-16x16.ico " />
+  
+  
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/favicon-z-32x32.ico">
+  
+  
+  <title>关于规范化的小分享 - 时之物语</title>
+  
+<link rel="stylesheet" href="/css/style.css">
+
+<meta name="generator" content="Hexo 5.4.2"><link rel="stylesheet" href="/css/prism-coy.css" type="text/css">
+<link rel="stylesheet" href="/css/prism-line-numbers.css" type="text/css"><script src="/js/prism.js"></script>
+<script src="/js/prism-line-numbers.min.js"></script></head>
+
+
+  <body class='fixed'>
+    <div class="container">
+      <header class="header">
+  <div class="blog-title">
+    <a href="/" class="logo">时之物语</a>
+  </div>
+  <nav class="navbar">
+    <ul class="menu">
+      
+        <li class="menu-item">
+          <a href="/" class="menu-item-link menu-item-home">Home</a>
+        </li>
+      
+        <li class="menu-item">
+          <a href="/about" class="menu-item-link menu-item-about">About</a>
+        </li>
+      
+        <li class="menu-item">
+          <a href="/links" class="menu-item-link menu-item-friends">Friends</a>
+        </li>
+      
+    </ul>
+  </nav>
+</header>
+
+        <main class="main">
+          
+  <input type="checkbox" id="toggle-toc" class="toggle-toc-right" />
+  <div class="toc-toggle toc-toggle-right">
+    <label for="toggle-toc">
+      <i class="fa fa-list-ol"></i>
+    </label>
+    <div class="toc-wrap toc-wrap-right">
+      <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%85%B3%E4%BA%8E%E7%9B%AE%E5%BD%95"><span class="toc-number">1.</span> <span class="toc-text">关于目录</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%85%B3%E4%BA%8E%E5%87%A0%E4%B8%AA%E5%B8%B8%E8%A7%81%E6%96%87%E4%BB%B6"><span class="toc-number">2.</span> <span class="toc-text">关于几个常见文件</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%85%B3%E4%BA%8E-eslint%E3%80%81pretter-%E9%85%8D%E7%BD%AE"><span class="toc-number">3.</span> <span class="toc-text">关于 eslint、pretter 配置</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#ESLint-%E5%BF%AB%E9%80%9F%E9%85%8D%E7%BD%AE"><span class="toc-number">3.1.</span> <span class="toc-text">ESLint 快速配置</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#prettier-%E5%BF%AB%E9%80%9F%E9%85%8D%E7%BD%AE"><span class="toc-number">3.2.</span> <span class="toc-text">prettier 快速配置</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%96%84%E7%94%A8-pretter-%E7%9A%84-git-hooks"><span class="toc-number">3.3.</span> <span class="toc-text">善用 pretter 的 git hooks</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E8%A7%86%E6%83%85%E5%86%B5%E4%BD%BF%E7%94%A8-vscode-%E9%85%8D%E7%BD%AE"><span class="toc-number">3.4.</span> <span class="toc-text">视情况使用.vscode 配置</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%85%B3%E4%BA%8E-commit-rule"><span class="toc-number">4.</span> <span class="toc-text">关于 commit rule</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E7%BB%93%E5%90%88-git-hook-%E5%8D%B3%E5%8F%AF%E5%BC%BA%E5%88%B6%E8%A6%81%E6%B1%82%E4%BA%86"><span class="toc-number">4.1.</span> <span class="toc-text">结合 git hook 即可强制要求了</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%85%B3%E4%BA%8E%E6%80%BB%E7%BB%93"><span class="toc-number">5.</span> <span class="toc-text">关于总结</span></a></li></ol>
+    </div>
+  </div>
+  <label class="mask" for="toggle-toc"></label>
+
+<div id="post-content">
+  <h1>关于规范化的小分享</h1>
+  <!-- 可能只是在准备配料 -->
+
+<h3 id="关于目录"><a href="#关于目录" class="headerlink" title="关于目录"></a>关于目录</h3><ul>
+<li>关于几个常见文件</li>
+<li>关于 eslint、pretter 配置</li>
+<li>关于 Git hooks</li>
+<li>关于总结</li>
+</ul>
+<h3 id="关于几个常见文件"><a href="#关于几个常见文件" class="headerlink" title="关于几个常见文件"></a>关于几个常见文件</h3><p>一般项目内容易看到</p>
+<pre class="line-numbers language-shell"><code class="language-shell">| poject/
+| --.vscode/                  // vscode 的配置
+| --.husky/                   // 存放 git commit 规则
+| --.eslintrc.json            // eslint 规则
+| --.eslintignore.json        // 可忽略 eslint 的规则或文件
+| --.editorconfig             // 存放编码规则，一般用于告诉编辑器当前的编码规则
+| --.prettierrc.json          // prettier 规则
+| --.prettierignore.json      // 可忽略 prettier 的文件
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h3 id="关于-eslint、pretter-配置"><a href="#关于-eslint、pretter-配置" class="headerlink" title="关于 eslint、pretter 配置"></a>关于 eslint、pretter 配置</h3><h4 id="ESLint-快速配置"><a href="#ESLint-快速配置" class="headerlink" title="ESLint 快速配置"></a>ESLint 快速配置</h4><pre class="line-numbers language-shell"><code class="language-shell"># 安装
+yarn add eslint --dev
+# 默认配置
+yarn create @eslint/config
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+<h4 id="prettier-快速配置"><a href="#prettier-快速配置" class="headerlink" title="prettier 快速配置"></a>prettier 快速配置</h4><pre class="line-numbers language-shell"><code class="language-shell"># 安装
+yarn add --dev --exact prettier
+# 默认配置
+echo &#123;&#125;> .prettierrc.json
+echo # Ignore > .prettierignore
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>TIP: .prettierrrc.json 个人配置</p>
+<pre class="line-numbers language-json"><code class="language-json">&amp;#<span class="token number">123</span><span class="token punctuation">;</span>
+  <span class="token property">"printWidth"</span><span class="token operator">:</span> <span class="token number">80</span><span class="token punctuation">,</span>
+  <span class="token property">"jsxSingleQuote"</span><span class="token operator">:</span> <span class="token boolean">true</span><span class="token punctuation">,</span>
+  <span class="token property">"tabWidth"</span><span class="token operator">:</span> <span class="token number">2</span><span class="token punctuation">,</span>
+  <span class="token property">"semi"</span><span class="token operator">:</span> <span class="token boolean">false</span><span class="token punctuation">,</span>
+  <span class="token property">"singleQuote"</span><span class="token operator">:</span> <span class="token boolean">true</span><span class="token punctuation">,</span>
+  <span class="token property">"trailingComma"</span><span class="token operator">:</span> <span class="token string">"all"</span><span class="token punctuation">,</span>
+  <span class="token property">"jsxBracketSameLine"</span><span class="token operator">:</span> <span class="token boolean">true</span><span class="token punctuation">,</span>
+  <span class="token property">"bracketSpacing"</span><span class="token operator">:</span> <span class="token boolean">true</span><span class="token punctuation">,</span>
+  <span class="token property">"proseWrap"</span><span class="token operator">:</span> <span class="token string">"preserve"</span><span class="token punctuation">,</span>
+  <span class="token property">"arrowParens"</span><span class="token operator">:</span> <span class="token string">"avoid"</span><span class="token punctuation">,</span>
+  <span class="token property">"htmlWhitespaceSensitivity"</span><span class="token operator">:</span> <span class="token string">"css"</span><span class="token punctuation">,</span>
+  <span class="token property">"quoteProps"</span><span class="token operator">:</span> <span class="token string">"as-needed"</span>
+&amp;#<span class="token number">125</span><span class="token punctuation">;</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h4 id="善用-pretter-的-git-hooks"><a href="#善用-pretter-的-git-hooks" class="headerlink" title="善用 pretter 的 git hooks"></a>善用 pretter 的 git hooks</h4><p>这是为了保证每次提交之前运行 Prettier：</p>
+<ol>
+<li>安装 husky 和 ​​lint-staged：</li>
+</ol>
+<pre class="line-numbers language-shell"><code class="language-shell">yarn add --dev husky lint-staged
+npx husky install
+npm set-script prepare "husky install"
+npx husky add .husky/pre-commit "npx lint-staged"
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+<ol start="2">
+<li>将以下内容添加到您的 package.json:</li>
+</ol>
+<pre class="line-numbers language-Json"><code class="language-Json">&#123;
+  "lint-staged": &#123;
+    "**/*": "prettier --write --ignore-unknown"
+  &#125;
+&#125;
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h4 id="视情况使用-vscode-配置"><a href="#视情况使用-vscode-配置" class="headerlink" title="视情况使用.vscode 配置"></a>视情况使用.vscode 配置</h4><p>TIP： 各自判断是否需要强制</p>
+<pre class="line-numbers language-json"><code class="language-json">&amp;#<span class="token number">123</span><span class="token punctuation">;</span>
+  <span class="token property">"editor.formatOnSave"</span><span class="token operator">:</span> <span class="token boolean">true</span><span class="token punctuation">,</span>
+  <span class="token property">"editor.codeActionsOnSave"</span><span class="token operator">:</span> &amp;#<span class="token number">123</span><span class="token punctuation">;</span>
+    <span class="token property">"source.fixAll.eslint"</span><span class="token operator">:</span> <span class="token boolean">true</span>
+  &amp;#<span class="token number">125</span><span class="token punctuation">;</span>
+&amp;#<span class="token number">125</span><span class="token punctuation">;</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h3 id="关于-commit-rule"><a href="#关于-commit-rule" class="headerlink" title="关于 commit rule"></a>关于 commit rule</h3><p>几个插件</p>
+<table>
+<thead>
+<tr>
+<th>插件</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>commitizen</td>
+<td>定义提交规则和传达规则的标准方式</td>
+</tr>
+<tr>
+<td>@commitlint&#x2F;cli</td>
+<td>检查提交消息是否符合传统的提交格式</td>
+</tr>
+<tr>
+<td>@commitlint&#x2F;config-conventional</td>
+<td>配置提交常规</td>
+</tr>
+<tr>
+<td>@commitlint&#x2F;cz-commitlint</td>
+<td>提供交互提交信息</td>
+</tr>
+</tbody></table>
+<pre class="line-numbers language-shell"><code class="language-shell"># 项目内下载
+yarn add -D commitizen @commitlint/cli @commitlint/config-conventional @commitlint/cz-commitlint
+
+# 配置文件生成
+echo "module.exports = &#123; extends: ['@commitlint/config-conventional'] &#125;;" > commitlint.config.js
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>使用交互式提交，需要在 package.json 中新增如下配置</p>
+<pre class="line-numbers language-json"><code class="language-json">&amp;#<span class="token number">123</span><span class="token punctuation">;</span>
+  <span class="token property">"config"</span><span class="token operator">:</span> &amp;#<span class="token number">123</span><span class="token punctuation">;</span>
+    <span class="token property">"commitizen"</span><span class="token operator">:</span> &amp;#<span class="token number">123</span><span class="token punctuation">;</span>
+      <span class="token property">"path"</span><span class="token operator">:</span> <span class="token string">"@commitlint/cz-commitlint"</span>
+    &amp;#<span class="token number">125</span><span class="token punctuation">;</span>
+  &amp;#<span class="token number">125</span><span class="token punctuation">;</span>
+&amp;#<span class="token number">125</span><span class="token punctuation">;</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>由于是项目内使用，为配合其他同事的使用，需要配合 package.json 中 scripts 或者使用 <code>yarn git-cz</code> 来使用</p>
+<pre class="line-numbers language-json"><code class="language-json">&amp;#<span class="token number">123</span><span class="token punctuation">;</span>
+  <span class="token property">"scripts"</span><span class="token operator">:</span> &amp;#<span class="token number">123</span><span class="token punctuation">;</span>
+    <span class="token property">"commit"</span><span class="token operator">:</span> <span class="token string">"git-cz"</span>
+  &amp;#<span class="token number">125</span><span class="token punctuation">;</span>
+&amp;#<span class="token number">125</span><span class="token punctuation">;</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p><code>自定义提交交互信息</code></p>
+<pre class="line-numbers language-js"><code class="language-js">module<span class="token punctuation">.</span>exports <span class="token operator">=</span> <span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span>
+  <span class="token keyword">extends</span><span class="token punctuation">:</span> <span class="token punctuation">[</span><span class="token string">'@commitlint/config-conventional'</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
+  prompt<span class="token punctuation">:</span> <span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span>
+    questions<span class="token punctuation">:</span> <span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span>
+      type<span class="token punctuation">:</span> <span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span>
+        description<span class="token punctuation">:</span> <span class="token string">'选择要提交的更改类型'</span><span class="token punctuation">,</span>
+        <span class="token keyword">enum</span><span class="token punctuation">:</span> <span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span>
+          feat<span class="token punctuation">:</span> <span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span>
+            description<span class="token punctuation">:</span> <span class="token string">'新功能'</span><span class="token punctuation">,</span>
+            title<span class="token punctuation">:</span> <span class="token string">'Features'</span><span class="token punctuation">,</span>
+            emoji<span class="token punctuation">:</span> <span class="token string">'✨'</span><span class="token punctuation">,</span>
+          <span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span><span class="token punctuation">,</span>
+          fix<span class="token punctuation">:</span> <span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span>
+            description<span class="token punctuation">:</span> <span class="token string">'bug 修复'</span><span class="token punctuation">,</span>
+            title<span class="token punctuation">:</span> <span class="token string">'Bug Fixes'</span><span class="token punctuation">,</span>
+            emoji<span class="token punctuation">:</span> <span class="token string">'🐛'</span><span class="token punctuation">,</span>
+          <span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span><span class="token punctuation">,</span>
+          docs<span class="token punctuation">:</span> <span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span>
+            description<span class="token punctuation">:</span> <span class="token string">'仅文档更改'</span><span class="token punctuation">,</span>
+            title<span class="token punctuation">:</span> <span class="token string">'Documentation'</span><span class="token punctuation">,</span>
+            emoji<span class="token punctuation">:</span> <span class="token string">'📚'</span><span class="token punctuation">,</span>
+          <span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span><span class="token punctuation">,</span>
+          style<span class="token punctuation">:</span> <span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span>
+            description<span class="token punctuation">:</span> <span class="token string">'不影响代码逻辑的更改（空格、格式、缺少分号等）'</span><span class="token punctuation">,</span>
+            title<span class="token punctuation">:</span> <span class="token string">'Styles'</span><span class="token punctuation">,</span>
+            emoji<span class="token punctuation">:</span> <span class="token string">'💎'</span><span class="token punctuation">,</span>
+          <span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span><span class="token punctuation">,</span>
+          refactor<span class="token punctuation">:</span> <span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span>
+            description<span class="token punctuation">:</span> <span class="token string">'重构，既不修复 Bug 也不添加功能的代码更改'</span><span class="token punctuation">,</span>
+            title<span class="token punctuation">:</span> <span class="token string">'Code Refactoring'</span><span class="token punctuation">,</span>
+            emoji<span class="token punctuation">:</span> <span class="token string">'📦'</span><span class="token punctuation">,</span>
+          <span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span><span class="token punctuation">,</span>
+          perf<span class="token punctuation">:</span> <span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span>
+            description<span class="token punctuation">:</span> <span class="token string">'性能优化'</span><span class="token punctuation">,</span>
+            title<span class="token punctuation">:</span> <span class="token string">'Performance Improvements'</span><span class="token punctuation">,</span>
+            emoji<span class="token punctuation">:</span> <span class="token string">'🚀'</span><span class="token punctuation">,</span>
+          <span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span><span class="token punctuation">,</span>
+          test<span class="token punctuation">:</span> <span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span>
+            description<span class="token punctuation">:</span> <span class="token string">'新增测试或更正现有测试'</span><span class="token punctuation">,</span>
+            title<span class="token punctuation">:</span> <span class="token string">'Tests'</span><span class="token punctuation">,</span>
+            emoji<span class="token punctuation">:</span> <span class="token string">'🚨'</span><span class="token punctuation">,</span>
+          <span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span><span class="token punctuation">,</span>
+          build<span class="token punctuation">:</span> <span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span>
+            description<span class="token punctuation">:</span>
+              <span class="token string">'影响构建系统或外部依赖项的更改（示例范围：yarn、npm）'</span><span class="token punctuation">,</span>
+            title<span class="token punctuation">:</span> <span class="token string">'Builds'</span><span class="token punctuation">,</span>
+            emoji<span class="token punctuation">:</span> <span class="token string">'🛠'</span><span class="token punctuation">,</span>
+          <span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span><span class="token punctuation">,</span>
+          ci<span class="token punctuation">:</span> <span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span>
+            description<span class="token punctuation">:</span>
+              <span class="token string">'对 CI 配置文件和脚本的更改(example scopes: Travis, Circle, BrowserStack, SauceLabs)'</span><span class="token punctuation">,</span>
+            title<span class="token punctuation">:</span> <span class="token string">'Continuous Integrations'</span><span class="token punctuation">,</span>
+            emoji<span class="token punctuation">:</span> <span class="token string">'⚙️'</span><span class="token punctuation">,</span>
+          <span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span><span class="token punctuation">,</span>
+          chore<span class="token punctuation">:</span> <span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span>
+            description<span class="token punctuation">:</span> <span class="token string">'其他不修改 src 或测试文件的更改'</span><span class="token punctuation">,</span>
+            title<span class="token punctuation">:</span> <span class="token string">'Chores'</span><span class="token punctuation">,</span>
+            emoji<span class="token punctuation">:</span> <span class="token string">'♻️'</span><span class="token punctuation">,</span>
+          <span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span><span class="token punctuation">,</span>
+          revert<span class="token punctuation">:</span> <span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span>
+            description<span class="token punctuation">:</span> <span class="token string">'撤銷、復原一次 git commit'</span><span class="token punctuation">,</span>
+            title<span class="token punctuation">:</span> <span class="token string">'Reverts'</span><span class="token punctuation">,</span>
+            emoji<span class="token punctuation">:</span> <span class="token string">'🗑'</span><span class="token punctuation">,</span>
+          <span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span><span class="token punctuation">,</span>
+        <span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span><span class="token punctuation">,</span>
+      <span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span><span class="token punctuation">,</span>
+      scope<span class="token punctuation">:</span> <span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span>
+        description<span class="token punctuation">:</span> <span class="token string">'请说明更改具体范围（例如组件或文件名）'</span><span class="token punctuation">,</span>
+      <span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span><span class="token punctuation">,</span>
+      subject<span class="token punctuation">:</span> <span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span>
+        description<span class="token punctuation">:</span> <span class="token string">'请简短描述的该变化'</span><span class="token punctuation">,</span>
+      <span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span><span class="token punctuation">,</span>
+      body<span class="token punctuation">:</span> <span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span>
+        description<span class="token punctuation">:</span> <span class="token string">'请提供更改的详细说明'</span><span class="token punctuation">,</span>
+      <span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span><span class="token punctuation">,</span>
+      isBreaking<span class="token punctuation">:</span> <span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span>
+        description<span class="token punctuation">:</span> <span class="token string">'是否有重大更改？'</span><span class="token punctuation">,</span>
+      <span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span><span class="token punctuation">,</span>
+      breakingBody<span class="token punctuation">:</span> <span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span>
+        description<span class="token punctuation">:</span> <span class="token string">'重大更改提交需要特殊说明。请输入提交本身的详细描述'</span><span class="token punctuation">,</span>
+      <span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span><span class="token punctuation">,</span>
+      breaking<span class="token punctuation">:</span> <span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span>
+        description<span class="token punctuation">:</span> <span class="token string">'描述重大更改'</span><span class="token punctuation">,</span>
+      <span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span><span class="token punctuation">,</span>
+      isIssueAffected<span class="token punctuation">:</span> <span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span>
+        description<span class="token punctuation">:</span> <span class="token string">'此更改是否会影响未解决的问题？'</span><span class="token punctuation">,</span>
+      <span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span><span class="token punctuation">,</span>
+      issuesBody<span class="token punctuation">:</span> <span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span>
+        description<span class="token punctuation">:</span>
+          <span class="token string">'如果问题已关闭，则提交需要一个主体。请输入提交本身的较长描述'</span><span class="token punctuation">,</span>
+      <span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span><span class="token punctuation">,</span>
+      issues<span class="token punctuation">:</span> <span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span>
+        description<span class="token punctuation">:</span> <span class="token string">'添加问题引用（例如，“修复 #123”、“修改 #123”。'</span><span class="token punctuation">,</span>
+      <span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span><span class="token punctuation">,</span>
+    <span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span><span class="token punctuation">,</span>
+  <span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span><span class="token punctuation">,</span>
+<span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h4 id="结合-git-hook-即可强制要求了"><a href="#结合-git-hook-即可强制要求了" class="headerlink" title="结合 git hook 即可强制要求了"></a>结合 git hook 即可强制要求了</h4><p>在 .husky&#x2F; 下新增 <code>commit-msg(可自定义名字)</code> 文件</p>
+<pre class="line-numbers language-shell"><code class="language-shell">npx husky add .husky/commit-msg "npx --no-install commitlint --edit "" "
+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<h3 id="关于总结"><a href="#关于总结" class="headerlink" title="关于总结"></a>关于总结</h3><p>项目愈发庞大，就愈发需要一些规范，来规范团队之间的协作</p>
+<p>当然对于个人一开始多少会有阵痛，但阵痛过后，彼此协作更加顺畅，岂不也是美哉</p>
+<hr>
+<p>参考文章</p>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://eslint.org/docs/user-guide/getting-started">eslint - getting-started</a></li>
+<li><a target="_blank" rel="noopener" href="https://prettier.io/docs/en/install.html">prettier - install</a></li>
+<li><a target="_blank" rel="noopener" href="https://prettier.io/docs/en/precommit.html">prettier - precommit</a></li>
+<li><a target="_blank" rel="noopener" href="https://commitlint.js.org/#/">commitlint</a></li>
+<li><a href="">commitizen</a></li>
+<li><a target="_blank" rel="noopener" href="https://medium.com/@peter3036200/git-cz-%E8%A6%8F%E7%AF%84%E4%BD%A0%E7%9A%84-commit-%E8%A8%8A%E6%81%AF-9bd8f91b3267">Git cz 規範你的 commit 訊息</a></li>
+</ul>
+
+</div>
+
+<script>
+  // I'm not sure your browser supports `es6`
+  window.addEventListener('load', function () {
+    [].concat(Array.from(document.querySelectorAll('code')), Array.from(document.querySelectorAll('pre'))).filter(function (item) {return item.className.indexOf('language') >= 0}).forEach(function (tag) { tag.classList.add('line-numbers') })
+    Prism.highlightAll()
+
+    let scrollY = window.scrollY
+    let headersList = Array.from(document.querySelector('#post-content').querySelectorAll('h1,h2,h3,h4,h5,h6')).map(function (item) {
+      let rect = item.getBoundingClientRect()
+      let anchorTag = document.querySelector(`a.toc-link[href="#${item.id}"]`)
+
+      if (!anchorTag) return
+      return {
+        top: scrollY + rect.top - rect.height,
+        tag: item,
+        anchorTag: anchorTag
+      }
+    }).filter(function (item) { return item })
+
+    window.addEventListener('scroll', debounce(scrollHandler, 200))
+    scrollHandler()
+
+    function scrollHandler () {
+      let scrollY = window.scrollY
+      let minInfo = null
+
+      for (let item of headersList) {
+        if (!minInfo) {
+          minInfo = item
+          continue
+        }
+
+        if ((scrollY - item.top) >= 0 && (scrollY - minInfo.top) > (scrollY - item.top)) {
+          minInfo = item
+        }
+      }
+
+      if (minInfo) {
+        headersList.forEach(function (item) {
+          item.anchorTag && item.anchorTag.classList.remove('selected')
+        })
+        minInfo.anchorTag.classList.add('selected')
+      }
+    }
+
+    function debounce (func, delay) {
+      let debounceIdentify = 0
+      return function () {
+        debounceIdentify && clearTimeout(debounceIdentify)
+        debounceIdentify = setTimeout(function () {
+          debounceIdentify = 0
+          func.apply(this, arguments)
+        }, delay)
+      }
+    }
+  })
+</script>
+
+        </main>
+        <a href="#" class="goto-top">
+          <i class="fa fa-chevron-up"></i>
+        </a>
+    </div>
+    <footer class="footer">
+  <div class="footer-content">
+    <div class="footer-info" class="inner">
+      <p class="copyright">&copy; 2022 时之物语 ZYG&#39;s Blog 保留一切权利 ｜ 粤ICP备15078531号-1<br></p>
+      powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+      theme by <a href="https://github.com/Jiasm/hexo-theme-sheet" target="_blank">Sheet</a>
+    </div>
+    <ul class="contact-info">
+      
+        <a class="contact-link" href="https://github.com/zindexyg" target="_blank"><i class="fa fa-github"></i></a>
+      
+      
+        <a class="contact-link" href="https://weibo.com/u/3249847654" target="_blank"><i class="fa fa-weibo"></i></a>
+      
+      
+      
+      
+        <a class="contact-link" href="mailto:zinger_yg@163.com" target="_blank"><i class="fa fa-envelope"></i></a>
+      
+    </ul>
+  </div>
+</footer>
+
+
+
+      <script>
+      function footerHandler () {
+        if (!window.screen || !document.body) return
+        var hasComments = document.querySelector('.comments')
+        if ((window.screen.availHeight - (hasComments ? 350 : 0)) > document.body.clientHeight) {
+          document.body.classList.add('fixed')
+        } else {
+          document.body.classList.remove('fixed')
+        }
+      }
+      footerHandler()
+      window.addEventListener('resize', footerHandler)
+    </script>
+  </body>
+  <script>
+    var pathname = new URL(location.href).pathname.replace(/\/$/, '')
+
+    switch (pathname) {
+      case '/about':
+        document.querySelector('.menu-item-about').classList.add('active')
+        break
+      case '/contact':
+        document.querySelector('.menu-item-contact').classList.add('active')
+        break
+      case '/links':
+        document.querySelector('.menu-item-friends').classList.add('active')
+        break
+      default:
+        document.querySelector('.menu-item-home').classList.add('active')
+    }
+  </script>
+  
+
+</html>
