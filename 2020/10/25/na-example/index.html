@@ -17,7 +17,7 @@
   
 <link rel="stylesheet" href="/css/style.css">
 
-<meta name="generator" content="Hexo 4.2.1"><link rel="stylesheet" href="/css/prism-coy.css" type="text/css">
+<meta name="generator" content="Hexo 5.4.2"><link rel="stylesheet" href="/css/prism-coy.css" type="text/css">
 <link rel="stylesheet" href="/css/prism-line-numbers.css" type="text/css"><script src="/js/prism.js"></script>
 <script src="/js/prism-line-numbers.min.js"></script></head>
 
@@ -55,7 +55,7 @@
       <i class="fa fa-list-ol"></i>
     </label>
     <div class="toc-wrap toc-wrap-right">
-      <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#关于前言"><span class="toc-number">1.</span> <span class="toc-text">关于前言</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#关于-node-的-docker-镜像"><span class="toc-number">2.</span> <span class="toc-text">关于 node 的 docker 镜像</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#关于-Github-Action-自动化的流程"><span class="toc-number">3.</span> <span class="toc-text">关于 Github Action 自动化的流程</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#Secrets"><span class="toc-number">3.1.</span> <span class="toc-text">Secrets</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#关于遇到的问题"><span class="toc-number">4.</span> <span class="toc-text">关于遇到的问题</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#Q：关于-node-项目使用-127-0-0-1-或-localhost-作为启动-IP-生成-docker-image-化后，运行后无法访问"><span class="toc-number">4.1.</span> <span class="toc-text">Q：关于 node 项目使用 127.0.0.1 或 localhost 作为启动 IP 生成 docker image 化后，运行后无法访问</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Q：关于-GitHub-Action-默认的环境变量"><span class="toc-number">4.2.</span> <span class="toc-text">Q：关于 GitHub Action 默认的环境变量</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#关于小结"><span class="toc-number">5.</span> <span class="toc-text">关于小结</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#关于参考"><span class="toc-number">6.</span> <span class="toc-text">关于参考</span></a></li></ol>
+      <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%85%B3%E4%BA%8E%E5%89%8D%E8%A8%80"><span class="toc-number">1.</span> <span class="toc-text">关于前言</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%85%B3%E4%BA%8E-node-%E7%9A%84-docker-%E9%95%9C%E5%83%8F"><span class="toc-number">2.</span> <span class="toc-text">关于 node 的 docker 镜像</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%85%B3%E4%BA%8E-Github-Action-%E8%87%AA%E5%8A%A8%E5%8C%96%E7%9A%84%E6%B5%81%E7%A8%8B"><span class="toc-number">3.</span> <span class="toc-text">关于 Github Action 自动化的流程</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#Secrets"><span class="toc-number">3.1.</span> <span class="toc-text">Secrets</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%85%B3%E4%BA%8E%E9%81%87%E5%88%B0%E7%9A%84%E9%97%AE%E9%A2%98"><span class="toc-number">4.</span> <span class="toc-text">关于遇到的问题</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#Q%EF%BC%9A%E5%85%B3%E4%BA%8E-node-%E9%A1%B9%E7%9B%AE%E4%BD%BF%E7%94%A8-127-0-0-1-%E6%88%96-localhost-%E4%BD%9C%E4%B8%BA%E5%90%AF%E5%8A%A8-IP-%E7%94%9F%E6%88%90-docker-image-%E5%8C%96%E5%90%8E%EF%BC%8C%E8%BF%90%E8%A1%8C%E5%90%8E%E6%97%A0%E6%B3%95%E8%AE%BF%E9%97%AE"><span class="toc-number">4.1.</span> <span class="toc-text">Q：关于 node 项目使用 127.0.0.1 或 localhost 作为启动 IP 生成 docker image 化后，运行后无法访问</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Q%EF%BC%9A%E5%85%B3%E4%BA%8E-GitHub-Action-%E9%BB%98%E8%AE%A4%E7%9A%84%E7%8E%AF%E5%A2%83%E5%8F%98%E9%87%8F"><span class="toc-number">4.2.</span> <span class="toc-text">Q：关于 GitHub Action 默认的环境变量</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%85%B3%E4%BA%8E%E5%B0%8F%E7%BB%93"><span class="toc-number">5.</span> <span class="toc-text">关于小结</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%85%B3%E4%BA%8E%E5%8F%82%E8%80%83"><span class="toc-number">6.</span> <span class="toc-text">关于参考</span></a></li></ol>
     </div>
   </div>
   <label class="mask" for="toggle-toc"></label>
@@ -265,7 +265,7 @@ jobs:
     <footer class="footer">
   <div class="footer-content">
     <div class="footer-info" class="inner">
-      <p class="copyright">&copy; 2021 时之物语 ZYG&#39;s Blog 保留一切权利 ｜ 粤ICP备15078531号-1<br></p>
+      <p class="copyright">&copy; 2022 时之物语 ZYG&#39;s Blog 保留一切权利 ｜ 粤ICP备15078531号-1<br></p>
       powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
       theme by <a href="https://github.com/Jiasm/hexo-theme-sheet" target="_blank">Sheet</a>
     </div>
