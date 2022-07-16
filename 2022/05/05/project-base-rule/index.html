@@ -17,7 +17,7 @@
   
 <link rel="stylesheet" href="/css/style.css">
 
-<meta name="generator" content="Hexo 5.4.2"><link rel="stylesheet" href="/css/prism-coy.css" type="text/css">
+<meta name="generator" content="Hexo 6.2.0"><link rel="stylesheet" href="/css/prism-coy.css" type="text/css">
 <link rel="stylesheet" href="/css/prism-line-numbers.css" type="text/css"><script src="/js/prism.js"></script>
 <script src="/js/prism-line-numbers.min.js"></script></head>
 
@@ -55,7 +55,7 @@
       <i class="fa fa-list-ol"></i>
     </label>
     <div class="toc-wrap toc-wrap-right">
-      <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%85%B3%E4%BA%8E%E7%9B%AE%E5%BD%95"><span class="toc-number">1.</span> <span class="toc-text">关于目录</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%85%B3%E4%BA%8E%E5%87%A0%E4%B8%AA%E5%B8%B8%E8%A7%81%E6%96%87%E4%BB%B6"><span class="toc-number">2.</span> <span class="toc-text">关于几个常见文件</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%85%B3%E4%BA%8E-eslint%E3%80%81pretter-%E9%85%8D%E7%BD%AE"><span class="toc-number">3.</span> <span class="toc-text">关于 eslint、pretter 配置</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#ESLint-%E5%BF%AB%E9%80%9F%E9%85%8D%E7%BD%AE"><span class="toc-number">3.1.</span> <span class="toc-text">ESLint 快速配置</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#prettier-%E5%BF%AB%E9%80%9F%E9%85%8D%E7%BD%AE"><span class="toc-number">3.2.</span> <span class="toc-text">prettier 快速配置</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%96%84%E7%94%A8-pretter-%E7%9A%84-git-hooks"><span class="toc-number">3.3.</span> <span class="toc-text">善用 pretter 的 git hooks</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E8%A7%86%E6%83%85%E5%86%B5%E4%BD%BF%E7%94%A8-vscode-%E9%85%8D%E7%BD%AE"><span class="toc-number">3.4.</span> <span class="toc-text">视情况使用.vscode 配置</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%85%B3%E4%BA%8E-commit-rule"><span class="toc-number">4.</span> <span class="toc-text">关于 commit rule</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E7%BB%93%E5%90%88-git-hook-%E5%8D%B3%E5%8F%AF%E5%BC%BA%E5%88%B6%E8%A6%81%E6%B1%82%E4%BA%86"><span class="toc-number">4.1.</span> <span class="toc-text">结合 git hook 即可强制要求了</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%85%B3%E4%BA%8E%E6%80%BB%E7%BB%93"><span class="toc-number">5.</span> <span class="toc-text">关于总结</span></a></li></ol>
+      <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%85%B3%E4%BA%8E%E7%9B%AE%E5%BD%95"><span class="toc-number">1.</span> <span class="toc-text">关于目录</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%85%B3%E4%BA%8E%E5%87%A0%E4%B8%AA%E5%B8%B8%E8%A7%81%E6%96%87%E4%BB%B6"><span class="toc-number">2.</span> <span class="toc-text">关于几个常见文件</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%85%B3%E4%BA%8E-eslint%E3%80%81prettier-%E9%85%8D%E7%BD%AE"><span class="toc-number">3.</span> <span class="toc-text">关于 eslint、prettier 配置</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#ESLint-%E5%BF%AB%E9%80%9F%E9%85%8D%E7%BD%AE"><span class="toc-number">3.1.</span> <span class="toc-text">ESLint 快速配置</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#prettier-%E5%BF%AB%E9%80%9F%E9%85%8D%E7%BD%AE"><span class="toc-number">3.2.</span> <span class="toc-text">prettier 快速配置</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%96%84%E7%94%A8-prettier-%E7%9A%84-git-hooks"><span class="toc-number">3.3.</span> <span class="toc-text">善用 prettier 的 git hooks</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E8%A7%86%E6%83%85%E5%86%B5%E4%BD%BF%E7%94%A8-vscode-%E9%85%8D%E7%BD%AE"><span class="toc-number">3.4.</span> <span class="toc-text">视情况使用.vscode 配置</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%85%B3%E4%BA%8E-commit-rule"><span class="toc-number">4.</span> <span class="toc-text">关于 commit rule</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E7%BB%93%E5%90%88-git-hook-%E5%8D%B3%E5%8F%AF%E5%BC%BA%E5%88%B6%E8%A6%81%E6%B1%82%E4%BA%86"><span class="toc-number">4.1.</span> <span class="toc-text">结合 git hook 即可强制要求了</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%85%B3%E4%BA%8E%E6%80%BB%E7%BB%93"><span class="toc-number">5.</span> <span class="toc-text">关于总结</span></a></li></ol>
     </div>
   </div>
   <label class="mask" for="toggle-toc"></label>
@@ -70,7 +70,7 @@
 
 <h3 id="关于目录"><a href="#关于目录" class="headerlink" title="关于目录"></a>关于目录</h3><ul>
 <li>关于几个常见文件</li>
-<li>关于 eslint、pretter 配置</li>
+<li>关于 eslint、prettier 配置</li>
 <li>关于 Git hooks</li>
 <li>关于总结</li>
 </ul>
@@ -84,7 +84,7 @@
 | --.prettierrc.json          // prettier 规则
 | --.prettierignore.json      // 可忽略 prettier 的文件
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<h3 id="关于-eslint、pretter-配置"><a href="#关于-eslint、pretter-配置" class="headerlink" title="关于 eslint、pretter 配置"></a>关于 eslint、pretter 配置</h3><h4 id="ESLint-快速配置"><a href="#ESLint-快速配置" class="headerlink" title="ESLint 快速配置"></a>ESLint 快速配置</h4><pre class="line-numbers language-shell"><code class="language-shell"># 安装
+<h3 id="关于-eslint、prettier-配置"><a href="#关于-eslint、prettier-配置" class="headerlink" title="关于 eslint、prettier 配置"></a>关于 eslint、prettier 配置</h3><h4 id="ESLint-快速配置"><a href="#ESLint-快速配置" class="headerlink" title="ESLint 快速配置"></a>ESLint 快速配置</h4><pre class="line-numbers language-shell"><code class="language-shell"># 安装
 yarn add eslint --dev
 # 默认配置
 yarn create @eslint/config
@@ -111,7 +111,7 @@ echo # Ignore > .prettierignore
   "quoteProps": "as-needed"
 &#125;
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<h4 id="善用-pretter-的-git-hooks"><a href="#善用-pretter-的-git-hooks" class="headerlink" title="善用 pretter 的 git hooks"></a>善用 pretter 的 git hooks</h4><p>这是为了保证每次提交之前运行 Prettier：</p>
+<h4 id="善用-prettier-的-git-hooks"><a href="#善用-prettier-的-git-hooks" class="headerlink" title="善用 prettier 的 git hooks"></a>善用 prettier 的 git hooks</h4><p>这是为了保证每次提交之前运行 Prettier：</p>
 <ol>
 <li>安装 husky 和 ​​lint-staged：</li>
 </ol>
