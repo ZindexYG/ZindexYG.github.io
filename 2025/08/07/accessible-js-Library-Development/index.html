@@ -1,0 +1,529 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+  
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-z-16x16.ico " />
+  
+  
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-z-16x16.ico " />
+  
+  
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/favicon-z-32x32.ico">
+  
+  
+  <title>愈发简单的 JS 库开发 - 时之物语</title>
+
+  <!-- Open Graph Meta Tags -->
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="愈发简单的 JS 库开发">
+  <meta property="og:url" content="https://z-index.me/2025/08/07/accessible-js-Library-Development/">
+  <meta property="og:site_name" content="时之物语">
+  <meta property="og:description" content="
+
+是的，再不看书，书里的知识就过时了
+">
+  <meta property="og:locale" content="zh-CN">
+  <meta property="og:image" content="https://z-index.me/images/default-cover.jpg">
+
+  <!-- Twitter Card Meta Tags -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="愈发简单的 JS 库开发">
+  <meta name="twitter:description" content="
+
+是的，再不看书，书里的知识就过时了
+">
+  <meta name="twitter:image" content="https://z-index.me/images/default-cover.jpg">
+  
+
+  <!-- 文章特定的元数据 -->
+  
+  <meta property="article:published_time" content="2025-08-07T06:34:41.000Z">
+  
+  <meta property="article:modified_time" content="2025-11-08T07:23:56.180Z">
+  
+  
+  
+  <meta property="article:tag" content="javascript">
+  
+  <meta property="article:tag" content="vite">
+  
+  <meta property="article:tag" content="rollup">
+  
+  
+  
+
+  
+<link rel="stylesheet" href="/css/style.css">
+
+<meta name="generator" content="Hexo 6.3.0"><link rel="stylesheet" href="/css/prism-coy.css" type="text/css">
+<link rel="stylesheet" href="/css/prism-line-numbers.css" type="text/css"><script src="/js/prism.js"></script>
+<script src="/js/prism-line-numbers.min.js"></script></head>
+
+
+  <body class='fixed'>
+    <div class="container">
+      <header class="header">
+  <div class="blog-title">
+    <a href="/" class="logo">时之物语</a>
+  </div>
+  <nav class="navbar">
+    <ul class="menu">
+      
+        <li class="menu-item">
+          <a href="/" class="menu-item-link menu-item-home">Home</a>
+        </li>
+      
+        <li class="menu-item">
+          <a href="/about" class="menu-item-link menu-item-about">About</a>
+        </li>
+      
+        <li class="menu-item">
+          <a href="/links" class="menu-item-link menu-item-friends">Friends</a>
+        </li>
+      
+    </ul>
+  </nav>
+</header>
+
+        <main class="main">
+          
+  <input type="checkbox" id="toggle-toc" class="toggle-toc-right" />
+  <div class="toc-toggle toc-toggle-right">
+    <label for="toggle-toc">
+      <i class="fa fa-list-ol"></i>
+    </label>
+    <div class="toc-wrap toc-wrap-right">
+      <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%85%B3%E4%BA%8E%E7%9B%AE%E5%BD%95"><span class="toc-number">1.</span> <span class="toc-text">关于目录</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%85%B3%E4%BA%8E%E5%AE%9E%E8%B7%B5"><span class="toc-number">2.</span> <span class="toc-text">关于实践</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%8F%A4%E6%B3%95%E5%88%9D%E5%A7%8B%E5%8C%96%E9%A1%B9%E7%9B%AE"><span class="toc-number">2.1.</span> <span class="toc-text">古法初始化项目</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%8F%A4%E6%B3%95%E6%89%93%E5%8C%85%E9%85%8D%E7%BD%AE%E5%88%9D%E5%A7%8B%E5%8C%96"><span class="toc-number">2.2.</span> <span class="toc-text">古法打包配置初始化</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%8F%A4%E6%B3%95%E6%89%93%E5%8C%85%E9%80%BB%E8%BE%91%E4%BB%A3%E7%A0%81"><span class="toc-number">2.3.</span> <span class="toc-text">古法打包逻辑代码</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E4%BF%AE%E6%94%B9-package-json-%E7%9B%B8%E5%85%B3%E5%86%85%E5%AE%B9"><span class="toc-number">2.4.</span> <span class="toc-text">修改 package.json 相关内容</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%85%B3%E4%BA%8E%E8%B0%83%E7%94%A8"><span class="toc-number">2.5.</span> <span class="toc-text">关于调用</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#CommonJS-Node-js-%E7%8E%AF%E5%A2%83"><span class="toc-number">2.5.1.</span> <span class="toc-text">CommonJS (Node.js 环境)</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#ESModule-%E7%8E%B0%E4%BB%A3%E6%89%93%E5%8C%85%E5%B7%A5%E5%85%B7%E6%88%96%E6%B5%8F%E8%A7%88%E5%99%A8%E6%94%AF%E6%8C%81-ESModule"><span class="toc-number">2.5.2.</span> <span class="toc-text">ESModule (现代打包工具或浏览器支持 ESModule)</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#UMD-%E6%B5%8F%E8%A7%88%E5%99%A8%E5%85%A8%E5%B1%80%E5%BC%95%E7%94%A8"><span class="toc-number">2.5.3.</span> <span class="toc-text">UMD (浏览器全局引用)</span></a></li></ol></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%85%B3%E4%BA%8E%E7%A4%BC%E4%BB%AA"><span class="toc-number">3.</span> <span class="toc-text">关于礼仪</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%AE%8C%E5%96%84%E5%AF%B9%E5%BA%94%E7%9A%84%E7%9B%AE%E5%BD%95%E4%B8%8E%E6%B3%A8%E9%87%8A%E9%83%A8%E4%BB%BD"><span class="toc-number">3.1.</span> <span class="toc-text">完善对应的目录与注释部份</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#README%E9%80%9A%E5%B8%B8%E5%8C%85%E5%90%AB%E4%BB%A5%E4%B8%8B%E5%86%85%E5%AE%B9%EF%BC%9A"><span class="toc-number">3.1.1.</span> <span class="toc-text">README通常包含以下内容：</span></a></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%85%B3%E4%BA%8E%E5%BC%80%E6%BA%90%E5%8D%8F%E8%AE%AE"><span class="toc-number">3.2.</span> <span class="toc-text">关于开源协议</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Q-amp-A"><span class="toc-number">4.</span> <span class="toc-text">Q&amp;A</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#Q%EF%BC%9AVite-%E4%B8%8E-Rollup-%E7%9A%84%E5%85%B3%E7%B3%BB%E3%80%81%E5%88%86%E5%88%AB%E5%9C%A8%E4%BB%80%E4%B9%88%E5%9C%BA%E6%99%AF%E4%B8%8B%E4%BD%BF%E7%94%A8"><span class="toc-number">4.1.</span> <span class="toc-text">Q：Vite 与 Rollup 的关系、分别在什么场景下使用</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Q%EF%BC%9A%E4%B8%BA%E4%BB%80%E4%B9%88%E8%A6%81%E5%88%86%E5%88%AB%E8%BE%93%E5%87%BA-CJS%E3%80%81ESM%E3%80%81UMD-%E4%B8%89%E7%A7%8D%E6%A0%BC%E5%BC%8F%EF%BC%9F"><span class="toc-number">4.2.</span> <span class="toc-text">Q：为什么要分别输出 CJS、ESM、UMD 三种格式？</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Q%EF%BC%9A%E5%A6%82%E4%BD%95%E8%AE%A9%E5%BA%93%E6%94%AF%E6%8C%81-TypeScript%EF%BC%9F"><span class="toc-number">4.3.</span> <span class="toc-text">Q：如何让库支持 TypeScript？</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Q%EF%BC%9A%E5%A6%82%E4%BD%95%E4%BF%9D%E8%AF%81%E5%BA%93%E7%9A%84%E4%BD%93%E7%A7%AF%E6%9C%80%E5%B0%8F%EF%BC%9F"><span class="toc-number">4.4.</span> <span class="toc-text">Q：如何保证库的体积最小？</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%80%BB%E7%BB%93"><span class="toc-number">5.</span> <span class="toc-text">总结</span></a></li></ol>
+    </div>
+  </div>
+  <label class="mask" for="toggle-toc"></label>
+
+<div id="post-content">
+  <h1>愈发简单的 JS 库开发</h1>
+  <p><img src="/images/accessible-js-Library-Development.jpg" alt="banner"></p>
+<blockquote>
+<p>是的，再不看书，书里的知识就过时了</p>
+</blockquote>
+<span id="more"></span>
+
+
+<h3 id="关于目录"><a href="#关于目录" class="headerlink" title="关于目录"></a>关于目录</h3><ol>
+<li>实践</li>
+<li>礼仪</li>
+<li>Q&amp;A</li>
+</ol>
+<h3 id="关于实践"><a href="#关于实践" class="headerlink" title="关于实践"></a>关于实践</h3><h4 id="古法初始化项目"><a href="#古法初始化项目" class="headerlink" title="古法初始化项目"></a>古法初始化项目</h4><p>话不多说，先来一波古法新建文件以及文件夹</p>
+<pre class="line-numbers language-bash"><code class="language-bash"><span class="token comment" spellcheck="true"># 新建项目 &amp;&amp; 进入项目</span>
+<span class="token function">mkdir</span> js-lib-temp <span class="token operator">&amp;</span> <span class="token function">cd</span> js-lib-temp
+<span class="token comment" spellcheck="true"># 初始化</span>
+<span class="token function">npm</span> init -y
+<span class="token comment" spellcheck="true"># 新建文件</span>
+<span class="token function">mkdir</span> -p src <span class="token operator">&amp;&amp;</span> <span class="token function">touch</span> src/index.js
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>打开 src&#x2F;index.js，写点简单的代码</p>
+<pre class="line-numbers language-js"><code class="language-js"><span class="token keyword">export</span> <span class="token keyword">default</span> <span class="token keyword">function</span> <span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span>
+  console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span><span class="token string">'hello world'</span><span class="token punctuation">)</span>
+<span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+<p>ok，咱的库只输出个 hello world，接下来就开始到处 say hi 呗</p>
+<h4 id="古法打包配置初始化"><a href="#古法打包配置初始化" class="headerlink" title="古法打包配置初始化"></a>古法打包配置初始化</h4><p>目标是在三种模块规范 CommonJS、 ESModule、UMD 中正常使用，目前最为流行的就是通过 rollupjs 来打包</p>
+<pre class="line-numbers language-bash"><code class="language-bash"><span class="token function">npm</span> <span class="token function">install</span> --save-dev rollup
+
+<span class="token comment" spellcheck="true"># 新建 config 文件夹，以及相关的配置文件</span>
+<span class="token function">mkdir</span> -p config
+
+<span class="token comment" spellcheck="true"># 新建 UMD 配置</span>
+<span class="token function">touch</span> config/rollup.config.aio.js
+<span class="token comment" spellcheck="true"># 新建 ESM 配置</span>
+<span class="token function">touch</span> config/rollup.config.esm.js
+<span class="token comment" spellcheck="true"># 新建 commonjs 配置</span>
+<span class="token function">touch</span> config/rollup.config.js
+<span class="token comment" spellcheck="true"># 新建整体配置</span>
+<span class="token function">touch</span> config/rollup.js
+
+<span class="token comment" spellcheck="true"># 一行搞定，也不是不行</span>
+<span class="token comment" spellcheck="true"># mkdir -p config &amp;&amp; touch config/rollup.config.aio.js config/rollup.config.esm.js config/rollup.config.js config/rollup.js</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>还需要下载一些插件 babel 与 rollup 相关的插件</p>
+<pre class="line-numbers language-bash"><code class="language-bash"><span class="token comment" spellcheck="true"># Babel 相关</span>
+<span class="token comment" spellcheck="true"># Babel 的核心库，负责将 ES6+ 代码转换为兼容旧环境的 JavaScript</span>
+<span class="token function">npm</span> <span class="token function">install</span> --save-dev @babel/core
+<span class="token comment" spellcheck="true"># 优化 Babel 转译结果，减少重复的辅助代码，提升包体积和运行效率。</span>
+<span class="token function">npm</span> <span class="token function">install</span> --save-dev @babel/plugin-transform-runtime
+<span class="token comment" spellcheck="true"># Babel 预设，自动根据目标环境转译最新的 JavaScript 语法</span>
+<span class="token function">npm</span> <span class="token function">install</span> --save-dev @babel/preset-env
+<span class="token comment" spellcheck="true"># Babel 运行时依赖</span>
+<span class="token comment" spellcheck="true"># 配合 @babel/plugin-transform-runtime 使用，避免辅助函数重复</span>
+<span class="token function">npm</span> <span class="token function">install</span> --save-dev @babel/runtime
+
+
+<span class="token comment" spellcheck="true"># rollup 相关</span>
+<span class="token comment" spellcheck="true"># 在 Rollup 打包时集成 Babel，支持源码转译。</span>
+<span class="token function">npm</span> <span class="token function">install</span> --save-dev @rollup/plugin-babel
+<span class="token comment" spellcheck="true"># 让 Rollup 能处理 CommonJS 模块（如 npm 包），转换为 ES6 模块。</span>
+<span class="token function">npm</span> <span class="token function">install</span> --save-dev  @rollup/plugin-commonjs
+<span class="token comment" spellcheck="true"># 让 Rollup 能解析 node_modules 里的第三方依赖。</span>
+<span class="token function">npm</span> <span class="token function">install</span> --save-dev  @rollup/plugin-node-resolve
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h4 id="古法打包逻辑代码"><a href="#古法打包逻辑代码" class="headerlink" title="古法打包逻辑代码"></a>古法打包逻辑代码</h4><pre class="line-numbers language-JS"><code class="language-JS">// config/rollup.js
+const &#123;
+  babel,
+&#125; = require('@rollup/plugin-babel')
+const pkg = require('../package.json')
+
+const version = pkg.version
+/**
+ * 构建输出文件的头部注释信息
+ * @type &#123;string&#125;
+ */
+let banner = `/*!
+ * $&#123;pkg.name&#125; $&#123;version&#125;
+ * Licensed under MIT
+ */
+`
+
+/**
+ * 获取 Babel 编译器插件配置
+ * @param &#123;object&#125; [opt] - 可选参数（当前未使用）
+ * @returns &#123;import('@rollup/plugin-babel').BabelInputPlugin&#125; Babel 插件实例
+ */
+function getCompiler(_opt) &#123;
+  return babel(&#123;
+    babelrc: false, // 不读取外部 .babelrc 文件，使用此处配置
+    presets: [
+      [
+        '@babel/preset-env',
+        &#123;
+          targets: &#123;
+            browsers: '> 0.5%, last 2 versions, not dead', // 浏览器兼容性目标
+            node: 'current', // LTS or 版本号
+          &#125;,
+          modules: false, // 不转换模块类型
+          loose: false, // 严格模式
+        &#125;,
+      ],
+    ],
+    plugins: [
+      [
+        '@babel/plugin-transform-runtime',
+        &#123;
+          corejs: 2, // 使用 core-js@2 polyfill
+          // helpers: false,  // 注释掉，默认 helpers 为 true
+          regenerator: false, // 不转换 generator
+        &#125;,
+      ],
+    ],
+    babelHelpers: 'runtime', // 使用 runtime helpers
+    exclude: 'node_modules/**', // 排除 node_modules
+  &#125;)
+&#125;
+
+/**
+ * 插件名称
+ * @type &#123;string&#125;
+ */
+exports.name = 'js-lib-temp'
+
+/**
+ * 构建输出文件的头部注释信息
+ * @type &#123;string&#125;
+ */
+exports.banner = banner
+
+/**
+ * 获取 Babel 编译器插件配置
+ * @type &#123;Function&#125;
+ */
+exports.getCompiler = getCompiler
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<pre class="line-numbers language-JS"><code class="language-JS">// config/rollup.config.js
+const common = require('./rollup.js')
+
+module.exports = &#123;
+  input: 'src/index.js',
+  output: &#123;
+    file: 'dist/index.js',
+    format: 'cjs',
+    banner: common.banner,
+  &#125;,
+  plugins: [common.getCompiler()],
+&#125;
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<pre class="line-numbers language-JS"><code class="language-JS">
+// config/rollup.config.esm.js
+const common = require('./rollup.js')
+
+module.exports = &#123;
+  input: 'src/index.js',
+  output: &#123;
+    file: 'dist/index.esm.js',
+    format: 'es',
+    banner: common.banner,
+  &#125;,
+  plugins: [common.getCompiler()],
+&#125;
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<pre class="line-numbers language-JS"><code class="language-JS">// config/rollup.config.aio.js
+const commonjs = require('@rollup/plugin-commonjs')
+const nodeResolve = require('@rollup/plugin-node-resolve')
+
+const common = require("./rollup.js")
+
+module.exports = &#123;
+  input: 'src/index.js',
+  output: &#123;
+    file: 'dist/index.aio.js',
+    format: 'umd',
+    name: common.name,
+    banner: common.banner,
+  &#125;,
+  plugins: [
+    nodeResolve(&#123;
+      main: true,
+      extensions: ['.js'],
+    &#125;),
+    commonjs(&#123;
+      include: 'node_modules/**',
+    &#125;),
+    common.getCompiler(),
+  ],
+&#125;
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h4 id="修改-package-json-相关内容"><a href="#修改-package-json-相关内容" class="headerlink" title="修改 package.json 相关内容"></a>修改 package.json 相关内容</h4><ul>
+<li>main：CommonJS 规范的入口文件</li>
+<li>module：ES Module 规范的入口文件，</li>
+</ul>
+<pre class="line-numbers language-json"><code class="language-json">&amp;#<span class="token number">123</span><span class="token punctuation">;</span>
+  <span class="token property">"main"</span><span class="token operator">:</span> <span class="token string">"dist/index.js"</span><span class="token punctuation">,</span> // 指定 CommonJS 规范的入口文件
+  <span class="token property">"module"</span><span class="token operator">:</span> <span class="token string">"dist/index.esm.js"</span><span class="token punctuation">,</span> // 指定 ES Module 规范的入口文件
+  <span class="token property">"scripts"</span><span class="token operator">:</span> &amp;#<span class="token number">123</span><span class="token punctuation">;</span>
+    <span class="token property">"build:self"</span><span class="token operator">:</span> <span class="token string">"rollup -c config/rollup.config.js"</span><span class="token punctuation">,</span>
+    <span class="token property">"build:esm"</span><span class="token operator">:</span> <span class="token string">"rollup -c config/rollup.config.esm.js"</span><span class="token punctuation">,</span>
+    <span class="token property">"build:aio"</span><span class="token operator">:</span> <span class="token string">"rollup -c config/rollup.config.aio.js"</span><span class="token punctuation">,</span>
+    <span class="token property">"build"</span><span class="token operator">:</span> <span class="token string">"npm run build:self &amp;&amp; npm run build:esm &amp;&amp; npm run build:aio"</span><span class="token punctuation">,</span>
+  &amp;#<span class="token number">125</span><span class="token punctuation">;</span>
+&amp;#<span class="token number">125</span><span class="token punctuation">;</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>运行 <code>npm run build</code> 后，即可在 CommonJS、ESModule、UMD 三个环境中运行了，调用示例：</p>
+<h4 id="关于调用"><a href="#关于调用" class="headerlink" title="关于调用"></a>关于调用</h4><h5 id="CommonJS-Node-js-环境"><a href="#CommonJS-Node-js-环境" class="headerlink" title="CommonJS (Node.js 环境)"></a>CommonJS (Node.js 环境)</h5><pre class="line-numbers language-js"><code class="language-js"><span class="token comment" spellcheck="true">// test-cjs.js</span>
+<span class="token keyword">const</span> sayHi <span class="token operator">=</span> <span class="token function">require</span><span class="token punctuation">(</span><span class="token string">'./dist/index.js'</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token function">sayHi</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment" spellcheck="true">// 输出: hello world</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+<h5 id="ESModule-现代打包工具或浏览器支持-ESModule"><a href="#ESModule-现代打包工具或浏览器支持-ESModule" class="headerlink" title="ESModule (现代打包工具或浏览器支持 ESModule)"></a>ESModule (现代打包工具或浏览器支持 ESModule)</h5><pre class="line-numbers language-js"><code class="language-js"><span class="token comment" spellcheck="true">// test-esm.mjs</span>
+<span class="token keyword">import</span> sayHi <span class="token keyword">from</span> <span class="token string">'./dist/index.esm.js'</span><span class="token punctuation">;</span>
+<span class="token function">sayHi</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment" spellcheck="true">// 输出: hello world</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+<h5 id="UMD-浏览器全局引用"><a href="#UMD-浏览器全局引用" class="headerlink" title="UMD (浏览器全局引用)"></a>UMD (浏览器全局引用)</h5><pre class="line-numbers language-html"><code class="language-html"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>script</span> <span class="token attr-name">src</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>./dist/index.aio.js<span class="token punctuation">"</span></span><span class="token punctuation">></span></span><span class="token script language-javascript"></span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>script</span><span class="token punctuation">></span></span>
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>script</span><span class="token punctuation">></span></span><span class="token script language-javascript">
+  <span class="token comment" spellcheck="true">// 假设 package.json 的 name 字段为 js-lib-temp</span>
+  <span class="token function">jsLibTemp</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment" spellcheck="true">// 输出: hello world</span>
+</span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>script</span><span class="token punctuation">></span></span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h3 id="关于礼仪"><a href="#关于礼仪" class="headerlink" title="关于礼仪"></a>关于礼仪</h3><h4 id="完善对应的目录与注释部份"><a href="#完善对应的目录与注释部份" class="headerlink" title="完善对应的目录与注释部份"></a>完善对应的目录与注释部份</h4><pre class="line-numbers language-bash"><code class="language-bash">├── README.md               <span class="token comment" spellcheck="true"># 项目说明文档</span>
+├── TODO.md                 <span class="token comment" spellcheck="true"># 待办事项记录（可选</span>
+├── CHANGELOG.md            <span class="token comment" spellcheck="true"># 变更日志（可选</span>
+├── config                   <span class="token comment" spellcheck="true"># Rollup 配置文件夹</span>
+│   ├── rollup.config.aio.js   <span class="token comment" spellcheck="true"># UMD 打包配置（适用于浏览器全局引用）</span>
+│   ├── rollup.config.esm.js   <span class="token comment" spellcheck="true"># ES Module 打包配置（适用于现代打包工具）</span>
+│   ├── rollup.config.js       <span class="token comment" spellcheck="true"># CommonJS 打包配置（适用于 Node.js）</span>
+│   └── rollup.js              <span class="token comment" spellcheck="true"># 公共 Rollup 配置与工具函数</span>
+├── dist                    <span class="token comment" spellcheck="true"># 打包输出目录</span>
+│   ├── index.aio.js            <span class="token comment" spellcheck="true"># UMD 格式输出文件</span>
+│   ├── index.esm.js            <span class="token comment" spellcheck="true"># ES Module 格式输出文件</span>
+│   └── index.js                <span class="token comment" spellcheck="true"># CommonJS 格式输出文件</span>
+├── package.json            <span class="token comment" spellcheck="true"># 项目依赖与配置信息</span>
+└── src                     <span class="token comment" spellcheck="true"># 源码目录</span>
+    └── index.js                <span class="token comment" spellcheck="true"># 主入口文件</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h5 id="README通常包含以下内容："><a href="#README通常包含以下内容：" class="headerlink" title="README通常包含以下内容："></a>README通常包含以下内容：</h5><ol>
+<li><strong>库介绍</strong>：简要说明库的功能、解决的问题和适用场景，帮助用户快速了解项目价值。</li>
+<li><strong>使用指南</strong>：提供安装、引入、调用等基础用法示例，让用户能快速上手。</li>
+<li><strong>贡献指南</strong>：说明如何参与贡献，包括代码规范、提 issue、提 PR 的流程，鼓励社区参与。</li>
+</ol>
+<h4 id="关于开源协议"><a href="#关于开源协议" class="headerlink" title="关于开源协议"></a>关于开源协议</h4><p>选择合适的开源协议对于 JS 库的传播和社区贡献非常重要。常见的协议有 MIT、BSD、Apache 等，不同协议在专利授权、商标使用、责任承担等方面略有差异。下表对比了三种主流协议的常见权利：</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>MIT</th>
+<th>BSD</th>
+<th>Apache</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>商业用途</td>
+<td>[x]</td>
+<td>[x]</td>
+<td>[x]</td>
+</tr>
+<tr>
+<td>可以修改</td>
+<td>[x]</td>
+<td>[x]</td>
+<td>[x]</td>
+</tr>
+<tr>
+<td>可以分发</td>
+<td>[x]</td>
+<td>[x]</td>
+<td>[x]</td>
+</tr>
+<tr>
+<td>授予专利许可</td>
+<td></td>
+<td></td>
+<td>[x]</td>
+</tr>
+<tr>
+<td>私人使用</td>
+<td>[x]</td>
+<td>[x]</td>
+<td>[x]</td>
+</tr>
+<tr>
+<td>商标使用</td>
+<td></td>
+<td></td>
+<td>[ ]</td>
+</tr>
+<tr>
+<td>承担责任</td>
+<td>[ ]</td>
+<td>[ ]</td>
+<td>[ ]</td>
+</tr>
+</tbody></table>
+<p>一般来说，MIT 协议最为宽松，适合大多数 JS 库项目。</p>
+<h3 id="Q-amp-A"><a href="#Q-amp-A" class="headerlink" title="Q&amp;A"></a>Q&amp;A</h3><h4 id="Q：Vite-与-Rollup-的关系、分别在什么场景下使用"><a href="#Q：Vite-与-Rollup-的关系、分别在什么场景下使用" class="headerlink" title="Q：Vite 与 Rollup 的关系、分别在什么场景下使用"></a>Q：Vite 与 Rollup 的关系、分别在什么场景下使用</h4><p>A：Vite 和 Rollup 都是现代前端构建工具。Rollup 专注于库&#x2F;包的打包，支持多种模块格式（如 CJS、ESM、UMD），适合开发 npm 包和 JS 库。Vite 则是基于 Rollup 的开发服务器和构建工具，主打开发体验（如热更新、极速冷启动），适合开发应用（如 SPA、组件库 demo），但底层生产构建依然用 Rollup。简单来说，开发库用 Rollup，开发应用用 Vite。</p>
+<h4 id="Q：为什么要分别输出-CJS、ESM、UMD-三种格式？"><a href="#Q：为什么要分别输出-CJS、ESM、UMD-三种格式？" class="headerlink" title="Q：为什么要分别输出 CJS、ESM、UMD 三种格式？"></a>Q：为什么要分别输出 CJS、ESM、UMD 三种格式？</h4><p>A：不同的使用场景和工具链对模块格式有不同要求。CJS 主要用于 Node.js 环境，ESM 适合现代打包工具和浏览器原生支持，UMD 兼容性最好，适合直接在浏览器通过 script 标签引入。三种格式都输出，能让你的库被更多场景和用户使用。</p>
+<h4 id="Q：如何让库支持-TypeScript？"><a href="#Q：如何让库支持-TypeScript？" class="headerlink" title="Q：如何让库支持 TypeScript？"></a>Q：如何让库支持 TypeScript？</h4><p>A：可以在 src 目录下使用 TypeScript（如 src&#x2F;index.ts），并安装相关依赖（typescript、@rollup&#x2F;plugin-typescript 等）。Rollup 配置中引入 typescript 插件即可。建议同时生成类型声明文件（.d.ts），方便 TypeScript 用户使用。</p>
+<h4 id="Q：如何保证库的体积最小？"><a href="#Q：如何保证库的体积最小？" class="headerlink" title="Q：如何保证库的体积最小？"></a>Q：如何保证库的体积最小？</h4><p>A：可以通过合理配置 Babel（如只引入需要的 polyfill）、使用 Rollup 的 tree-shaking、external 配置排除外部依赖、压缩输出（如使用 terser 插件）等方式减小包体积。</p>
+<h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><p><code>感谢阅读</code></p>
+<p>本文属于是阅读完《现代 JS 库开发：原理、技术与实践》的读后感</p>
+
+</div>
+
+<script>
+  // I'm not sure your browser supports `es6`
+  window.addEventListener('load', function () {
+    [].concat(Array.from(document.querySelectorAll('code')), Array.from(document.querySelectorAll('pre'))).filter(function (item) {return item.className.indexOf('language') >= 0}).forEach(function (tag) { tag.classList.add('line-numbers') })
+    Prism.highlightAll()
+
+    let scrollY = window.scrollY
+    let headersList = Array.from(document.querySelector('#post-content').querySelectorAll('h1,h2,h3,h4,h5,h6')).map(function (item) {
+      let rect = item.getBoundingClientRect()
+      let anchorTag = document.querySelector(`a.toc-link[href="#${item.id}"]`)
+
+      if (!anchorTag) return
+      return {
+        top: scrollY + rect.top - rect.height,
+        tag: item,
+        anchorTag: anchorTag
+      }
+    }).filter(function (item) { return item })
+
+    window.addEventListener('scroll', debounce(scrollHandler, 200))
+    scrollHandler()
+
+    function scrollHandler () {
+      let scrollY = window.scrollY
+      let minInfo = null
+
+      for (let item of headersList) {
+        if (!minInfo) {
+          minInfo = item
+          continue
+        }
+
+        if ((scrollY - item.top) >= 0 && (scrollY - minInfo.top) > (scrollY - item.top)) {
+          minInfo = item
+        }
+      }
+
+      if (minInfo) {
+        headersList.forEach(function (item) {
+          item.anchorTag && item.anchorTag.classList.remove('selected')
+        })
+        minInfo.anchorTag.classList.add('selected')
+      }
+    }
+
+    function debounce (func, delay) {
+      let debounceIdentify = 0
+      return function () {
+        debounceIdentify && clearTimeout(debounceIdentify)
+        debounceIdentify = setTimeout(function () {
+          debounceIdentify = 0
+          func.apply(this, arguments)
+        }, delay)
+      }
+    }
+  })
+</script>
+
+        </main>
+        <a href="#" class="goto-top">
+          <i class="fa fa-chevron-up"></i>
+        </a>
+    </div>
+    <footer class="footer">
+  <div class="footer-content">
+    <div class="footer-info" class="inner">
+      <p class="copyright">&copy; 2025 时之物语 ZYG&#39;s Blog 保留一切权利 ｜ 粤ICP备15078531号-1<br></p>
+      powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+      theme by <a href="https://github.com/Jiasm/hexo-theme-sheet" target="_blank">Sheet</a>
+    </div>
+    <ul class="contact-info">
+      
+        <a class="contact-link" href="https://github.com/zindexyg" target="_blank"><i class="fa fa-github"></i></a>
+      
+      
+        <a class="contact-link" href="https://weibo.com/u/3249847654" target="_blank"><i class="fa fa-weibo"></i></a>
+      
+      
+      
+      
+        <a class="contact-link" href="mailto:zinger_yg@163.com" target="_blank"><i class="fa fa-envelope"></i></a>
+      
+    </ul>
+  </div>
+</footer>
+
+
+
+      <script>
+      function footerHandler () {
+        if (!window.screen || !document.body) return
+        var hasComments = document.querySelector('.comments')
+        if ((window.screen.availHeight - (hasComments ? 350 : 0)) > document.body.clientHeight) {
+          document.body.classList.add('fixed')
+        } else {
+          document.body.classList.remove('fixed')
+        }
+      }
+      footerHandler()
+      window.addEventListener('resize', footerHandler)
+    </script>
+  </body>
+  <script>
+    var pathname = new URL(location.href).pathname.replace(/\/$/, '')
+
+    switch (pathname) {
+      case '/about':
+        document.querySelector('.menu-item-about').classList.add('active')
+        break
+      case '/contact':
+        document.querySelector('.menu-item-contact').classList.add('active')
+        break
+      case '/links':
+        document.querySelector('.menu-item-friends').classList.add('active')
+        break
+      default:
+        document.querySelector('.menu-item-home').classList.add('active')
+    }
+  </script>
+  
+
+</html>
