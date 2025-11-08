@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+  
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-z-16x16.ico " />
+  
+  
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-z-16x16.ico " />
+  
+  
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/favicon-z-32x32.ico">
+  
+  
+  <title>你不知道的bootstrap中文网 - 时之物语</title>
+
+  <!-- Open Graph Meta Tags -->
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="你不知道的bootstrap中文网">
+  <meta property="og:url" content="https://z-index.me/2017/12/19/%E4%BD%A0%E4%B8%8D%E7%9F%A5%E9%81%93%E7%9A%84bootstrap%E4%B8%AD%E6%96%87%E7%BD%91/">
+  <meta property="og:site_name" content="时之物语">
+  <meta property="og:description" content="
+
+本文介绍的是 bootstrap中文网 里的一些插件与模板 以及 《bootstrap实战》里面介绍的一些工具
+">
+  <meta property="og:locale" content="zh-CN">
+  <meta property="og:image" content="https://z-index.me/images/default-cover.jpg">
+
+  <!-- Twitter Card Meta Tags -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="你不知道的bootstrap中文网">
+  <meta name="twitter:description" content="
+
+本文介绍的是 bootstrap中文网 里的一些插件与模板 以及 《bootstrap实战》里面介绍的一些工具
+">
+  <meta name="twitter:image" content="https://z-index.me/images/default-cover.jpg">
+  
+
+  <!-- 文章特定的元数据 -->
+  
+  <meta property="article:published_time" content="2017-12-19T13:58:32.000Z">
+  
+  <meta property="article:modified_time" content="2025-07-14T04:12:09.302Z">
+  
+  
+  
+  <meta property="article:tag" content="bootstrap">
+  
+  <meta property="article:tag" content="plugs">
+  
+  <meta property="article:tag" content="读书笔记">
+  
+  
+  
+
+  
+<link rel="stylesheet" href="/css/style.css">
+
+<meta name="generator" content="Hexo 6.3.0"><link rel="stylesheet" href="/css/prism-coy.css" type="text/css">
+<link rel="stylesheet" href="/css/prism-line-numbers.css" type="text/css"><script src="/js/prism.js"></script>
+<script src="/js/prism-line-numbers.min.js"></script></head>
+
+
+  <body class='fixed'>
+    <div class="container">
+      <header class="header">
+  <div class="blog-title">
+    <a href="/" class="logo">时之物语</a>
+  </div>
+  <nav class="navbar">
+    <ul class="menu">
+      
+        <li class="menu-item">
+          <a href="/" class="menu-item-link menu-item-home">Home</a>
+        </li>
+      
+        <li class="menu-item">
+          <a href="/about" class="menu-item-link menu-item-about">About</a>
+        </li>
+      
+        <li class="menu-item">
+          <a href="/links" class="menu-item-link menu-item-friends">Friends</a>
+        </li>
+      
+    </ul>
+  </nav>
+</header>
+
+        <main class="main">
+          
+  <input type="checkbox" id="toggle-toc" class="toggle-toc-right" />
+  <div class="toc-toggle toc-toggle-right">
+    <label for="toggle-toc">
+      <i class="fa fa-list-ol"></i>
+    </label>
+    <div class="toc-wrap toc-wrap-right">
+      <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%B7%A5%E5%85%B7"><span class="toc-number">1.</span> <span class="toc-text">工具</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#xampp-%E6%9C%AC%E5%9C%B0%E5%BF%AB%E9%80%9F%E6%90%AD%E5%BB%BA%E7%BD%91%E9%A1%B5%E6%9C%8D%E5%8A%A1%E5%99%A8"><span class="toc-number">1.1.</span> <span class="toc-text">xampp 本地快速搭建网页服务器</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#WinLess-%E7%BC%96%E5%86%99-LESS"><span class="toc-number">1.2.</span> <span class="toc-text">WinLess 编写 LESS</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#H5BP"><span class="toc-number">1.3.</span> <span class="toc-text">H5BP</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%8F%92%E4%BB%B6%E5%BA%93"><span class="toc-number">2.</span> <span class="toc-text">插件库</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Zepto-js-%E8%BD%BB%E9%87%8F%E7%89%88-jQ"><span class="toc-number">2.1.</span> <span class="toc-text">Zepto.js 轻量版 jQ</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#messenger-%E5%BC%B9%E6%A1%86%E7%BB%84%E4%BB%B6%E5%BA%93"><span class="toc-number">2.2.</span> <span class="toc-text">messenger 弹框组件库</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Chart-js-%E5%9B%BE%E8%A1%A8%E7%BB%98%E5%88%B6%E5%B7%A5%E5%85%B7%E5%BA%93"><span class="toc-number">2.3.</span> <span class="toc-text">Chart.js 图表绘制工具库</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#BootCDN-%E5%85%8D%E8%B4%B9%E5%BC%80%E6%BA%90%E7%9A%84-CDN-%E5%8A%A0%E9%80%9F"><span class="toc-number">2.4.</span> <span class="toc-text">BootCDN 免费开源的 CDN 加速</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%80%BB%E7%BB%93"><span class="toc-number">3.</span> <span class="toc-text">总结</span></a></li></ol>
+    </div>
+  </div>
+  <label class="mask" for="toggle-toc"></label>
+
+<div id="post-content">
+  <h1>你不知道的bootstrap中文网</h1>
+  <p><img src="/images/boot-banner.jpg"></p>
+<blockquote>
+<p>本文介绍的是 <a target="_blank" rel="noopener" href="http://www.bootcss.com/">bootstrap中文网</a> 里的一些插件与模板 以及 <a target="_blank" rel="noopener" href="https://book.douban.com/subject/26376363/">《bootstrap实战》</a>里面介绍的一些工具</p>
+</blockquote>
+<span id="more"></span>
+
+<h2 id="工具"><a href="#工具" class="headerlink" title="工具"></a>工具</h2><h3 id="xampp-本地快速搭建网页服务器"><a href="#xampp-本地快速搭建网页服务器" class="headerlink" title="xampp 本地快速搭建网页服务器"></a>xampp 本地快速搭建网页服务器</h3><p><a target="_blank" rel="noopener" href="https://www.apachefriends.org/zh_cn/index.html">xampp</a> 是一款快速搭建网页服务器的软件，当然 win 下面还有 IIS 这种选项，可以快速搭建一个网页服务平台，这些我们不争论。好就好在，这款软件可以搭建 WordPress 让我们愉快把玩它；</p>
+<h3 id="WinLess-编写-LESS"><a href="#WinLess-编写-LESS" class="headerlink" title="WinLess 编写 LESS"></a>WinLess 编写 LESS</h3><p><a target="_blank" rel="noopener" href="http://winless.org/">WinLess</a>,在当今打包工具横行的前端界，这个可谓是很古老的东西了，但依然还是很好用的，其用法也很简单，在 <code>.less</code> 文件下编写，之后打开 WinLess 把 <code>.less</code> 编译成 <code>.css</code> 文件，使得我们即使在业务需求下编写纯页面文档，也可以不用编写那些难忍的前缀属性了；</p>
+<h3 id="H5BP"><a href="#H5BP" class="headerlink" title="H5BP"></a>H5BP</h3><p><a target="_blank" rel="noopener" href="http://www.bootcss.com/p/html5boilerplate/">H5BP</a> 让我们快速搭建 web app，可以根据自己需要定制一些 meta 标签，以及 jQ，bootstrap，Normalize，定制的页面直接符合了一个项目规范，所有需要的文档一应俱全，只待编写了；</p>
+<h2 id="插件库"><a href="#插件库" class="headerlink" title="插件库"></a>插件库</h2><h3 id="Zepto-js-轻量版-jQ"><a href="#Zepto-js-轻量版-jQ" class="headerlink" title="Zepto.js 轻量版 jQ"></a>Zepto.js 轻量版 jQ</h3><p><a target="_blank" rel="noopener" href="http://zeptojs.bootcss.com/">Zepto</a> 严格来说不算是一个插件，在移动端，我们的流量异常的可贵，<code>jQ.min.js</code> 压缩到 90kb 已经是很好了，然而还是有很多我们用不到的方法，而 <code>Zepto.min.js</code> 可以压缩到 20kb 左右，简直天秀；</p>
+<h3 id="messenger-弹框组件库"><a href="#messenger-弹框组件库" class="headerlink" title="messenger 弹框组件库"></a>messenger 弹框组件库</h3><p><a target="_blank" rel="noopener" href="http://www.bootcss.com/p/messenger/">messenger</a>,这个组件好玩之处在于，它有不同的样式选择，也在于只需要依赖 jQ 即可，bootStrap 可有可无；</p>
+<h3 id="Chart-js-图表绘制工具库"><a href="#Chart-js-图表绘制工具库" class="headerlink" title="Chart.js 图表绘制工具库"></a>Chart.js 图表绘制工具库</h3><p><a target="_blank" rel="noopener" href="http://www.bootcss.com/p/chart.js/docs/">Chart.js</a> 不依赖任何工具库，好玩，轻便，中文文档也写得好，更主要是兼容低端浏览器，简直是工作利器；</p>
+<h3 id="BootCDN-免费开源的-CDN-加速"><a href="#BootCDN-免费开源的-CDN-加速" class="headerlink" title="BootCDN 免费开源的 CDN 加速"></a>BootCDN 免费开源的 CDN 加速</h3><p><a target="_blank" rel="noopener" href="http://www.bootcdn.cn/">BootCDN</a>，在特殊原因下，这个 CDN 基本上是很良心了，该有的都有，而且速度也不错，平常也是常用这个；</p>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>这里面的文档几乎都在列表最前面，该有的都有了，而且都是可以访问的链接，很良心，学习起来也不费事，感谢阅读</p>
+
+</div>
+
+<script>
+  // I'm not sure your browser supports `es6`
+  window.addEventListener('load', function () {
+    [].concat(Array.from(document.querySelectorAll('code')), Array.from(document.querySelectorAll('pre'))).filter(function (item) {return item.className.indexOf('language') >= 0}).forEach(function (tag) { tag.classList.add('line-numbers') })
+    Prism.highlightAll()
+
+    let scrollY = window.scrollY
+    let headersList = Array.from(document.querySelector('#post-content').querySelectorAll('h1,h2,h3,h4,h5,h6')).map(function (item) {
+      let rect = item.getBoundingClientRect()
+      let anchorTag = document.querySelector(`a.toc-link[href="#${item.id}"]`)
+
+      if (!anchorTag) return
+      return {
+        top: scrollY + rect.top - rect.height,
+        tag: item,
+        anchorTag: anchorTag
+      }
+    }).filter(function (item) { return item })
+
+    window.addEventListener('scroll', debounce(scrollHandler, 200))
+    scrollHandler()
+
+    function scrollHandler () {
+      let scrollY = window.scrollY
+      let minInfo = null
+
+      for (let item of headersList) {
+        if (!minInfo) {
+          minInfo = item
+          continue
+        }
+
+        if ((scrollY - item.top) >= 0 && (scrollY - minInfo.top) > (scrollY - item.top)) {
+          minInfo = item
+        }
+      }
+
+      if (minInfo) {
+        headersList.forEach(function (item) {
+          item.anchorTag && item.anchorTag.classList.remove('selected')
+        })
+        minInfo.anchorTag.classList.add('selected')
+      }
+    }
+
+    function debounce (func, delay) {
+      let debounceIdentify = 0
+      return function () {
+        debounceIdentify && clearTimeout(debounceIdentify)
+        debounceIdentify = setTimeout(function () {
+          debounceIdentify = 0
+          func.apply(this, arguments)
+        }, delay)
+      }
+    }
+  })
+</script>
+
+        </main>
+        <a href="#" class="goto-top">
+          <i class="fa fa-chevron-up"></i>
+        </a>
+    </div>
+    <footer class="footer">
+  <div class="footer-content">
+    <div class="footer-info" class="inner">
+      <p class="copyright">&copy; 2025 时之物语 ZYG&#39;s Blog 保留一切权利 ｜ 粤ICP备15078531号-1<br></p>
+      powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+      theme by <a href="https://github.com/Jiasm/hexo-theme-sheet" target="_blank">Sheet</a>
+    </div>
+    <ul class="contact-info">
+      
+        <a class="contact-link" href="https://github.com/zindexyg" target="_blank"><i class="fa fa-github"></i></a>
+      
+      
+        <a class="contact-link" href="https://weibo.com/u/3249847654" target="_blank"><i class="fa fa-weibo"></i></a>
+      
+      
+      
+      
+        <a class="contact-link" href="mailto:zinger_yg@163.com" target="_blank"><i class="fa fa-envelope"></i></a>
+      
+    </ul>
+  </div>
+</footer>
+
+
+
+      <script>
+      function footerHandler () {
+        if (!window.screen || !document.body) return
+        var hasComments = document.querySelector('.comments')
+        if ((window.screen.availHeight - (hasComments ? 350 : 0)) > document.body.clientHeight) {
+          document.body.classList.add('fixed')
+        } else {
+          document.body.classList.remove('fixed')
+        }
+      }
+      footerHandler()
+      window.addEventListener('resize', footerHandler)
+    </script>
+  </body>
+  <script>
+    var pathname = new URL(location.href).pathname.replace(/\/$/, '')
+
+    switch (pathname) {
+      case '/about':
+        document.querySelector('.menu-item-about').classList.add('active')
+        break
+      case '/contact':
+        document.querySelector('.menu-item-contact').classList.add('active')
+        break
+      case '/links':
+        document.querySelector('.menu-item-friends').classList.add('active')
+        break
+      default:
+        document.querySelector('.menu-item-home').classList.add('active')
+    }
+  </script>
+  
+
+</html>

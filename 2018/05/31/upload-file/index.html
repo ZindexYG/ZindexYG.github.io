@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+  
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-z-16x16.ico " />
+  
+  
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-z-16x16.ico " />
+  
+  
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/favicon-z-32x32.ico">
+  
+  
+  <title>Ajax 之文件上传 - 时之物语</title>
+
+  <!-- Open Graph Meta Tags -->
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="Ajax 之文件上传">
+  <meta property="og:url" content="https://z-index.me/2018/05/31/upload-file/">
+  <meta property="og:site_name" content="时之物语">
+  <meta property="og:description" content="
+
+这个应该是用来做菜的~
+">
+  <meta property="og:locale" content="zh-CN">
+  <meta property="og:image" content="https://z-index.me/images/default-cover.jpg">
+
+  <!-- Twitter Card Meta Tags -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Ajax 之文件上传">
+  <meta name="twitter:description" content="
+
+这个应该是用来做菜的~
+">
+  <meta name="twitter:image" content="https://z-index.me/images/default-cover.jpg">
+  
+
+  <!-- 文章特定的元数据 -->
+  
+  <meta property="article:published_time" content="2018-05-31T15:40:57.000Z">
+  
+  <meta property="article:modified_time" content="2025-07-14T04:12:09.302Z">
+  
+  
+  
+  <meta property="article:tag" content="javascript">
+  
+  <meta property="article:tag" content="ajax">
+  
+  <meta property="article:tag" content="ES6">
+  
+  
+  
+
+  
+<link rel="stylesheet" href="/css/style.css">
+
+<meta name="generator" content="Hexo 6.3.0"><link rel="stylesheet" href="/css/prism-coy.css" type="text/css">
+<link rel="stylesheet" href="/css/prism-line-numbers.css" type="text/css"><script src="/js/prism.js"></script>
+<script src="/js/prism-line-numbers.min.js"></script></head>
+
+
+  <body class='fixed'>
+    <div class="container">
+      <header class="header">
+  <div class="blog-title">
+    <a href="/" class="logo">时之物语</a>
+  </div>
+  <nav class="navbar">
+    <ul class="menu">
+      
+        <li class="menu-item">
+          <a href="/" class="menu-item-link menu-item-home">Home</a>
+        </li>
+      
+        <li class="menu-item">
+          <a href="/about" class="menu-item-link menu-item-about">About</a>
+        </li>
+      
+        <li class="menu-item">
+          <a href="/links" class="menu-item-link menu-item-friends">Friends</a>
+        </li>
+      
+    </ul>
+  </nav>
+</header>
+
+        <main class="main">
+          
+  <input type="checkbox" id="toggle-toc" class="toggle-toc-right" />
+  <div class="toc-toggle toc-toggle-right">
+    <label for="toggle-toc">
+      <i class="fa fa-list-ol"></i>
+    </label>
+    <div class="toc-wrap toc-wrap-right">
+      <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#FormData"><span class="toc-number">1.</span> <span class="toc-text">FormData</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%AE%80%E5%8D%95%E7%9A%84%E4%B8%8A%E4%BC%A0%E4%BE%8B%E5%AD%90"><span class="toc-number">1.1.</span> <span class="toc-text">简单的上传例子</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%A7%A3%E8%AF%BB%E6%AD%A5%E9%AA%A4"><span class="toc-number">1.2.</span> <span class="toc-text">解读步骤</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%8E%9F%E7%90%86%E8%AF%B4%E6%98%8E"><span class="toc-number">1.3.</span> <span class="toc-text">原理说明</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#FileReader"><span class="toc-number">2.</span> <span class="toc-text">FileReader</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%AE%80%E5%8D%95%E7%9A%84%E8%AF%BB%E5%8F%96%E6%96%87%E4%BB%B6%E4%BE%8B%E5%AD%90"><span class="toc-number">2.1.</span> <span class="toc-text">简单的读取文件例子</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%A7%A3%E8%AF%BB%E6%AD%A5%E9%AA%A4-1"><span class="toc-number">2.2.</span> <span class="toc-text">解读步骤</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%8E%9F%E7%90%86%E8%AF%B4%E6%98%8E-1"><span class="toc-number">2.3.</span> <span class="toc-text">原理说明</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%80%BB%E7%BB%93"><span class="toc-number">3.</span> <span class="toc-text">总结</span></a></li></ol>
+    </div>
+  </div>
+  <label class="mask" for="toggle-toc"></label>
+
+<div id="post-content">
+  <h1>Ajax 之文件上传</h1>
+  <p><img src="/images/uploading-file-banner.jpg"></p>
+<blockquote>
+<p>这个应该是用来做菜的~</p>
+</blockquote>
+<span id="more"></span>
+
+<h2 id="FormData"><a href="#FormData" class="headerlink" title="FormData"></a>FormData</h2><h3 id="简单的上传例子"><a href="#简单的上传例子" class="headerlink" title="简单的上传例子"></a>简单的上传例子</h3><pre class="line-numbers language-javascript"><code class="language-javascript"><span class="token comment" spellcheck="true">/*
+  先在 html 里面准便好 &lt;input class="file-input" tpye="file" /> 标签
+*/</span>
+
+<span class="token keyword">var</span> fileInput <span class="token operator">=</span> document<span class="token punctuation">.</span><span class="token function">querySelector</span><span class="token punctuation">(</span><span class="token string">'.file-input'</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token keyword">var</span> formData <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">FormData</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+<span class="token comment" spellcheck="true">//添加 formData 上传文件</span>
+fileInput<span class="token punctuation">.</span>onchange <span class="token operator">=</span> <span class="token keyword">function</span><span class="token punctuation">(</span>e<span class="token punctuation">)</span><span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span>
+  formData<span class="token punctuation">.</span><span class="token function">append</span><span class="token punctuation">(</span><span class="token string">"fileIn"</span><span class="token punctuation">,</span> <span class="token keyword">this</span><span class="token punctuation">.</span>value<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span>
+
+<span class="token comment" spellcheck="true">//上传文件</span>
+<span class="token keyword">var</span> request <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">XMLHttpRequest</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+request<span class="token punctuation">.</span><span class="token function">open</span><span class="token punctuation">(</span><span class="token string">"POST"</span><span class="token punctuation">,</span> <span class="token string">"/ajax.php"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+request<span class="token punctuation">.</span><span class="token function">send</span><span class="token punctuation">(</span>formData<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h3 id="解读步骤"><a href="#解读步骤" class="headerlink" title="解读步骤"></a>解读步骤</h3><ol>
+<li><code>fileInput</code> 的 <code>dom</code> 对象获取， <code>FormData</code> 对象生成；</li>
+<li>使用 <code>fileInput</code> 的 <code>onchange</code>  事件来获取，文件的内容；</li>
+<li>使用 <code>formData</code> 的 <code>append</code> 方法来添加一个新值到 <code>formData</code> 里面来；</li>
+<li>使用 <code>XMLHttpRequest</code> 的 <code>send</code> 的方法来上传文件；</li>
+</ol>
+<h3 id="原理说明"><a href="#原理说明" class="headerlink" title="原理说明"></a>原理说明</h3><p><code>FormData</code> 对象其实不止是可以用来上传文件，如同其名，可以模拟一系列表单控件的键值对，然后用于 <code>XMLHttpRequest</code> 的提交，其最大的优点就是可以异步上传一个二进制文件；</p>
+<p><code>FormData</code> 是无法读取文件的，其核心就是通过 <code>append()</code>，将文件变成新增字段，来上传文件；</p>
+<h2 id="FileReader"><a href="#FileReader" class="headerlink" title="FileReader"></a>FileReader</h2><h3 id="简单的读取文件例子"><a href="#简单的读取文件例子" class="headerlink" title="简单的读取文件例子"></a>简单的读取文件例子</h3><pre class="line-numbers language-javascript"><code class="language-javascript">
+<span class="token comment" spellcheck="true">/*
+  先在 html 里面准便好 &lt;input class="file-input" tpye="file" /> 标签
+*/</span>
+
+<span class="token keyword">var</span> fileInput <span class="token operator">=</span> document<span class="token punctuation">.</span><span class="token function">querySelector</span><span class="token punctuation">(</span><span class="token string">'.file-input'</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token comment" spellcheck="true">// 创建 FileReader 对象</span>
+<span class="token keyword">var</span> fileReader <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">FileReader</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+fileInput<span class="token punctuation">.</span>onchange <span class="token operator">=</span> <span class="token keyword">function</span><span class="token punctuation">(</span>e<span class="token punctuation">)</span><span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span>
+  <span class="token comment" spellcheck="true">// 获取原声 File 对象</span>
+  <span class="token keyword">var</span> file <span class="token operator">=</span> event<span class="token punctuation">.</span>target<span class="token punctuation">.</span>files<span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span><span class="token punctuation">;</span>
+  <span class="token comment" spellcheck="true">// 以二进制读取文件对象</span>
+  fileReader<span class="token punctuation">.</span><span class="token function">readAsArrayBuffer</span><span class="token punctuation">(</span>file<span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token comment" spellcheck="true">//fileReader.readAsDataURL(file); // 以data:URL 格式的字符串以表示读取文件的内容</span>
+  <span class="token comment" spellcheck="true">//fileReader.readAsText(file); //以字符串形式表示读取到的文件内容</span>
+<span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span>
+
+<span class="token comment" spellcheck="true">// 读取操作完成后</span>
+fileReader<span class="token punctuation">.</span>onload <span class="token operator">=</span> <span class="token keyword">function</span> <span class="token punctuation">(</span>e<span class="token punctuation">)</span> <span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span>
+  console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span>e<span class="token punctuation">)</span>
+<span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h3 id="解读步骤-1"><a href="#解读步骤-1" class="headerlink" title="解读步骤"></a>解读步骤</h3><ol>
+<li>创建 <code>FileReader</code> 对象；</li>
+<li>通过 <code>fileInput</code> 的 <code>dom</code> 对象 <code>onchange</code> 的方法， 获取原始 <code>File</code> 对象；</li>
+<li>通过 <code>FileReader</code> 中其中一种读取方式，读取原始 <code>File</code> 对象；</li>
+<li>通过 <code>FileReader</code> 的 <code>onload</code> 方法获取来继续读取完成后的操作；</li>
+</ol>
+<h3 id="原理说明-1"><a href="#原理说明-1" class="headerlink" title="原理说明"></a>原理说明</h3><p>一般来说，读取文件应用场景应该是需要作断点续存的时候，或者想要预览上传的图片；</p>
+<p>预览图片例子</p>
+<pre class="line-numbers language-javascript"><code class="language-javascript">
+<span class="token keyword">var</span> fileInput <span class="token operator">=</span> document<span class="token punctuation">.</span><span class="token function">querySelector</span><span class="token punctuation">(</span><span class="token string">'.file-input'</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token keyword">var</span> imgSrc <span class="token operator">=</span> document<span class="token punctuation">.</span><span class="token function">querySelector</span><span class="token punctuation">(</span><span class="token string">'.img'</span><span class="token punctuation">)</span>
+<span class="token comment" spellcheck="true">// 创建 FileReader 对象</span>
+<span class="token keyword">var</span> fileReader <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">FileReader</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+fileInput<span class="token punctuation">.</span>onchange <span class="token operator">=</span> <span class="token keyword">function</span><span class="token punctuation">(</span>e<span class="token punctuation">)</span><span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span>
+  <span class="token comment" spellcheck="true">// 获取原声 File 对象</span>
+  <span class="token keyword">var</span> file <span class="token operator">=</span> event<span class="token punctuation">.</span>target<span class="token punctuation">.</span>files<span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span><span class="token punctuation">;</span>
+
+  fileReader<span class="token punctuation">.</span><span class="token function">readAsDataURL</span><span class="token punctuation">(</span>file<span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment" spellcheck="true">// 以data:URL 格式的字符串以表示读取文件的内容</span>
+<span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span>
+
+<span class="token comment" spellcheck="true">// 读取操作完成后</span>
+fileReader<span class="token punctuation">.</span>onload <span class="token operator">=</span> <span class="token keyword">function</span> <span class="token punctuation">(</span>e<span class="token punctuation">)</span> <span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span>
+  console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span>e<span class="token punctuation">)</span>
+  imgSrc<span class="token punctuation">.</span>src <span class="token operator">=</span> e<span class="token punctuation">.</span>target<span class="token punctuation">.</span>result
+<span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>由于本人使用 <code>FileReader</code> 得并不多，所以这里不作详细讨论了，有兴趣的同学可以，直接去看<a target="_blank" rel="noopener" href="https://developer.mozilla.org/zh-CN/docs/Web/API/FileReader">MDN文档</a></p>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>虽然上传文件很早就尝试过了，但是当时理解并不是很深入，而且加上最近几次在这方面知识的打击，有点不太能认了；</p>
+<p>感谢 <a target="_blank" rel="noopener" href="https://github.com/ZhangPuXi">白白</a> 的几次指导，（指导了好几次，本人还是忘了)</p>
+<p>感谢 <a target="_blank" rel="noopener" href="https://developer.mozilla.org/zh-CN/">MDN</a> 提供的文档给予我一定的灵感</p>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://developer.mozilla.org/zh-CN/docs/Web/API/FormData/Using_FormData_Objects">FormData 对象的使用</a></li>
+<li><a target="_blank" rel="noopener" href="https://developer.mozilla.org/zh-CN/docs/Web/API/FileReader">FileReader</a></li>
+</ul>
+<p>感谢阅读，欢迎指出文章的不足之处，以及讨论更多的代码优化</p>
+
+</div>
+
+<script>
+  // I'm not sure your browser supports `es6`
+  window.addEventListener('load', function () {
+    [].concat(Array.from(document.querySelectorAll('code')), Array.from(document.querySelectorAll('pre'))).filter(function (item) {return item.className.indexOf('language') >= 0}).forEach(function (tag) { tag.classList.add('line-numbers') })
+    Prism.highlightAll()
+
+    let scrollY = window.scrollY
+    let headersList = Array.from(document.querySelector('#post-content').querySelectorAll('h1,h2,h3,h4,h5,h6')).map(function (item) {
+      let rect = item.getBoundingClientRect()
+      let anchorTag = document.querySelector(`a.toc-link[href="#${item.id}"]`)
+
+      if (!anchorTag) return
+      return {
+        top: scrollY + rect.top - rect.height,
+        tag: item,
+        anchorTag: anchorTag
+      }
+    }).filter(function (item) { return item })
+
+    window.addEventListener('scroll', debounce(scrollHandler, 200))
+    scrollHandler()
+
+    function scrollHandler () {
+      let scrollY = window.scrollY
+      let minInfo = null
+
+      for (let item of headersList) {
+        if (!minInfo) {
+          minInfo = item
+          continue
+        }
+
+        if ((scrollY - item.top) >= 0 && (scrollY - minInfo.top) > (scrollY - item.top)) {
+          minInfo = item
+        }
+      }
+
+      if (minInfo) {
+        headersList.forEach(function (item) {
+          item.anchorTag && item.anchorTag.classList.remove('selected')
+        })
+        minInfo.anchorTag.classList.add('selected')
+      }
+    }
+
+    function debounce (func, delay) {
+      let debounceIdentify = 0
+      return function () {
+        debounceIdentify && clearTimeout(debounceIdentify)
+        debounceIdentify = setTimeout(function () {
+          debounceIdentify = 0
+          func.apply(this, arguments)
+        }, delay)
+      }
+    }
+  })
+</script>
+
+        </main>
+        <a href="#" class="goto-top">
+          <i class="fa fa-chevron-up"></i>
+        </a>
+    </div>
+    <footer class="footer">
+  <div class="footer-content">
+    <div class="footer-info" class="inner">
+      <p class="copyright">&copy; 2025 时之物语 ZYG&#39;s Blog 保留一切权利 ｜ 粤ICP备15078531号-1<br></p>
+      powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+      theme by <a href="https://github.com/Jiasm/hexo-theme-sheet" target="_blank">Sheet</a>
+    </div>
+    <ul class="contact-info">
+      
+        <a class="contact-link" href="https://github.com/zindexyg" target="_blank"><i class="fa fa-github"></i></a>
+      
+      
+        <a class="contact-link" href="https://weibo.com/u/3249847654" target="_blank"><i class="fa fa-weibo"></i></a>
+      
+      
+      
+      
+        <a class="contact-link" href="mailto:zinger_yg@163.com" target="_blank"><i class="fa fa-envelope"></i></a>
+      
+    </ul>
+  </div>
+</footer>
+
+
+
+      <script>
+      function footerHandler () {
+        if (!window.screen || !document.body) return
+        var hasComments = document.querySelector('.comments')
+        if ((window.screen.availHeight - (hasComments ? 350 : 0)) > document.body.clientHeight) {
+          document.body.classList.add('fixed')
+        } else {
+          document.body.classList.remove('fixed')
+        }
+      }
+      footerHandler()
+      window.addEventListener('resize', footerHandler)
+    </script>
+  </body>
+  <script>
+    var pathname = new URL(location.href).pathname.replace(/\/$/, '')
+
+    switch (pathname) {
+      case '/about':
+        document.querySelector('.menu-item-about').classList.add('active')
+        break
+      case '/contact':
+        document.querySelector('.menu-item-contact').classList.add('active')
+        break
+      case '/links':
+        document.querySelector('.menu-item-friends').classList.add('active')
+        break
+      default:
+        document.querySelector('.menu-item-home').classList.add('active')
+    }
+  </script>
+  
+
+</html>

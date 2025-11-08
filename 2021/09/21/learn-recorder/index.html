@@ -1,0 +1,494 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+  
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-z-16x16.ico " />
+  
+  
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-z-16x16.ico " />
+  
+  
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/favicon-z-32x32.ico">
+  
+  
+  <title>关于录音 Recorder.js - 时之物语</title>
+
+  <!-- Open Graph Meta Tags -->
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="关于录音 Recorder.js">
+  <meta property="og:url" content="https://z-index.me/2021/09/21/learn-recorder/">
+  <meta property="og:site_name" content="时之物语">
+  <meta property="og:description" content="
+
+看，学，做
+">
+  <meta property="og:locale" content="zh-CN">
+  <meta property="og:image" content="https://z-index.me/images/default-cover.jpg">
+
+  <!-- Twitter Card Meta Tags -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="关于录音 Recorder.js">
+  <meta name="twitter:description" content="
+
+看，学，做
+">
+  <meta name="twitter:image" content="https://z-index.me/images/default-cover.jpg">
+  
+
+  <!-- 文章特定的元数据 -->
+  
+  <meta property="article:published_time" content="2021-09-21T07:51:57.000Z">
+  
+  <meta property="article:modified_time" content="2025-07-14T04:12:09.301Z">
+  
+  
+  
+  <meta property="article:tag" content="js">
+  
+  
+  
+
+  
+<link rel="stylesheet" href="/css/style.css">
+
+<meta name="generator" content="Hexo 6.3.0"><link rel="stylesheet" href="/css/prism-coy.css" type="text/css">
+<link rel="stylesheet" href="/css/prism-line-numbers.css" type="text/css"><script src="/js/prism.js"></script>
+<script src="/js/prism-line-numbers.min.js"></script></head>
+
+
+  <body class='fixed'>
+    <div class="container">
+      <header class="header">
+  <div class="blog-title">
+    <a href="/" class="logo">时之物语</a>
+  </div>
+  <nav class="navbar">
+    <ul class="menu">
+      
+        <li class="menu-item">
+          <a href="/" class="menu-item-link menu-item-home">Home</a>
+        </li>
+      
+        <li class="menu-item">
+          <a href="/about" class="menu-item-link menu-item-about">About</a>
+        </li>
+      
+        <li class="menu-item">
+          <a href="/links" class="menu-item-link menu-item-friends">Friends</a>
+        </li>
+      
+    </ul>
+  </nav>
+</header>
+
+        <main class="main">
+          
+  <input type="checkbox" id="toggle-toc" class="toggle-toc-right" />
+  <div class="toc-toggle toc-toggle-right">
+    <label for="toggle-toc">
+      <i class="fa fa-list-ol"></i>
+    </label>
+    <div class="toc-wrap toc-wrap-right">
+      <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%85%B3%E4%BA%8E%E7%9B%AE%E5%BD%95"><span class="toc-number">1.</span> <span class="toc-text">关于目录</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%85%B3%E4%BA%8E%E5%AE%9E%E7%8E%B0%E6%89%80%E9%9C%80-API"><span class="toc-number">2.</span> <span class="toc-text">关于实现所需 API</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%85%B3%E4%BA%8E%E5%85%B3%E9%94%AE%E4%BB%A3%E7%A0%81%E5%AE%9E%E7%8E%B0"><span class="toc-number">3.</span> <span class="toc-text">关于关键代码实现</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%AF%B9%E8%B1%A1%E5%88%9D%E5%A7%8B%E5%8C%96"><span class="toc-number">3.1.</span> <span class="toc-text">对象初始化</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E7%BC%96%E5%86%99%E5%86%85%E7%BD%AE%E5%B7%A5%E5%85%B7%E5%87%BD%E6%95%B0"><span class="toc-number">3.2.</span> <span class="toc-text">编写内置工具函数</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E7%BC%96%E5%86%99%E5%8F%AF%E6%9A%B4%E9%9C%B2%E7%9A%84%E6%95%B0%E6%8D%AE"><span class="toc-number">3.3.</span> <span class="toc-text">编写可暴露的数据</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%85%B3%E4%BA%8E%E5%B0%8F%E7%BB%93"><span class="toc-number">4.</span> <span class="toc-text">关于小结</span></a></li></ol>
+    </div>
+  </div>
+  <label class="mask" for="toggle-toc"></label>
+
+<div id="post-content">
+  <h1>关于录音 Recorder.js</h1>
+  <p><img src="/images/Recorder-js.png"></p>
+<blockquote>
+<p>看，学，做</p>
+</blockquote>
+<span id="more"></span>
+
+<h3 id="关于目录"><a href="#关于目录" class="headerlink" title="关于目录"></a>关于目录</h3><ul>
+<li>关于关键 Api</li>
+<li>关于关键代码实现</li>
+<li>关于 audio  标签的细节</li>
+</ul>
+<h3 id="关于实现所需-API"><a href="#关于实现所需-API" class="headerlink" title="关于实现所需 API"></a>关于实现所需 API</h3><ul>
+<li>navigator.mediaDevices.getUserMedia() 获取客户端录音流</li>
+<li>AudioContext 音频处理对象<ul>
+<li>AudioContext.createMediaStreamSource(stream) 关联录音流</li>
+<li>AudioContext.createScriptProcessor(option) 获取音频流</li>
+</ul>
+</li>
+</ul>
+<h3 id="关于关键代码实现"><a href="#关于关键代码实现" class="headerlink" title="关于关键代码实现"></a>关于关键代码实现</h3><p>首要必须是获取客户端录音权限，并给予一些错误提示</p>
+<pre class="line-numbers language-JavaScript"><code class="language-JavaScript">/*
+  @type           constraints = &#123; audio: true, video: true &#125;
+  @description    一个 MediaStreamConstraints 对象，
+                  指定了请求的媒体类型和相对应的参数。
+*/
+navigator.mediaDevices.getUserMedia([constraints])
+.(function(stream) &#123;
+  /* 使用这个 stream stream */
+  const context = new AudioContext(&#123; sampleRate: 48000 &#125;);
+  const audioInput = context.createMediaStreamSource(stream);
+  const recorder = context.createScriptProcessor(4096, 1, 1);
+&#125;)
+.catch(function(err) &#123;
+  /*
+    处理error
+    ------------
+    可能有的错误
+    AbortError              [中止错误]
+    NotAllowedError         ［拒绝错误］
+    NotFoundError           ［找不到错误］
+    NotReadableError        ［无法读取错误］
+    OverConstrainedError    ［无法满足要求错误］
+    SecurityError           ［安全错误］
+    TypeError               ［类型错误］
+  */
+  switch(err.message || err.name)&#123;
+    case 'PERMISSION_DENIED':
+    case 'PermissionDeniedError':
+      alert('用户拒绝提供信息。');
+      break;
+    case 'NOT_SUPPORTED_ERROR':
+    case 'NotSupportedError':
+      alert('浏览器不支持硬件设备。');
+      break;
+    case 'MANDATORY_UNSATISFIED_ERROR':
+    case 'MandatoryUnsatisfiedError':
+      alert('无法发现指定的硬件设备。');
+      break;
+    default:
+      alert('无法打开麦克风。异常信息:' + (err.code || err.name));
+      break;
+  &#125;
+&#125;);
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>有权限录音流后，目前所见的常用做法，是放入一个对象内，<br>对象有些根据所传入的配置要求初始化，并初始化缓存数据，<br>最后暴露出简单的方法</p>
+<h4 id="对象初始化"><a href="#对象初始化" class="headerlink" title="对象初始化"></a>对象初始化</h4><pre class="line-numbers language-JavaScript"><code class="language-JavaScript">
+class Recorder&#123;
+  // 初始化 config 与需要的数据流
+  constructor(stream, config, callback)&#123;
+    // 配置初始化
+    this.callback   = callback
+    this.sampleBits = config.sampleBits || 16
+    this.sampleRate = config.sampleRate || 16000
+    this.context    = new AudioContext(&#123; sampleRate: 48000 &#125;)
+    this.audioInput = this.context.createMediaStreamSource(stream)
+    this.recorder   = this.context.createScriptProcessor(4096,1,1)
+
+    // Audio Source 数据缓存
+    this.size             = 0
+    this.buffer           = []
+    this.inputSampleRate  = 48000
+    this.inputSampleBits  = 16
+    this.outputSampleRate = this.sampleRate
+    this.outputSampleBits = this.sampleBits
+    this.objUrl           = null
+  &#125;
+&#125;
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p><code>Tip：如果 AudioContext 对象无配置采样率，则会根据系统变化，已知 Mac 默认是 44100， Window 默认是 48000</code></p>
+<h4 id="编写内置工具函数"><a href="#编写内置工具函数" class="headerlink" title="编写内置工具函数"></a>编写内置工具函数</h4><p>内置需要一些压缩与输出的算法工具函数</p>
+<ul>
+<li>clear() 清空缓存数据 or 上一次数据</li>
+<li>input（） 存储过程数据</li>
+<li>compress（） 压缩算法</li>
+<li>encode（） 输出格式，可自行百度获取</li>
+</ul>
+<pre class="line-numbers language-JavaScript"><code class="language-JavaScript">class Recorder&#123;
+  /* ... */
+  /* 清空数据 */
+  claer()&#123;
+    this.buffer = [];
+    this.size   = 0;
+  &#125;
+  /* 数据缓存 */
+  input(inputBuffer)&#123;
+    this.buffer.push(new Float32Array(inputBuffer));
+    this.size += inputBuffer.length;
+  &#125;
+  /* 数据合并压缩 */
+  compress()&#123;
+    // 合并
+    const data = new Float32Array(this.size);
+    for (let i = 0, offset = 0; i < this.buffer.length; i++) &#123;
+      data.set(this.buffer[i], offset);
+      offset += this.buffer[i].length;
+    &#125;
+    //压缩
+    const compression = this.inputSampleRate / this.outputSampleRate;
+    const length = data.length / compression;
+    const result = new Float32Array(length);
+    for (let i = 0; i < length; i += compression) &#123;
+      result.push(this.buffer[i]);
+    &#125;
+    return result
+  &#125;
+&#125;
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p><code>encode()</code> 方法有几种，主要是为了输出不同的格式，以满足不同的需求，<br>这里只描绘一下 Wav</p>
+<p><code>这里也是网上拿下来的</code></p>
+<pre class="line-numbers language-JavaScript"><code class="language-JavaScript">class Recorder &#123;
+  encodeWAV()&#123;
+    const sampleRate = Math.min(this.inputSampleRate, this.outputSampleRate);
+    const sampleBits = Math.min(this.inputSampleBits, this.outputSampleBits);
+    const bytes = this.compress();
+    const dataLength = bytes.length * (sampleBits / 8);
+    const buffer = new ArrayBuffer(44 + dataLength);
+    const data = new DataView(buffer);
+    const channelCount = 1; //单声道
+    let offset = 0;
+    const writeString = function (str: string) &#123;
+      for (let i = 0; i < str.length; i++) &#123;
+        data.setUint8(offset + i, str.charCodeAt(i));
+      &#125;
+    &#125;;
+    // 资源交换文件标识符
+    writeString('RIFF');
+    offset += 4;
+    // 下个地址开始到文件尾总字节数,即文件大小-8
+    data.setUint32(offset, 36 + dataLength, true);
+    offset += 4;
+    // WAV文件标志
+    writeString('WAVE');
+    offset += 4;
+    // 波形格式标志
+    writeString('fmt ');
+    offset += 4;
+    // 过滤字节,一般为 0x10 = 16
+    data.setUint32(offset, 16, true);
+    offset += 4;
+    // 格式类别 (PCM形式采样数据)
+    data.setUint16(offset, 1, true);
+    offset += 2;
+    // 通道数
+    data.setUint16(offset, channelCount, true);
+    offset += 2;
+    // 采样率,每秒样本数,表示每个通道的播放速度
+    data.setUint32(offset, sampleRate, true);
+    offset += 4;
+    // 波形数据传输率 (每秒平均字节数) 单声道×每秒数据位数×每样本数据位/8
+    data.setUint32(offset, channelCount * sampleRate * (sampleBits / 8), true);
+    offset += 4;
+    // 快数据调整数 采样一次占用字节数 单声道×每样本的数据位数/8
+    data.setUint16(offset, channelCount * (sampleBits / 8), true);
+    offset += 2;
+    // 每样本数据位数
+    data.setUint16(offset, sampleBits, true);
+    offset += 2;
+    // 数据标识符
+    writeString('data');
+    offset += 4;
+    // 采样数据总数,即数据总大小-44
+    data.setUint32(offset, dataLength, true);
+    offset += 4;
+    // 写入采样数据
+    if (sampleBits === 8) &#123;
+      for (let i = 0; i < bytes.length; i++, offset++) &#123;
+        const s = Math.max(-1, Math.min(1, Number(bytes[i])));
+        const val = s < 0 ? s * 0x8000 : s * 0x7fff;
+        val = 255 / (65535 / (val + 32768));
+        data.setInt8(offset, val);
+      &#125;
+    &#125; else &#123;
+      for (let i = 0; i < bytes.length; i++, offset += 2) &#123;
+        const s = Math.max(-1, Math.min(1, Number(bytes[i])));
+        data.setInt16(offset, s < 0 ? s * 0x8000 : s * 0x7fff, true);
+      &#125;
+    &#125;
+    return new Blob([data], &#123; type: 'audio/wav' &#125;);
+  &#125;
+&#125;
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h4 id="编写可暴露的数据"><a href="#编写可暴露的数据" class="headerlink" title="编写可暴露的数据"></a>编写可暴露的数据</h4><ul>
+<li>start() 开始记录录音数据</li>
+<li>stop() 停止记录录音数据</li>
+<li>getAudioUrl() 获取录音数据</li>
+</ul>
+<pre class="line-numbers language-JavaScript"><code class="language-JavaScript">class Recorder &#123;
+  /* ... */
+  // 开始
+  start()&#123;
+    console.log('recorder start');
+    this.audioInput.connect(this.recorder);
+    this.recorder.connect(this.context.destination);
+    this.recorder.onaudioprocess = e => &#123;
+      const inputBuffer = e.inputBuffer.getChannelData(0);
+      this.input(inputBuffer);
+    &#125;;
+  &#125;
+  // 停止
+  stop()&#123;
+    this.recorder.disconnect();
+  &#125;
+  // 获取可播放 url
+  getAudioUrl()&#123;
+    const url = this.encodeWAV();
+    if (this.objUrl) &#123;
+      URL.revokeObjectURL(this.objUrl);
+    &#125;
+    this.objUrl = URL.createObjectURL(wav);
+    return this.objUrl
+  &#125;
+&#125;
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p><code>实时传送录音数据流</code></p>
+<ul>
+<li>需要进行一次压缩</li>
+<li>需要一个回调函数</li>
+</ul>
+<pre class="line-numbers language-JavaScript"><code class="language-JavaScript">class Recorder &#123;
+  /* ... */
+  sendData()&#123;
+    const compression = this.inputSampleRate / this.outputSampleRate;
+    const length = inputBuffer.length / compression;
+    const result = new Float32Array(length);
+    let index = 0,
+      j = 0;
+    while (index < length) &#123;
+      result[index] = inputBuffer[j];
+      j += compression;
+      index++;
+    &#125;
+    const dataLength = result.length * (16 / 8);
+    const buffer = new ArrayBuffer(dataLength);
+    const blockData = new Uint8Array(buffer);
+    blockData && this.callback  && this.callback(blockData)
+  &#125;
+&#125;
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h3 id="关于小结"><a href="#关于小结" class="headerlink" title="关于小结"></a>关于小结</h3><p><code>尚未解决的问题</code></p>
+<p>createScriptProcessor 已经不推荐使用，然在大部分浏览器内尚可运行，<br>且新的录音 Api 尚未有新鲜可循的 blog 文教授</p>
+<p>本文大致才是参照，网上诸多老旧 blog 以及已有的插件组成的，大致可以看作是一片缝合水文，<br>本文目的在于记录自己开发前置需求中的一些思考，以及找寻到的 blog</p>
+<p>感谢阅读</p>
+<hr>
+<p>参照文章</p>
+<ul>
+<li>[jqpeng 的技术记事本][<a target="_blank" rel="noopener" href="https://www.cnblogs.com/xiaoqi/p/6993912.html]">https://www.cnblogs.com/xiaoqi/p/6993912.html]</a></li>
+<li>[Recorder 用于 html5 录音][<a target="_blank" rel="noopener" href="https://github.com/xiangyuecn/Recorder]">https://github.com/xiangyuecn/Recorder]</a></li>
+<li>[使用 html5 在网页录音和保存][<a target="_blank" rel="noopener" href="http://luoma.pro/Content/Detail/503?parentId=1%5D">http://luoma.pro/Content/Detail/503?parentId=1]</a></li>
+</ul>
+
+</div>
+
+<script>
+  // I'm not sure your browser supports `es6`
+  window.addEventListener('load', function () {
+    [].concat(Array.from(document.querySelectorAll('code')), Array.from(document.querySelectorAll('pre'))).filter(function (item) {return item.className.indexOf('language') >= 0}).forEach(function (tag) { tag.classList.add('line-numbers') })
+    Prism.highlightAll()
+
+    let scrollY = window.scrollY
+    let headersList = Array.from(document.querySelector('#post-content').querySelectorAll('h1,h2,h3,h4,h5,h6')).map(function (item) {
+      let rect = item.getBoundingClientRect()
+      let anchorTag = document.querySelector(`a.toc-link[href="#${item.id}"]`)
+
+      if (!anchorTag) return
+      return {
+        top: scrollY + rect.top - rect.height,
+        tag: item,
+        anchorTag: anchorTag
+      }
+    }).filter(function (item) { return item })
+
+    window.addEventListener('scroll', debounce(scrollHandler, 200))
+    scrollHandler()
+
+    function scrollHandler () {
+      let scrollY = window.scrollY
+      let minInfo = null
+
+      for (let item of headersList) {
+        if (!minInfo) {
+          minInfo = item
+          continue
+        }
+
+        if ((scrollY - item.top) >= 0 && (scrollY - minInfo.top) > (scrollY - item.top)) {
+          minInfo = item
+        }
+      }
+
+      if (minInfo) {
+        headersList.forEach(function (item) {
+          item.anchorTag && item.anchorTag.classList.remove('selected')
+        })
+        minInfo.anchorTag.classList.add('selected')
+      }
+    }
+
+    function debounce (func, delay) {
+      let debounceIdentify = 0
+      return function () {
+        debounceIdentify && clearTimeout(debounceIdentify)
+        debounceIdentify = setTimeout(function () {
+          debounceIdentify = 0
+          func.apply(this, arguments)
+        }, delay)
+      }
+    }
+  })
+</script>
+
+        </main>
+        <a href="#" class="goto-top">
+          <i class="fa fa-chevron-up"></i>
+        </a>
+    </div>
+    <footer class="footer">
+  <div class="footer-content">
+    <div class="footer-info" class="inner">
+      <p class="copyright">&copy; 2025 时之物语 ZYG&#39;s Blog 保留一切权利 ｜ 粤ICP备15078531号-1<br></p>
+      powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+      theme by <a href="https://github.com/Jiasm/hexo-theme-sheet" target="_blank">Sheet</a>
+    </div>
+    <ul class="contact-info">
+      
+        <a class="contact-link" href="https://github.com/zindexyg" target="_blank"><i class="fa fa-github"></i></a>
+      
+      
+        <a class="contact-link" href="https://weibo.com/u/3249847654" target="_blank"><i class="fa fa-weibo"></i></a>
+      
+      
+      
+      
+        <a class="contact-link" href="mailto:zinger_yg@163.com" target="_blank"><i class="fa fa-envelope"></i></a>
+      
+    </ul>
+  </div>
+</footer>
+
+
+
+      <script>
+      function footerHandler () {
+        if (!window.screen || !document.body) return
+        var hasComments = document.querySelector('.comments')
+        if ((window.screen.availHeight - (hasComments ? 350 : 0)) > document.body.clientHeight) {
+          document.body.classList.add('fixed')
+        } else {
+          document.body.classList.remove('fixed')
+        }
+      }
+      footerHandler()
+      window.addEventListener('resize', footerHandler)
+    </script>
+  </body>
+  <script>
+    var pathname = new URL(location.href).pathname.replace(/\/$/, '')
+
+    switch (pathname) {
+      case '/about':
+        document.querySelector('.menu-item-about').classList.add('active')
+        break
+      case '/contact':
+        document.querySelector('.menu-item-contact').classList.add('active')
+        break
+      case '/links':
+        document.querySelector('.menu-item-friends').classList.add('active')
+        break
+      default:
+        document.querySelector('.menu-item-home').classList.add('active')
+    }
+  </script>
+  
+
+</html>
