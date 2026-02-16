@@ -1,0 +1,699 @@
+<!DOCTYPE html><html lang="en" class="relative bg-fontdefault dark:bg-bgdefault"> <head><meta name="generator" content="Astro"><!-- Global Metadata --><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><link rel="icon" type="image/svg+xml" href="/favicon.svg"><meta name="generator" content="Astro v5.16.6"><!-- Font preloads --><link rel="preload" href="/fonts/geist-variable.woff2" as="font" type="font/woff2" crossorigin><link rel="preload" href="/fonts/geist-mono-variable.woff2" as="font" type="font/woff2" crossorigin><!-- Canonical URL --><link rel="canonical" href="https://z-index.me/posts/accessible-js-library-development/"><!-- Primary Meta Tags --><title>愈发简单的 JS 库开发</title><meta name="title" content="愈发简单的 JS 库开发"><meta name="description" content="是的，再不看书，书里的知识就过时了"><!-- Open Graph / Facebook --><meta property="og:type" content="website"><meta property="og:url" content="https://z-index.me/posts/accessible-js-library-development/"><meta property="og:title" content="愈发简单的 JS 库开发"><meta property="og:description" content="是的，再不看书，书里的知识就过时了"><meta property="og:image" content="https://z-index.me/static/ogimage.png"><!-- Twitter --><meta property="twitter:card" content="summary_large_image"><meta property="twitter:url" content="https://z-index.me/posts/accessible-js-library-development/"><meta property="twitter:title" content="愈发简单的 JS 库开发"><meta property="twitter:description" content="是的，再不看书，书里的知识就过时了"><meta property="twitter:image" content="https://z-index.me/static/ogimage.png"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/twikoo@1.6.44/dist/twikoo.css" crossorigin="anonymous"><link rel="stylesheet" href="/_astro/index.wYwjb_5q.css">
+<style>.toc-root[data-astro-cid-6t6zfk7k] .toc-inline[data-astro-cid-6t6zfk7k]{display:block}.toc-root[data-astro-cid-6t6zfk7k] .toc-float[data-astro-cid-6t6zfk7k]{display:none}@media(min-width:1200px){.toc-root[data-astro-cid-6t6zfk7k] .toc-inline[data-astro-cid-6t6zfk7k]{display:none}.toc-root[data-astro-cid-6t6zfk7k] .toc-float[data-astro-cid-6t6zfk7k]{display:block}}.toc-root[data-astro-cid-6t6zfk7k] .toc[data-astro-cid-6t6zfk7k] details[data-astro-cid-6t6zfk7k]{padding:1rem;border-radius:10px;border:1px solid #83838330;margin-bottom:1rem}.toc-root[data-astro-cid-6t6zfk7k] .toc-float[data-astro-cid-6t6zfk7k]{position:fixed;top:84px;right:max(12px,env(safe-area-inset-right));width:260px;max-height:78vh;overflow:auto;z-index:40;transition:opacity .25s ease,transform .25s ease}.toc-root[data-astro-cid-6t6zfk7k] .toc-float[data-astro-cid-6t6zfk7k].at-top{opacity:0;pointer-events:none;transform:translateY(-4px)}.toc-root[data-astro-cid-6t6zfk7k] .toc[data-astro-cid-6t6zfk7k] a[data-astro-cid-6t6zfk7k].toc-link{position:relative;display:block;padding:.125rem 0;color:#6b7280;text-decoration:none;transition:color .15s ease}.dark[data-astro-cid-6t6zfk7k] .toc-root[data-astro-cid-6t6zfk7k] .toc[data-astro-cid-6t6zfk7k] a[data-astro-cid-6t6zfk7k].toc-link{color:#a1a1aa}.toc-root[data-astro-cid-6t6zfk7k] .toc[data-astro-cid-6t6zfk7k] a[data-astro-cid-6t6zfk7k].toc-link:hover{color:#3f3f46}.dark[data-astro-cid-6t6zfk7k] .toc-root[data-astro-cid-6t6zfk7k] .toc[data-astro-cid-6t6zfk7k] a[data-astro-cid-6t6zfk7k].toc-link:hover{color:#e4e4e7}.toc-root[data-astro-cid-6t6zfk7k] .toc[data-astro-cid-6t6zfk7k] a[data-astro-cid-6t6zfk7k].toc-link.is-active:before{content:"";position:absolute;left:-12px;top:.6em;width:5px;height:5px;border-radius:50%;background:currentColor}.toc-root[data-astro-cid-6t6zfk7k] .toc[data-astro-cid-6t6zfk7k] a[data-astro-cid-6t6zfk7k][data-depth="1"]{font-weight:600}.toc-root[data-astro-cid-6t6zfk7k] .toc[data-astro-cid-6t6zfk7k] a[data-astro-cid-6t6zfk7k][data-depth="3"],.toc-root[data-astro-cid-6t6zfk7k] .toc[data-astro-cid-6t6zfk7k] a[data-astro-cid-6t6zfk7k][data-depth="4"],.toc-root[data-astro-cid-6t6zfk7k] .toc[data-astro-cid-6t6zfk7k] a[data-astro-cid-6t6zfk7k][data-depth="5"]{opacity:.8;font-size:.9em}.toc-root[data-astro-cid-6t6zfk7k] .toc-float[data-astro-cid-6t6zfk7k] .toc[data-astro-cid-6t6zfk7k] details[data-astro-cid-6t6zfk7k]{padding:.75rem;border:1px solid rgba(0,0,0,.08);background-color:#00000008}.dark[data-astro-cid-6t6zfk7k] .toc-root[data-astro-cid-6t6zfk7k] .toc-float[data-astro-cid-6t6zfk7k] .toc[data-astro-cid-6t6zfk7k] details[data-astro-cid-6t6zfk7k]{border-color:#ffffff14;background-color:#ffffff0a}article[data-pagefind-body] :is(h1[id],h2[id],h3[id],h4[id],h5[id]){scroll-margin-top:96px}article[data-pagefind-body] img{cursor:pointer}article[data-pagefind-body] img{transition:transform .18s ease,filter .18s ease;transform-origin:center center;will-change:transform;backface-visibility:hidden}article[data-pagefind-body] img:hover{transform:scale(1.01)}.lightbox-img:hover{transform:none!important}@media(prefers-reduced-motion:reduce){article[data-pagefind-body] img{transition:none}}.lightbox-overlay{position:fixed;inset:0;display:flex;align-items:center;justify-content:center;background:#0009;cursor:zoom-out;z-index:1000;opacity:0;touch-action:none;-webkit-tap-highlight-color:transparent}.dark .lightbox-overlay{background:#000000b3}.lightbox-img{max-width:92vw;max-height:92vh;border-radius:12px;box-shadow:0 10px 40px #0006;will-change:transform}.dark .lightbox-img{box-shadow:0 10px 40px #000000b3}@media(prefers-reduced-motion:reduce){.lightbox-overlay,.lightbox-img{animation:none !重要;transition:none !重要}}.expressive-code .frame{all:unset;position:relative;display:block;--header-border-radius: calc(var(--ec-brdRad) + var(--ec-brdWd));--tab-border-radius: calc(var(--ec-frm-edTabBrdRad) + var(--ec-brdWd));--button-spacing: .4rem;--code-background: var(--ec-frm-edBg);border-radius:var(--header-border-radius);box-shadow:0 0 0 var(--ec-brdWd) var(--ec-frm-edBrdClr)!important}
+</style></head> <body class="font-sans min-h-svh text-zinc-900 bg-fontdefault antialiased transition-colors dark:bg-bgdefault dark:text-fontdefault"> <div class="mx-auto p-4 pb-16 max-w-3xl"> <header class="sticky top-0 z-50 w-full mb-6
+         bg-fontdefault dark:bg-bgdefault transition-colors" data-astro-cid-3ef6ksr2> <!-- 仅内容限宽；背景全屏铺开 --> <div class="mx-auto w-full max-w-screen-md
+              flex h-12 items-center justify-between" data-astro-cid-3ef6ksr2>  <nav class="hidden md:flex items-center gap-4" data-astro-cid-3ef6ksr2> <a href="/" data-astro-cid-3ef6ksr2>Home</a> <a href="/posts" data-astro-cid-3ef6ksr2>Posts</a> <a href="/library" data-astro-cid-3ef6ksr2>Library</a> <!-- <a href="/bmmg">Media</a> --> <!-- <a href="https://exercise.asyncx.top" target="_blank" rel="noopener noreferrer">Steps</a> --> </nav>  <div class="hidden md:block" data-astro-cid-3ef6ksr2> <div class="flex justify-end space-x-2"> <button id="search" class="inline-flex items-center rounded-md border p-1 transition-colors hover:bg-zinc-50 dark:border-zinc-700 dark:hover:bg-zinc-800 [&_svg]:text-zinc-500 [&_svg]:hover:text-zinc-900 [&_svg]:dark:hover:text-zinc-100" aria-label="Search" onclick="window.location.href='/search'" data-umami-event="Button-Search" type="button"> <span class="sr-only">Search</span> <svg class="size-4" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"> <g transform="scale(0.015625)"> <path d="M975.474921 917.123519l-152.442347-152.502577c150.575215-165.512276 146.419339-421.550372-13.431309-581.40102a421.610602 421.610602 0 0 0-596.217622 596.277851c138.890578 138.890578 350.47887 160.151799 512.136422 64.626882l161.47686 161.537091a62.518829 62.518829 0 1 0 88.477996-88.538227z m-251.038998-222.851318a301.15043 301.15043 0 0 1-425.886938 0 301.15043 301.15043 0 0 1 0-425.886938 301.15043 301.15043 0 1 1 425.886938 425.886938z" fill="currentColor"></path> </g> </svg> </button> <button id="rss" class="inline-flex items-center rounded-md border p-1 transition-colors hover:bg-zinc-50 dark:border-zinc-700 dark:hover:bg-zinc-800 [&_svg]:text-zinc-500 [&_svg]:hover:text-zinc-900 [&_svg]:dark:hover:text-zinc-100" aria-label="RSS Feed" onclick="window.location.href='/rss.xml'" data-umami-event="Button-RSS" type="button"> <span class="sr-only">RSS Feed</span> <svg class="size-4" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"> <g transform="scale(0.015625)"> <path d="M42.666667 853.333333a128 128 0 1 1 256 0 128 128 0 0 1-256 0z m938.666666 128h-178.773333c0-418.986667-340.906667-759.893333-759.893333-759.893333V42.666667c517.546667 0 938.666667 421.12 938.666666 938.666666z m-298.666666 0h-182.826667c0-252.074667-205.098667-457.130667-457.173333-457.130666V341.333333c352.896 0 640 287.104 640 640z" fill="currentColor"></path> </g> </svg> </button> <button id="douban" class="inline-flex items-center rounded-md border p-1 transition-colors hover:bg-zinc-50 dark:border-zinc-700 dark:hover:bg-zinc-800 [&_svg]:text-zinc-500 [&_svg]:hover:text-zinc-900 [&_svg]:dark:hover:text-zinc-100" aria-label="Douban" onclick="window.open('https://douban.com/people/141874159/', '_blank')" data-umami-event="Button-Douban" type="button"> <span class="sr-only">Douban</span> <svg class="size-4" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" fill="currentColor"> <path d="M.51 3.06h22.98V.755H.51V3.06Zm20.976 2.537v9.608h-2.137l-1.669 5.76H24v2.28H0v-2.28h6.32l-1.67-5.76H2.515V5.597h18.972Zm-5.066 9.608H7.58l1.67 5.76h5.501l1.67-5.76ZM18.367 7.9H5.634v5.025h12.733V7.9Z"></path> </svg> </button> <button id="github" class="inline-flex items-center rounded-md border p-1 transition-colors hover:bg-zinc-50 dark:border-zinc-700 dark:hover:bg-zinc-800 [&_svg]:text-zinc-500 [&_svg]:hover:text-zinc-900 [&_svg]:dark:hover:text-zinc-100" aria-label="GitHub" onclick="window.open('https://github.com/ZindexYG/z-index.me', '_blank')" data-umami-event="Button-GitHub" type="button"> <span class="sr-only">GitHub</span> <svg class="size-4" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" fill="currentColor"> <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"></path> </svg> </button> <button id="theme-toggle" class="inline-flex items-center rounded-md border p-1 transition-colors hover:bg-zinc-50 dark:border-zinc-700 dark:hover:bg-zinc-800 [&_svg]:text-zinc-500 [&_svg]:hover:text-zinc-900 [&_svg]:dark:hover:text-zinc-100" aria-label="Toggle theme" data-umami-event="Button-Theme" type="button"> <span class="sr-only">Toggle theme</span> <svg id="sun" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor" class="hidden size-4 dark:block"> <path d="M8 1a.75.75 0 0 1 .75.75v1.5a.75.75 0 0 1-1.5 0v-1.5A.75.75 0 0 1 8 1ZM10.5 8a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0ZM12.95 4.11a.75.75 0 1 0-1.06-1.06l-1.062 1.06a.75.75 0 0 0 1.061 1.062l1.06-1.061ZM15 8a.75.75 0 0 1-.75.75h-1.5a.75.75 0 0 1 0-1.5h1.5A.75.75 0 0 1 15 8ZM11.89 12.95a.75.75 0 0 0 1.06-1.06l-1.06-1.062a.75.75 0 0 0-1.062 1.061l1.061 1.06ZM8 12a.75.75 0 0 1 .75.75v1.5a.75.75 0 0 1-1.5 0v-1.5A.75.75 0 0 1 8 12ZM5.172 11.89a.75.75 0 0 0-1.061-1.062L3.05 11.89a.75.75 0 1 0 1.06 1.06l1.06-1.06ZM4 8a.75.75 0 0 1-.75.75h-1.5a.75.75 0 0 1 0-1.5h1.5A.75.75 0 0 1 4 8ZM4.11 5.172A.75.75 0 0 0 5.173 4.11L4.11 3.05a.75.75 0 1 0-1.06 1.06l1.06 1.06Z"></path> </svg> <svg id="moon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor" class="size-4 dark:hidden"> <path d="M14.438 10.148c.19-.425-.321-.787-.748-.601A5.5 5.5 0 0 1 6.453 2.31c.186-.427-.176-.938-.6-.748a6.501 6.501 0 1 0 8.585 8.586Z"></path> </svg> </button> </div> <script type="module">function t(){document.getElementById("theme-toggle")?.addEventListener("click",()=>{document.documentElement.classList.toggle("dark")})}t();document.addEventListener("astro:after-swap",t);</script> </div>  <div class="md:hidden flex items-center gap-2" data-astro-cid-3ef6ksr2> <details class="relative" data-astro-cid-3ef6ksr2> <summary class="list-none cursor-pointer p-2 rounded-md
+                 hover:bg-zinc-100 dark:hover:bg-zinc-800
+                 outline-none focus-visible:ring-2
+                 focus-visible:ring-zinc-400 dark:focus-visible:ring-zinc-600" aria-label="Open menu" data-astro-cid-3ef6ksr2> <!-- 汉堡图标 --> <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" data-astro-cid-3ef6ksr2> <path stroke-linecap="round" stroke-linejoin="round" d="M4 7h16M4 12h16M4 17h16" data-astro-cid-3ef6ksr2></path> </svg> </summary> <!-- 下拉菜单背景也跟随站点配色 --> <nav class="absolute top-0 left-[calc(100%+0.5rem)] z-50
+                  w-56 max-w-[80vw]
+                  rounded-lg border border-zinc-200 dark:border-zinc-800
+                  bg-fontdefault dark:bg-bgdefault shadow-lg" data-astro-cid-3ef6ksr2> <ul class="py-1" data-astro-cid-3ef6ksr2> <li data-astro-cid-3ef6ksr2> <a class="block px-3 py-2 rounded hover:bg-zinc-100 dark:hover:bg-zinc-800" href="/" data-astro-cid-3ef6ksr2>Home</a> </li> <li data-astro-cid-3ef6ksr2> <a class="block px-3 py-2 rounded hover:bg-zinc-100 dark:hover:bg-zinc-800" href="/posts" data-astro-cid-3ef6ksr2>Posts</a> </li> <!-- <li>
+              <a
+                class='block px-3 py-2 rounded hover:bg-zinc-100 dark:hover:bg-zinc-800'
+                href='/tags'>Tag</a
+              >
+            </li> --> <!-- <li>
+              <a
+                class='block px-3 py-2 rounded hover:bg-zinc-100 dark:hover:bg-zinc-800'
+                href='/bmmg'>Media</a
+              >
+            </li> --> <!-- <li>
+              <a
+                class='block px-3 py-2 rounded hover:bg-zinc-100 dark:hover:bg-zinc-800'
+                href='https://exercise.asyncx.top'
+                target='_blank'
+                rel='noopener noreferrer'>Steps</a
+              >
+            </li> --> <!-- <li>
+              <a
+                class='block px-3 py-2 rounded hover:bg-zinc-100 dark:hover:bg-zinc-800'
+                href='/about'>README.md</a
+              >
+            </li> --> </ul> </nav> </details> <div class="flex justify-end space-x-2"> <button id="search" class="inline-flex items-center rounded-md border p-1 transition-colors hover:bg-zinc-50 dark:border-zinc-700 dark:hover:bg-zinc-800 [&_svg]:text-zinc-500 [&_svg]:hover:text-zinc-900 [&_svg]:dark:hover:text-zinc-100" aria-label="Search" onclick="window.location.href='/search'" data-umami-event="Button-Search" type="button"> <span class="sr-only">Search</span> <svg class="size-4" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"> <g transform="scale(0.015625)"> <path d="M975.474921 917.123519l-152.442347-152.502577c150.575215-165.512276 146.419339-421.550372-13.431309-581.40102a421.610602 421.610602 0 0 0-596.217622 596.277851c138.890578 138.890578 350.47887 160.151799 512.136422 64.626882l161.47686 161.537091a62.518829 62.518829 0 1 0 88.477996-88.538227z m-251.038998-222.851318a301.15043 301.15043 0 0 1-425.886938 0 301.15043 301.15043 0 0 1 0-425.886938 301.15043 301.15043 0 1 1 425.886938 425.886938z" fill="currentColor"></path> </g> </svg> </button> <button id="rss" class="inline-flex items-center rounded-md border p-1 transition-colors hover:bg-zinc-50 dark:border-zinc-700 dark:hover:bg-zinc-800 [&_svg]:text-zinc-500 [&_svg]:hover:text-zinc-900 [&_svg]:dark:hover:text-zinc-100" aria-label="RSS Feed" onclick="window.location.href='/rss.xml'" data-umami-event="Button-RSS" type="button"> <span class="sr-only">RSS Feed</span> <svg class="size-4" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"> <g transform="scale(0.015625)"> <path d="M42.666667 853.333333a128 128 0 1 1 256 0 128 128 0 0 1-256 0z m938.666666 128h-178.773333c0-418.986667-340.906667-759.893333-759.893333-759.893333V42.666667c517.546667 0 938.666667 421.12 938.666666 938.666666z m-298.666666 0h-182.826667c0-252.074667-205.098667-457.130667-457.173333-457.130666V341.333333c352.896 0 640 287.104 640 640z" fill="currentColor"></path> </g> </svg> </button> <button id="douban" class="inline-flex items-center rounded-md border p-1 transition-colors hover:bg-zinc-50 dark:border-zinc-700 dark:hover:bg-zinc-800 [&_svg]:text-zinc-500 [&_svg]:hover:text-zinc-900 [&_svg]:dark:hover:text-zinc-100" aria-label="Douban" onclick="window.open('https://douban.com/people/141874159/', '_blank')" data-umami-event="Button-Douban" type="button"> <span class="sr-only">Douban</span> <svg class="size-4" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" fill="currentColor"> <path d="M.51 3.06h22.98V.755H.51V3.06Zm20.976 2.537v9.608h-2.137l-1.669 5.76H24v2.28H0v-2.28h6.32l-1.67-5.76H2.515V5.597h18.972Zm-5.066 9.608H7.58l1.67 5.76h5.501l1.67-5.76ZM18.367 7.9H5.634v5.025h12.733V7.9Z"></path> </svg> </button> <button id="github" class="inline-flex items-center rounded-md border p-1 transition-colors hover:bg-zinc-50 dark:border-zinc-700 dark:hover:bg-zinc-800 [&_svg]:text-zinc-500 [&_svg]:hover:text-zinc-900 [&_svg]:dark:hover:text-zinc-100" aria-label="GitHub" onclick="window.open('https://github.com/ZindexYG/z-index.me', '_blank')" data-umami-event="Button-GitHub" type="button"> <span class="sr-only">GitHub</span> <svg class="size-4" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" fill="currentColor"> <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"></path> </svg> </button> <button id="theme-toggle" class="inline-flex items-center rounded-md border p-1 transition-colors hover:bg-zinc-50 dark:border-zinc-700 dark:hover:bg-zinc-800 [&_svg]:text-zinc-500 [&_svg]:hover:text-zinc-900 [&_svg]:dark:hover:text-zinc-100" aria-label="Toggle theme" data-umami-event="Button-Theme" type="button"> <span class="sr-only">Toggle theme</span> <svg id="sun" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor" class="hidden size-4 dark:block"> <path d="M8 1a.75.75 0 0 1 .75.75v1.5a.75.75 0 0 1-1.5 0v-1.5A.75.75 0 0 1 8 1ZM10.5 8a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0ZM12.95 4.11a.75.75 0 1 0-1.06-1.06l-1.062 1.06a.75.75 0 0 0 1.061 1.062l1.06-1.061ZM15 8a.75.75 0 0 1-.75.75h-1.5a.75.75 0 0 1 0-1.5h1.5A.75.75 0 0 1 15 8ZM11.89 12.95a.75.75 0 0 0 1.06-1.06l-1.06-1.062a.75.75 0 0 0-1.062 1.061l1.061 1.06ZM8 12a.75.75 0 0 1 .75.75v1.5a.75.75 0 0 1-1.5 0v-1.5A.75.75 0 0 1 8 12ZM5.172 11.89a.75.75 0 0 0-1.061-1.062L3.05 11.89a.75.75 0 1 0 1.06 1.06l1.06-1.06ZM4 8a.75.75 0 0 1-.75.75h-1.5a.75.75 0 0 1 0-1.5h1.5A.75.75 0 0 1 4 8ZM4.11 5.172A.75.75 0 0 0 5.173 4.11L4.11 3.05a.75.75 0 1 0-1.06 1.06l1.06 1.06Z"></path> </svg> <svg id="moon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor" class="size-4 dark:hidden"> <path d="M14.438 10.148c.19-.425-.321-.787-.748-.601A5.5 5.5 0 0 1 6.453 2.31c.186-.427-.176-.938-.6-.748a6.501 6.501 0 1 0 8.585 8.586Z"></path> </svg> </button> </div>  </div> </div> </header>   <main> <div class="mb-5 flex items-center justify-between"> <h1 class="text-xl font-heading font-bold text-zinc-900 dark:text-zinc-100"> 愈发简单的 JS 库开发 </h1> <p class="ml-4 text-sm font-medium text-zinc-500"> 2025-08-07 </p> </div>  <div class="mb-5" data-pagefind-ignore="all"> <ul class="flex flex-wrap gap-2"> <li> <a href="/tags/javascript/" class="group flex justify-between gap-3 rounded px-2 py-1 text-sm bg-bgdefault text-fontdefault dark:bg-fontdefault dark:text-bgdefault">
+# javascript </a> </li><li> <a href="/tags/vite/" class="group flex justify-between gap-3 rounded px-2 py-1 text-sm bg-bgdefault text-fontdefault dark:bg-fontdefault dark:text-bgdefault">
+# vite </a> </li><li> <a href="/tags/rollup/" class="group flex justify-between gap-3 rounded px-2 py-1 text-sm bg-bgdefault text-fontdefault dark:bg-fontdefault dark:text-bgdefault">
+# rollup </a> </li> </ul> </div>  <div class="toc-root" data-astro-cid-6t6zfk7k><nav class="toc toc-inline" aria-label="Table Of Contents" data-astro-cid-6t6zfk7k><details open data-astro-cid-6t6zfk7k><summary class="text-sm font-semibold" data-astro-cid-6t6zfk7k>Table of Contents</summary><div class="mt-4 ml-4" data-astro-cid-6t6zfk7k>
+    <ul class="space-y-1 pl-4">
+      
+        <li class="text-sm leading-tight">
+          <a href="#关于目录" class="toc-link toc-h3" data-depth="3">
+            关于目录
+          </a>
+          
+        </li>
+      
+        <li class="text-sm leading-tight">
+          <a href="#关于实践" class="toc-link toc-h3" data-depth="3">
+            关于实践
+          </a>
+          
+    <ul class="space-y-1 pl-4">
+      
+        <li class="text-sm leading-tight">
+          <a href="#古法初始化项目" class="toc-link toc-h4" data-depth="4">
+            古法初始化项目
+          </a>
+          
+        </li>
+      
+        <li class="text-sm leading-tight">
+          <a href="#古法打包配置初始化" class="toc-link toc-h4" data-depth="4">
+            古法打包配置初始化
+          </a>
+          
+        </li>
+      
+        <li class="text-sm leading-tight">
+          <a href="#古法打包逻辑代码" class="toc-link toc-h4" data-depth="4">
+            古法打包逻辑代码
+          </a>
+          
+        </li>
+      
+        <li class="text-sm leading-tight">
+          <a href="#修改-packagejson-相关内容" class="toc-link toc-h4" data-depth="4">
+            修改 package.json 相关内容
+          </a>
+          
+        </li>
+      
+        <li class="text-sm leading-tight">
+          <a href="#关于调用" class="toc-link toc-h4" data-depth="4">
+            关于调用
+          </a>
+          
+    <ul class="space-y-1 pl-4">
+      
+        <li class="text-sm leading-tight">
+          <a href="#commonjs-nodejs-环境" class="toc-link toc-h5" data-depth="5">
+            CommonJS (Node.js 环境)
+          </a>
+          
+        </li>
+      
+        <li class="text-sm leading-tight">
+          <a href="#esmodule-现代打包工具或浏览器支持-esmodule" class="toc-link toc-h5" data-depth="5">
+            ESModule (现代打包工具或浏览器支持 ESModule)
+          </a>
+          
+        </li>
+      
+        <li class="text-sm leading-tight">
+          <a href="#umd-浏览器全局引用" class="toc-link toc-h5" data-depth="5">
+            UMD (浏览器全局引用)
+          </a>
+          
+        </li>
+      
+    </ul>
+  
+        </li>
+      
+    </ul>
+  
+        </li>
+      
+        <li class="text-sm leading-tight">
+          <a href="#关于礼仪" class="toc-link toc-h3" data-depth="3">
+            关于礼仪
+          </a>
+          
+    <ul class="space-y-1 pl-4">
+      
+        <li class="text-sm leading-tight">
+          <a href="#完善对应的目录与注释部份" class="toc-link toc-h4" data-depth="4">
+            完善对应的目录与注释部份
+          </a>
+          
+    <ul class="space-y-1 pl-4">
+      
+        <li class="text-sm leading-tight">
+          <a href="#readme通常包含以下内容" class="toc-link toc-h5" data-depth="5">
+            README通常包含以下内容：
+          </a>
+          
+        </li>
+      
+    </ul>
+  
+        </li>
+      
+        <li class="text-sm leading-tight">
+          <a href="#关于开源协议" class="toc-link toc-h4" data-depth="4">
+            关于开源协议
+          </a>
+          
+        </li>
+      
+    </ul>
+  
+        </li>
+      
+        <li class="text-sm leading-tight">
+          <a href="#qa" class="toc-link toc-h3" data-depth="3">
+            Q&A
+          </a>
+          
+    <ul class="space-y-1 pl-4">
+      
+        <li class="text-sm leading-tight">
+          <a href="#qvite-与-rollup-的关系分别在什么场景下使用" class="toc-link toc-h4" data-depth="4">
+            Q：Vite 与 Rollup 的关系、分别在什么场景下使用
+          </a>
+          
+        </li>
+      
+        <li class="text-sm leading-tight">
+          <a href="#q为什么要分别输出-cjsesmumd-三种格式" class="toc-link toc-h4" data-depth="4">
+            Q：为什么要分别输出 CJS、ESM、UMD 三种格式？
+          </a>
+          
+        </li>
+      
+        <li class="text-sm leading-tight">
+          <a href="#q如何让库支持-typescript" class="toc-link toc-h4" data-depth="4">
+            Q：如何让库支持 TypeScript？
+          </a>
+          
+        </li>
+      
+        <li class="text-sm leading-tight">
+          <a href="#q如何保证库的体积最小" class="toc-link toc-h4" data-depth="4">
+            Q：如何保证库的体积最小？
+          </a>
+          
+        </li>
+      
+    </ul>
+  
+        </li>
+      
+        <li class="text-sm leading-tight">
+          <a href="#总结" class="toc-link toc-h3" data-depth="3">
+            总结
+          </a>
+          
+        </li>
+      
+    </ul>
+  </div></details></nav><aside class="toc-float" data-astro-cid-6t6zfk7k><nav class="toc" aria-label="Table Of Contents" data-astro-cid-6t6zfk7k><details open data-astro-cid-6t6zfk7k><summary class="text-sm font-semibold" data-astro-cid-6t6zfk7k>Table of Contents</summary><div class="mt-2" data-astro-cid-6t6zfk7k>
+    <ul class="space-y-1 pl-4">
+      
+        <li class="text-sm leading-tight">
+          <a href="#关于目录" class="toc-link toc-h3" data-depth="3">
+            关于目录
+          </a>
+          
+        </li>
+      
+        <li class="text-sm leading-tight">
+          <a href="#关于实践" class="toc-link toc-h3" data-depth="3">
+            关于实践
+          </a>
+          
+    <ul class="space-y-1 pl-4">
+      
+        <li class="text-sm leading-tight">
+          <a href="#古法初始化项目" class="toc-link toc-h4" data-depth="4">
+            古法初始化项目
+          </a>
+          
+        </li>
+      
+        <li class="text-sm leading-tight">
+          <a href="#古法打包配置初始化" class="toc-link toc-h4" data-depth="4">
+            古法打包配置初始化
+          </a>
+          
+        </li>
+      
+        <li class="text-sm leading-tight">
+          <a href="#古法打包逻辑代码" class="toc-link toc-h4" data-depth="4">
+            古法打包逻辑代码
+          </a>
+          
+        </li>
+      
+        <li class="text-sm leading-tight">
+          <a href="#修改-packagejson-相关内容" class="toc-link toc-h4" data-depth="4">
+            修改 package.json 相关内容
+          </a>
+          
+        </li>
+      
+        <li class="text-sm leading-tight">
+          <a href="#关于调用" class="toc-link toc-h4" data-depth="4">
+            关于调用
+          </a>
+          
+    <ul class="space-y-1 pl-4">
+      
+        <li class="text-sm leading-tight">
+          <a href="#commonjs-nodejs-环境" class="toc-link toc-h5" data-depth="5">
+            CommonJS (Node.js 环境)
+          </a>
+          
+        </li>
+      
+        <li class="text-sm leading-tight">
+          <a href="#esmodule-现代打包工具或浏览器支持-esmodule" class="toc-link toc-h5" data-depth="5">
+            ESModule (现代打包工具或浏览器支持 ESModule)
+          </a>
+          
+        </li>
+      
+        <li class="text-sm leading-tight">
+          <a href="#umd-浏览器全局引用" class="toc-link toc-h5" data-depth="5">
+            UMD (浏览器全局引用)
+          </a>
+          
+        </li>
+      
+    </ul>
+  
+        </li>
+      
+    </ul>
+  
+        </li>
+      
+        <li class="text-sm leading-tight">
+          <a href="#关于礼仪" class="toc-link toc-h3" data-depth="3">
+            关于礼仪
+          </a>
+          
+    <ul class="space-y-1 pl-4">
+      
+        <li class="text-sm leading-tight">
+          <a href="#完善对应的目录与注释部份" class="toc-link toc-h4" data-depth="4">
+            完善对应的目录与注释部份
+          </a>
+          
+    <ul class="space-y-1 pl-4">
+      
+        <li class="text-sm leading-tight">
+          <a href="#readme通常包含以下内容" class="toc-link toc-h5" data-depth="5">
+            README通常包含以下内容：
+          </a>
+          
+        </li>
+      
+    </ul>
+  
+        </li>
+      
+        <li class="text-sm leading-tight">
+          <a href="#关于开源协议" class="toc-link toc-h4" data-depth="4">
+            关于开源协议
+          </a>
+          
+        </li>
+      
+    </ul>
+  
+        </li>
+      
+        <li class="text-sm leading-tight">
+          <a href="#qa" class="toc-link toc-h3" data-depth="3">
+            Q&A
+          </a>
+          
+    <ul class="space-y-1 pl-4">
+      
+        <li class="text-sm leading-tight">
+          <a href="#qvite-与-rollup-的关系分别在什么场景下使用" class="toc-link toc-h4" data-depth="4">
+            Q：Vite 与 Rollup 的关系、分别在什么场景下使用
+          </a>
+          
+        </li>
+      
+        <li class="text-sm leading-tight">
+          <a href="#q为什么要分别输出-cjsesmumd-三种格式" class="toc-link toc-h4" data-depth="4">
+            Q：为什么要分别输出 CJS、ESM、UMD 三种格式？
+          </a>
+          
+        </li>
+      
+        <li class="text-sm leading-tight">
+          <a href="#q如何让库支持-typescript" class="toc-link toc-h4" data-depth="4">
+            Q：如何让库支持 TypeScript？
+          </a>
+          
+        </li>
+      
+        <li class="text-sm leading-tight">
+          <a href="#q如何保证库的体积最小" class="toc-link toc-h4" data-depth="4">
+            Q：如何保证库的体积最小？
+          </a>
+          
+        </li>
+      
+    </ul>
+  
+        </li>
+      
+        <li class="text-sm leading-tight">
+          <a href="#总结" class="toc-link toc-h3" data-depth="3">
+            总结
+          </a>
+          
+        </li>
+      
+    </ul>
+  </div></details></nav></aside></div><script data-astro-rerun>
+  ;(() => {
+    const ready = fn => {
+      if (document.readyState === 'loading')
+        document.addEventListener('DOMContentLoaded', fn, { once: true })
+      else fn()
+    }
+
+    function boot() {
+      const root = document.querySelector('.toc-root')
+      if (!root) return
+
+      const float = root.querySelector('.toc-float')
+      const atTop = () => window.scrollY <= 2
+      const onScroll = () => {
+        float?.classList.toggle('at-top', atTop())
+      }
+      onScroll()
+      window.addEventListener('scroll', onScroll, { passive: true })
+
+      const article = document.querySelector('article[data-pagefind-body]')
+      if (!article) return
+
+      // 更新选择器：支持 h1 到 h5
+      const heads = [
+        ...article.querySelectorAll('h1[id], h2[id], h3[id], h4[id], h5[id]'),
+      ]
+      if (!heads.length) return
+
+      const allLinks = [...root.querySelectorAll('.toc a.toc-link')]
+      const map = new Map()
+      for (const a of allLinks) {
+        const href = a.getAttribute('href') || ''
+        if (!href.startsWith('#')) continue
+        const id = href.slice(1)
+        if (!map.has(id)) map.set(id, [])
+        map.get(id).push(a)
+      }
+
+      let activeId = null
+      const setActive = id => {
+        if (activeId === id) return
+        if (activeId && map.has(activeId))
+          map.get(activeId).forEach(el => el.classList.remove('is-active'))
+        activeId = id
+        if (activeId && map.has(activeId))
+          map.get(activeId).forEach(el => el.classList.add('is-active'))
+      }
+
+      const io = new IntersectionObserver(
+        entries => {
+          const visible = entries
+            .filter(e => e.isIntersecting)
+            .sort((a, b) => a.boundingClientRect.top - b.boundingClientRect.top)
+          if (visible.length) {
+            setActive(visible[0].target.id)
+          } else {
+            const nearest = heads
+              .map(h => ({
+                id: h.id,
+                top: Math.abs(h.getBoundingClientRect().top),
+              }))
+              .sort((a, b) => a.top - b.top)[0]
+            if (nearest) setActive(nearest.id)
+          }
+        },
+        { root: null, threshold: [0, 1], rootMargin: '-96px 0px -60% 0px' },
+      )
+
+      heads.forEach(h => io.observe(h))
+
+      const onClick = e => {
+        const a = e.target.closest('.toc a.toc-link')
+        if (!a) return
+        const href = a.getAttribute('href') || ''
+        if (!href.startsWith('#')) return
+        const id = href.slice(1)
+        const el = document.getElementById(id)
+        if (!el) return
+        e.preventDefault()
+        el.scrollIntoView({ behavior: 'smooth', block: 'start' })
+      }
+      root.addEventListener('click', onClick)
+
+      const cleanup = () => {
+        window.removeEventListener('scroll', onScroll)
+        io.disconnect()
+        root.removeEventListener('click', onClick)
+      }
+      document.addEventListener('astro:before-swap', cleanup, { once: true })
+    }
+
+    ready(boot)
+    document.addEventListener('astro:page-load', boot)
+  })()
+</script> <article data-pagefind-body> <figure><img src="/posts//accessible-js-Library-Development.jpg" alt="banner"><figcaption>banner</figcaption></figure>
+<blockquote>
+<p>是的，再不看书，书里的知识就过时了</p>
+</blockquote>
+<!-- more -->
+<h3 id="关于目录">关于目录</h3>
+<ol>
+<li>实践</li>
+<li>礼仪</li>
+<li>Q&#x26;A</li>
+</ol>
+<h3 id="关于实践">关于实践</h3>
+<h4 id="古法初始化项目">古法初始化项目</h4>
+<p>话不多说，先来一波古法新建文件以及文件夹</p>
+<div class="expressive-code"><link rel="stylesheet" href="/_astro/ec.c86xd.css"><script type="module" src="/_astro/ec.0vx5m.js"></script><figure class="frame is-terminal"><figcaption class="header"><span class="title"></span><span class="sr-only">Terminal window</span></figcaption><pre data-language="bash"><code><div class="ec-line"><div class="code"><span style="--0:#A0A1A7F4;--1:#96A1C2"># 新建项目 &#x26;&#x26; 进入项目</span></div></div><div class="ec-line"><div class="code"><span style="--0:#FFE66D;--1:#50FA7B">mkdir</span><span style="--0:#D5CED9;--1:#F8F8F2"> </span><span style="--0:#96E072;--1:#F1FA8C">js-lib-temp</span><span style="--0:#D5CED9;--1:#F8F8F2"> &#x26; </span><span style="--0:#FFE66D;--1:#8BE9FD">cd</span><span style="--0:#D5CED9;--1:#F8F8F2"> </span><span style="--0:#96E072;--1:#F1FA8C">js-lib-temp</span></div></div><div class="ec-line"><div class="code"><span style="--0:#A0A1A7F4;--1:#96A1C2"># 初始化</span></div></div><div class="ec-line"><div class="code"><span style="--0:#FFE66D;--1:#50FA7B">npm</span><span style="--0:#D5CED9;--1:#F8F8F2"> </span><span style="--0:#96E072;--1:#F1FA8C">init</span><span style="--0:#D5CED9;--1:#F8F8F2"> </span><span style="--0:#F17963;--1:#BD93F9">-y</span></div></div><div class="ec-line"><div class="code"><span style="--0:#A0A1A7F4;--1:#96A1C2"># 新建文件</span></div></div><div class="ec-line"><div class="code"><span style="--0:#FFE66D;--1:#50FA7B">mkdir</span><span style="--0:#D5CED9;--1:#F8F8F2"> </span><span style="--0:#F17963;--1:#BD93F9">-p</span><span style="--0:#D5CED9;--1:#F8F8F2"> </span><span style="--0:#96E072;--1:#F1FA8C">src</span><span style="--0:#D5CED9;--1:#F8F8F2"> &#x26;&#x26; </span><span style="--0:#FFE66D;--1:#50FA7B">touch</span><span style="--0:#D5CED9;--1:#F8F8F2"> </span><span style="--0:#96E072;--1:#F1FA8C">src/index.js</span></div></div></code></pre><div class="copy"><div aria-live="polite"></div><button title="Copy to clipboard" data-copied="Copied!" data-code="mkdir js-lib-temp &#x26; cd js-lib-tempnpm init -ymkdir -p src &#x26;&#x26; touch src/index.js"><div></div></button></div></figure></div>
+<p>打开 src/index.js，写点简单的代码</p>
+<div class="expressive-code"><figure class="frame"><figcaption class="header"></figcaption><pre data-language="js"><code><div class="ec-line"><div class="code"><span style="--0:#D477F1;--1:#FF79C6">export</span><span style="--0:#D5CED9;--1:#F8F8F2"> </span><span style="--0:#D477F1;--1:#FF79C6">default</span><span style="--0:#D5CED9;--1:#F8F8F2"> </span><span style="--0:#D477F1;--1:#FF79C6">function</span><span style="--0:#D5CED9;--1:#F8F8F2"> () {</span></div></div><div class="ec-line"><div class="code"><span class="indent"><span style="--1:#F8F8F2">  </span></span><span style="--0:#F39C12;--1:#F8F8F2">console</span><span style="--0:#D5CED9;--1:#F8F8F2">.</span><span style="--0:#FFE66D;--1:#50FA7B">log</span><span style="--0:#D5CED9;--1:#F8F8F2">(</span><span style="--0:#96E072;--1:#E9F284">'</span><span style="--0:#96E072;--1:#F1FA8C">hello world</span><span style="--0:#96E072;--1:#E9F284">'</span><span style="--0:#D5CED9;--1:#F8F8F2">)</span></div></div><div class="ec-line"><div class="code"><span style="--0:#D5CED9;--1:#F8F8F2">}</span></div></div></code></pre><div class="copy"><div aria-live="polite"></div><button title="Copy to clipboard" data-copied="Copied!" data-code="export default function () {  console.log(&#x27;hello world&#x27;)}"><div></div></button></div></figure></div>
+<p>ok，咱的库只输出个 hello world，接下来就开始到处 say hi 呗</p>
+<h4 id="古法打包配置初始化">古法打包配置初始化</h4>
+<p>目标是在三种模块规范 CommonJS、 ESModule、UMD 中正常使用，目前最为流行的就是通过 rollupjs 来打包</p>
+<div class="expressive-code"><figure class="frame is-terminal"><figcaption class="header"><span class="title"></span><span class="sr-only">Terminal window</span></figcaption><pre data-language="bash"><code><div class="ec-line"><div class="code"><span style="--0:#FFE66D;--1:#50FA7B">npm</span><span style="--0:#D5CED9;--1:#F8F8F2"> </span><span style="--0:#96E072;--1:#F1FA8C">install</span><span style="--0:#D5CED9;--1:#F8F8F2"> </span><span style="--0:#F17963;--1:#BD93F9">--save-dev</span><span style="--0:#D5CED9;--1:#F8F8F2"> </span><span style="--0:#96E072;--1:#F1FA8C">rollup</span></div></div><div class="ec-line"><div class="code">
+</div></div><div class="ec-line"><div class="code"><span style="--0:#A0A1A7F4;--1:#96A1C2"># 新建 config 文件夹，以及相关的配置文件</span></div></div><div class="ec-line"><div class="code"><span style="--0:#FFE66D;--1:#50FA7B">mkdir</span><span style="--0:#D5CED9;--1:#F8F8F2"> </span><span style="--0:#F17963;--1:#BD93F9">-p</span><span style="--0:#D5CED9;--1:#F8F8F2"> </span><span style="--0:#96E072;--1:#F1FA8C">config</span></div></div><div class="ec-line"><div class="code">
+</div></div><div class="ec-line"><div class="code"><span style="--0:#A0A1A7F4;--1:#96A1C2"># 新建 UMD 配置</span></div></div><div class="ec-line"><div class="code"><span style="--0:#FFE66D;--1:#50FA7B">touch</span><span style="--0:#D5CED9;--1:#F8F8F2"> </span><span style="--0:#96E072;--1:#F1FA8C">config/rollup.config.aio.js</span></div></div><div class="ec-line"><div class="code"><span style="--0:#A0A1A7F4;--1:#96A1C2"># 新建 ESM 配置</span></div></div><div class="ec-line"><div class="code"><span style="--0:#FFE66D;--1:#50FA7B">touch</span><span style="--0:#D5CED9;--1:#F8F8F2"> </span><span style="--0:#96E072;--1:#F1FA8C">config/rollup.config.esm.js</span></div></div><div class="ec-line"><div class="code"><span style="--0:#A0A1A7F4;--1:#96A1C2"># 新建 commonjs 配置</span></div></div><div class="ec-line"><div class="code"><span style="--0:#FFE66D;--1:#50FA7B">touch</span><span style="--0:#D5CED9;--1:#F8F8F2"> </span><span style="--0:#96E072;--1:#F1FA8C">config/rollup.config.js</span></div></div><div class="ec-line"><div class="code"><span style="--0:#A0A1A7F4;--1:#96A1C2"># 新建整体配置</span></div></div><div class="ec-line"><div class="code"><span style="--0:#FFE66D;--1:#50FA7B">touch</span><span style="--0:#D5CED9;--1:#F8F8F2"> </span><span style="--0:#96E072;--1:#F1FA8C">config/rollup.js</span></div></div><div class="ec-line"><div class="code">
+</div></div><div class="ec-line"><div class="code"><span style="--0:#A0A1A7F4;--1:#96A1C2"># 一行搞定，也不是不行</span></div></div><div class="ec-line"><div class="code"><span style="--0:#A0A1A7F4;--1:#96A1C2"># mkdir -p config &#x26;&#x26; touch config/rollup.config.aio.js config/rollup.config.esm.js config/rollup.config.js config/rollup.js</span></div></div></code></pre><div class="copy"><div aria-live="polite"></div><button title="Copy to clipboard" data-copied="Copied!" data-code="npm install --save-dev rollupmkdir -p configtouch config/rollup.config.aio.jstouch config/rollup.config.esm.jstouch config/rollup.config.jstouch config/rollup.js"><div></div></button></div></figure></div>
+<p>还需要下载一些插件 babel 与 rollup 相关的插件</p>
+<div class="expressive-code"><figure class="frame is-terminal"><figcaption class="header"><span class="title"></span><span class="sr-only">Terminal window</span></figcaption><pre data-language="bash"><code><div class="ec-line"><div class="code"><span style="--0:#A0A1A7F4;--1:#96A1C2"># Babel 相关</span></div></div><div class="ec-line"><div class="code"><span style="--0:#A0A1A7F4;--1:#96A1C2"># Babel 的核心库，负责将 ES6+ 代码转换为兼容旧环境的 JavaScript</span></div></div><div class="ec-line"><div class="code"><span style="--0:#FFE66D;--1:#50FA7B">npm</span><span style="--0:#D5CED9;--1:#F8F8F2"> </span><span style="--0:#96E072;--1:#F1FA8C">install</span><span style="--0:#D5CED9;--1:#F8F8F2"> </span><span style="--0:#F17963;--1:#BD93F9">--save-dev</span><span style="--0:#D5CED9;--1:#F8F8F2"> </span><span style="--0:#96E072;--1:#F1FA8C">@babel/core</span></div></div><div class="ec-line"><div class="code"><span style="--0:#A0A1A7F4;--1:#96A1C2"># 优化 Babel 转译结果，减少重复的辅助代码，提升包体积和运行效率。</span></div></div><div class="ec-line"><div class="code"><span style="--0:#FFE66D;--1:#50FA7B">npm</span><span style="--0:#D5CED9;--1:#F8F8F2"> </span><span style="--0:#96E072;--1:#F1FA8C">install</span><span style="--0:#D5CED9;--1:#F8F8F2"> </span><span style="--0:#F17963;--1:#BD93F9">--save-dev</span><span style="--0:#D5CED9;--1:#F8F8F2"> </span><span style="--0:#96E072;--1:#F1FA8C">@babel/plugin-transform-runtime</span></div></div><div class="ec-line"><div class="code"><span style="--0:#A0A1A7F4;--1:#96A1C2"># Babel 预设，自动根据目标环境转译最新的 JavaScript 语法</span></div></div><div class="ec-line"><div class="code"><span style="--0:#FFE66D;--1:#50FA7B">npm</span><span style="--0:#D5CED9;--1:#F8F8F2"> </span><span style="--0:#96E072;--1:#F1FA8C">install</span><span style="--0:#D5CED9;--1:#F8F8F2"> </span><span style="--0:#F17963;--1:#BD93F9">--save-dev</span><span style="--0:#D5CED9;--1:#F8F8F2"> </span><span style="--0:#96E072;--1:#F1FA8C">@babel/preset-env</span></div></div><div class="ec-line"><div class="code"><span style="--0:#A0A1A7F4;--1:#96A1C2"># Babel 运行时依赖</span></div></div><div class="ec-line"><div class="code"><span style="--0:#A0A1A7F4;--1:#96A1C2"># 配合 @babel/plugin-transform-runtime 使用，避免辅助函数重复</span></div></div><div class="ec-line"><div class="code"><span style="--0:#FFE66D;--1:#50FA7B">npm</span><span style="--0:#D5CED9;--1:#F8F8F2"> </span><span style="--0:#96E072;--1:#F1FA8C">install</span><span style="--0:#D5CED9;--1:#F8F8F2"> </span><span style="--0:#F17963;--1:#BD93F9">--save-dev</span><span style="--0:#D5CED9;--1:#F8F8F2"> </span><span style="--0:#96E072;--1:#F1FA8C">@babel/runtime</span></div></div><div class="ec-line"><div class="code">
+</div></div><div class="ec-line"><div class="code">
+</div></div><div class="ec-line"><div class="code"><span style="--0:#A0A1A7F4;--1:#96A1C2"># rollup 相关</span></div></div><div class="ec-line"><div class="code"><span style="--0:#A0A1A7F4;--1:#96A1C2"># 在 Rollup 打包时集成 Babel，支持源码转译。</span></div></div><div class="ec-line"><div class="code"><span style="--0:#FFE66D;--1:#50FA7B">npm</span><span style="--0:#D5CED9;--1:#F8F8F2"> </span><span style="--0:#96E072;--1:#F1FA8C">install</span><span style="--0:#D5CED9;--1:#F8F8F2"> </span><span style="--0:#F17963;--1:#BD93F9">--save-dev</span><span style="--0:#D5CED9;--1:#F8F8F2"> </span><span style="--0:#96E072;--1:#F1FA8C">@rollup/plugin-babel</span></div></div><div class="ec-line"><div class="code"><span style="--0:#A0A1A7F4;--1:#96A1C2"># 让 Rollup 能处理 CommonJS 模块（如 npm 包），转换为 ES6 模块。</span></div></div><div class="ec-line"><div class="code"><span style="--0:#FFE66D;--1:#50FA7B">npm</span><span style="--0:#D5CED9;--1:#F8F8F2"> </span><span style="--0:#96E072;--1:#F1FA8C">install</span><span style="--0:#D5CED9;--1:#F8F8F2"> </span><span style="--0:#F17963;--1:#BD93F9">--save-dev</span><span style="--0:#D5CED9;--1:#F8F8F2">  </span><span style="--0:#96E072;--1:#F1FA8C">@rollup/plugin-commonjs</span></div></div><div class="ec-line"><div class="code"><span style="--0:#A0A1A7F4;--1:#96A1C2"># 让 Rollup 能解析 node_modules 里的第三方依赖。</span></div></div><div class="ec-line"><div class="code"><span style="--0:#FFE66D;--1:#50FA7B">npm</span><span style="--0:#D5CED9;--1:#F8F8F2"> </span><span style="--0:#96E072;--1:#F1FA8C">install</span><span style="--0:#D5CED9;--1:#F8F8F2"> </span><span style="--0:#F17963;--1:#BD93F9">--save-dev</span><span style="--0:#D5CED9;--1:#F8F8F2">  </span><span style="--0:#96E072;--1:#F1FA8C">@rollup/plugin-node-resolve</span></div></div></code></pre><div class="copy"><div aria-live="polite"></div><button title="Copy to clipboard" data-copied="Copied!" data-code="npm install --save-dev @babel/corenpm install --save-dev @babel/plugin-transform-runtimenpm install --save-dev @babel/preset-envnpm install --save-dev @babel/runtimenpm install --save-dev @rollup/plugin-babelnpm install --save-dev  @rollup/plugin-commonjsnpm install --save-dev  @rollup/plugin-node-resolve"><div></div></button></div></figure></div>
+<h4 id="古法打包逻辑代码">古法打包逻辑代码</h4>
+<div class="expressive-code"><figure class="frame has-title"><figcaption class="header"><span class="title">config/rollup.js</span></figcaption><pre data-language="js"><code><div class="ec-line"><div class="code"><span style="--0:#D477F1;--1:#FF79C6">const</span><span style="--0:#D5CED9;--1:#F8F8F2"> {</span></div></div><div class="ec-line"><div class="code"><span class="indent"><span style="--1:#F8F8F2">  </span></span><span style="--0:#00E8C6;--1:#F8F8F2">babel</span><span style="--0:#D5CED9;--1:#F8F8F2">,</span></div></div><div class="ec-line"><div class="code"><span style="--0:#D5CED9;--1:#F8F8F2">} </span><span style="--0:#F17963;--1:#FF79C6">=</span><span style="--0:#D5CED9;--1:#F8F8F2"> </span><span style="--0:#FFE66D;--1:#50FA7B">require</span><span style="--0:#D5CED9;--1:#F8F8F2">(</span><span style="--0:#96E072;--1:#E9F284">'</span><span style="--0:#96E072;--1:#F1FA8C">@rollup/plugin-babel</span><span style="--0:#96E072;--1:#E9F284">'</span><span style="--0:#D5CED9;--1:#F8F8F2">)</span></div></div><div class="ec-line"><div class="code"><span style="--0:#D477F1;--1:#FF79C6">const</span><span style="--1:#F8F8F2"><span style="--0:#D5CED9"> </span><span style="--0:#00E8C6">pkg</span><span style="--0:#D5CED9"> </span></span><span style="--0:#F17963;--1:#FF79C6">=</span><span style="--0:#D5CED9;--1:#F8F8F2"> </span><span style="--0:#FFE66D;--1:#50FA7B">require</span><span style="--0:#D5CED9;--1:#F8F8F2">(</span><span style="--0:#96E072;--1:#E9F284">'</span><span style="--0:#96E072;--1:#F1FA8C">../package.json</span><span style="--0:#96E072;--1:#E9F284">'</span><span style="--0:#D5CED9;--1:#F8F8F2">)</span></div></div><div class="ec-line"><div class="code">
+</div></div><div class="ec-line"><div class="code"><span style="--0:#D477F1;--1:#FF79C6">const</span><span style="--1:#F8F8F2"><span style="--0:#D5CED9"> </span><span style="--0:#00E8C6">version</span><span style="--0:#D5CED9"> </span></span><span style="--0:#F17963;--1:#FF79C6">=</span><span style="--1:#F8F8F2"><span style="--0:#D5CED9"> </span><span style="--0:#F39C12">pkg</span><span style="--0:#D5CED9">.</span><span style="--0:#00E8C6">version</span></span></div></div><div class="ec-line"><div class="code"><span style="--0:#A0A1A7F4;--1:#96A1C2">/**</span></div></div><div class="ec-line"><div class="code"><span class="indent"><span style="--0:#A0A1A7F4;--1:#96A1C2"> </span></span><span style="--0:#A0A1A7F4;--1:#96A1C2">* 构建输出文件的头部注释信息</span></div></div><div class="ec-line"><div class="code"><span class="indent"><span style="--0:#A0A1A7F4;--1:#96A1C2"> </span></span><span style="--0:#A0A1A7F4;--1:#96A1C2">* </span><span style="--0:#D477F1;--1:#FF79C6">@type</span><span style="--0:#A0A1A7F4;--1:#96A1C2"> </span><span style="--0:#FFE66D;--1:#8BE9FD;--1fs:italic">{string}</span></div></div><div class="ec-line"><div class="code"><span class="indent"><span style="--0:#A0A1A7F4;--1:#96A1C2"> </span></span><span style="--0:#A0A1A7F4;--1:#96A1C2">*/</span></div></div><div class="ec-line"><div class="code"><span style="--0:#D477F1;--1:#FF79C6">let</span><span style="--1:#F8F8F2"><span style="--0:#D5CED9"> </span><span style="--0:#00E8C6">banner</span><span style="--0:#D5CED9"> </span></span><span style="--0:#F17963;--1:#FF79C6">=</span><span style="--0:#D5CED9;--1:#F8F8F2"> </span><span style="--0:#96E072;--1:#F1FA8C">`/*!</span></div></div><div class="ec-line"><div class="code"><span class="indent"><span style="--0:#96E072;--1:#F1FA8C"> </span></span><span style="--0:#96E072;--1:#F1FA8C">* </span><span style="--0:#FB6A9E;--1:#FF79C6">${</span><span style="--1:#F8F8F2"><span style="--0:#F39C12">pkg</span><span style="--0:#D5CED9">.</span><span style="--0:#00E8C6">name</span></span><span style="--0:#FB6A9E;--1:#FF79C6">}</span><span style="--0:#96E072;--1:#F1FA8C"> </span><span style="--0:#FB6A9E;--1:#FF79C6">${</span><span style="--0:#00E8C6;--1:#F8F8F2">version</span><span style="--0:#FB6A9E;--1:#FF79C6">}</span></div></div><div class="ec-line"><div class="code"><span class="indent"><span style="--0:#96E072;--1:#F1FA8C"> </span></span><span style="--0:#96E072;--1:#F1FA8C">* Licensed under MIT</span></div></div><div class="ec-line"><div class="code"><span class="indent"><span style="--0:#96E072;--1:#F1FA8C"> </span></span><span style="--0:#96E072;--1:#F1FA8C">*/</span></div></div><div class="ec-line"><div class="code"><span style="--0:#96E072;--1:#F1FA8C">`</span></div></div><div class="ec-line"><div class="code">
+</div></div><div class="ec-line"><div class="code"><span style="--0:#A0A1A7F4;--1:#96A1C2">/**</span></div></div><div class="ec-line"><div class="code"><span class="indent"><span style="--0:#A0A1A7F4;--1:#96A1C2"> </span></span><span style="--0:#A0A1A7F4;--1:#96A1C2">* 获取 Babel 编译器插件配置</span></div></div><div class="ec-line"><div class="code"><span class="indent"><span style="--0:#A0A1A7F4;--1:#96A1C2"> </span></span><span style="--0:#A0A1A7F4;--1:#96A1C2">* </span><span style="--0:#D477F1;--1:#FF79C6">@param</span><span style="--0:#A0A1A7F4;--1:#96A1C2"> </span><span style="--0:#FFE66D;--1:#8BE9FD;--1fs:italic">{object}</span><span style="--0:#A0A1A7F4;--1:#96A1C2"> </span><span style="--0:#00E8C6;--1:#FFB86C;--1fs:italic">[opt]</span><span style="--0:#A0A1A7F4;--1:#96A1C2"> - 可选参数（当前未使用）</span></div></div><div class="ec-line"><div class="code"><span class="indent"><span style="--0:#A0A1A7F4;--1:#96A1C2"> </span></span><span style="--0:#A0A1A7F4;--1:#96A1C2">* </span><span style="--0:#D477F1;--1:#FF79C6">@returns</span><span style="--0:#A0A1A7F4;--1:#96A1C2"> </span><span style="--0:#FFE66D;--1:#8BE9FD;--1fs:italic">{import('@rollup/plugin-babel').BabelInputPlugin}</span><span style="--0:#A0A1A7F4;--1:#96A1C2"> Babel 插件实例</span></div></div><div class="ec-line"><div class="code"><span class="indent"><span style="--0:#A0A1A7F4;--1:#96A1C2"> </span></span><span style="--0:#A0A1A7F4;--1:#96A1C2">*/</span></div></div><div class="ec-line"><div class="code"><span style="--0:#D477F1;--1:#FF79C6">function</span><span style="--0:#D5CED9;--1:#F8F8F2"> </span><span style="--0:#FFE66D;--1:#50FA7B">getCompiler</span><span style="--0:#D5CED9;--1:#F8F8F2">(</span><span style="--0:#00E8C6;--1:#FFB86C;--1fs:italic">_opt</span><span style="--0:#D5CED9;--1:#F8F8F2">) {</span></div></div><div class="ec-line"><div class="code"><span class="indent">  </span><span style="--0:#D477F1;--1:#FF79C6">return</span><span style="--0:#D5CED9;--1:#F8F8F2"> </span><span style="--0:#FFE66D;--1:#50FA7B">babel</span><span style="--0:#D5CED9;--1:#F8F8F2">({</span></div></div><div class="ec-line"><div class="code"><span class="indent"><span style="--0:#D5CED9;--1:#F8F8F2">    </span></span><span style="--0:#D5CED9;--1:#F8F8F2">babelrc</span><span style="--0:#D5CED9;--1:#FF79C6">:</span><span style="--0:#D5CED9;--1:#F8F8F2"> </span><span style="--0:#F17963;--1:#BD93F9">false</span><span style="--0:#D5CED9;--1:#F8F8F2">, </span><span style="--0:#A0A1A7F4;--1:#96A1C2">// 不读取外部 .babelrc 文件，使用此处配置</span></div></div><div class="ec-line"><div class="code"><span class="indent"><span style="--0:#D5CED9;--1:#F8F8F2">    </span></span><span style="--0:#D5CED9;--1:#F8F8F2">presets</span><span style="--0:#D5CED9;--1:#FF79C6">:</span><span style="--0:#D5CED9;--1:#F8F8F2"> [</span></div></div><div class="ec-line"><div class="code"><span class="indent"><span style="--0:#D5CED9;--1:#F8F8F2">      </span></span><span style="--0:#D5CED9;--1:#F8F8F2">[</span></div></div><div class="ec-line"><div class="code"><span class="indent">        </span><span style="--0:#96E072;--1:#E9F284">'</span><span style="--0:#96E072;--1:#F1FA8C">@babel/preset-env</span><span style="--0:#96E072;--1:#E9F284">'</span><span style="--0:#D5CED9;--1:#F8F8F2">,</span></div></div><div class="ec-line"><div class="code"><span class="indent"><span style="--0:#D5CED9;--1:#F8F8F2">        </span></span><span style="--0:#D5CED9;--1:#F8F8F2">{</span></div></div><div class="ec-line"><div class="code"><span class="indent"><span style="--0:#D5CED9;--1:#F8F8F2">          </span></span><span style="--0:#D5CED9;--1:#F8F8F2">targets</span><span style="--0:#D5CED9;--1:#FF79C6">:</span><span style="--0:#D5CED9;--1:#F8F8F2"> {</span></div></div><div class="ec-line"><div class="code"><span class="indent"><span style="--0:#D5CED9;--1:#F8F8F2">            </span></span><span style="--0:#D5CED9;--1:#F8F8F2">browsers</span><span style="--0:#D5CED9;--1:#FF79C6">:</span><span style="--0:#D5CED9;--1:#F8F8F2"> </span><span style="--0:#96E072;--1:#E9F284">'</span><span style="--0:#96E072;--1:#F1FA8C">> 0.5%, last 2 versions, not dead</span><span style="--0:#96E072;--1:#E9F284">'</span><span style="--0:#D5CED9;--1:#F8F8F2">, </span><span style="--0:#A0A1A7F4;--1:#96A1C2">// 浏览器兼容性目标</span></div></div><div class="ec-line"><div class="code"><span class="indent"><span style="--0:#D5CED9;--1:#F8F8F2">            </span></span><span style="--0:#D5CED9;--1:#F8F8F2">node</span><span style="--0:#D5CED9;--1:#FF79C6">:</span><span style="--0:#D5CED9;--1:#F8F8F2"> </span><span style="--0:#96E072;--1:#E9F284">'</span><span style="--0:#96E072;--1:#F1FA8C">current</span><span style="--0:#96E072;--1:#E9F284">'</span><span style="--0:#D5CED9;--1:#F8F8F2">, </span><span style="--0:#A0A1A7F4;--1:#96A1C2">// LTS or 版本号</span></div></div><div class="ec-line"><div class="code"><span class="indent"><span style="--0:#D5CED9;--1:#F8F8F2">          </span></span><span style="--0:#D5CED9;--1:#F8F8F2">},</span></div></div><div class="ec-line"><div class="code"><span class="indent"><span style="--0:#D5CED9;--1:#F8F8F2">          </span></span><span style="--0:#D5CED9;--1:#F8F8F2">modules</span><span style="--0:#D5CED9;--1:#FF79C6">:</span><span style="--0:#D5CED9;--1:#F8F8F2"> </span><span style="--0:#F17963;--1:#BD93F9">false</span><span style="--0:#D5CED9;--1:#F8F8F2">, </span><span style="--0:#A0A1A7F4;--1:#96A1C2">// 不转换模块类型</span></div></div><div class="ec-line"><div class="code"><span class="indent"><span style="--0:#D5CED9;--1:#F8F8F2">          </span></span><span style="--0:#D5CED9;--1:#F8F8F2">loose</span><span style="--0:#D5CED9;--1:#FF79C6">:</span><span style="--0:#D5CED9;--1:#F8F8F2"> </span><span style="--0:#F17963;--1:#BD93F9">false</span><span style="--0:#D5CED9;--1:#F8F8F2">, </span><span style="--0:#A0A1A7F4;--1:#96A1C2">// 严格模式</span></div></div><div class="ec-line"><div class="code"><span class="indent"><span style="--0:#D5CED9;--1:#F8F8F2">        </span></span><span style="--0:#D5CED9;--1:#F8F8F2">},</span></div></div><div class="ec-line"><div class="code"><span class="indent"><span style="--0:#D5CED9;--1:#F8F8F2">      </span></span><span style="--0:#D5CED9;--1:#F8F8F2">],</span></div></div><div class="ec-line"><div class="code"><span class="indent"><span style="--0:#D5CED9;--1:#F8F8F2">    </span></span><span style="--0:#D5CED9;--1:#F8F8F2">],</span></div></div><div class="ec-line"><div class="code"><span class="indent"><span style="--0:#D5CED9;--1:#F8F8F2">    </span></span><span style="--0:#D5CED9;--1:#F8F8F2">plugins</span><span style="--0:#D5CED9;--1:#FF79C6">:</span><span style="--0:#D5CED9;--1:#F8F8F2"> [</span></div></div><div class="ec-line"><div class="code"><span class="indent"><span style="--0:#D5CED9;--1:#F8F8F2">      </span></span><span style="--0:#D5CED9;--1:#F8F8F2">[</span></div></div><div class="ec-line"><div class="code"><span class="indent">        </span><span style="--0:#96E072;--1:#E9F284">'</span><span style="--0:#96E072;--1:#F1FA8C">@babel/plugin-transform-runtime</span><span style="--0:#96E072;--1:#E9F284">'</span><span style="--0:#D5CED9;--1:#F8F8F2">,</span></div></div><div class="ec-line"><div class="code"><span class="indent"><span style="--0:#D5CED9;--1:#F8F8F2">        </span></span><span style="--0:#D5CED9;--1:#F8F8F2">{</span></div></div><div class="ec-line"><div class="code"><span class="indent"><span style="--0:#D5CED9;--1:#F8F8F2">          </span></span><span style="--0:#D5CED9;--1:#F8F8F2">corejs</span><span style="--0:#D5CED9;--1:#FF79C6">:</span><span style="--0:#D5CED9;--1:#F8F8F2"> </span><span style="--0:#F39C12;--1:#BD93F9">2</span><span style="--0:#D5CED9;--1:#F8F8F2">, </span><span style="--0:#A0A1A7F4;--1:#96A1C2">// 使用 core-js@2 polyfill</span></div></div><div class="ec-line"><div class="code"><span class="indent">          </span><span style="--0:#A0A1A7F4;--1:#96A1C2">// helpers: false,  // 注释掉，默认 helpers 为 true</span></div></div><div class="ec-line"><div class="code"><span class="indent"><span style="--0:#D5CED9;--1:#F8F8F2">          </span></span><span style="--0:#D5CED9;--1:#F8F8F2">regenerator</span><span style="--0:#D5CED9;--1:#FF79C6">:</span><span style="--0:#D5CED9;--1:#F8F8F2"> </span><span style="--0:#F17963;--1:#BD93F9">false</span><span style="--0:#D5CED9;--1:#F8F8F2">, </span><span style="--0:#A0A1A7F4;--1:#96A1C2">// 不转换 generator</span></div></div><div class="ec-line"><div class="code"><span class="indent"><span style="--0:#D5CED9;--1:#F8F8F2">        </span></span><span style="--0:#D5CED9;--1:#F8F8F2">},</span></div></div><div class="ec-line"><div class="code"><span class="indent"><span style="--0:#D5CED9;--1:#F8F8F2">      </span></span><span style="--0:#D5CED9;--1:#F8F8F2">],</span></div></div><div class="ec-line"><div class="code"><span class="indent"><span style="--0:#D5CED9;--1:#F8F8F2">    </span></span><span style="--0:#D5CED9;--1:#F8F8F2">],</span></div></div><div class="ec-line"><div class="code"><span class="indent"><span style="--0:#D5CED9;--1:#F8F8F2">    </span></span><span style="--0:#D5CED9;--1:#F8F8F2">babelHelpers</span><span style="--0:#D5CED9;--1:#FF79C6">:</span><span style="--0:#D5CED9;--1:#F8F8F2"> </span><span style="--0:#96E072;--1:#E9F284">'</span><span style="--0:#96E072;--1:#F1FA8C">runtime</span><span style="--0:#96E072;--1:#E9F284">'</span><span style="--0:#D5CED9;--1:#F8F8F2">, </span><span style="--0:#A0A1A7F4;--1:#96A1C2">// 使用 runtime helpers</span></div></div><div class="ec-line"><div class="code"><span class="indent"><span style="--0:#D5CED9;--1:#F8F8F2">    </span></span><span style="--0:#D5CED9;--1:#F8F8F2">exclude</span><span style="--0:#D5CED9;--1:#FF79C6">:</span><span style="--0:#D5CED9;--1:#F8F8F2"> </span><span style="--0:#96E072;--1:#E9F284">'</span><span style="--0:#96E072;--1:#F1FA8C">node_modules/**</span><span style="--0:#96E072;--1:#E9F284">'</span><span style="--0:#D5CED9;--1:#F8F8F2">, </span><span style="--0:#A0A1A7F4;--1:#96A1C2">// 排除 node_modules</span></div></div><div class="ec-line"><div class="code"><span class="indent"><span style="--0:#D5CED9;--1:#F8F8F2">  </span></span><span style="--0:#D5CED9;--1:#F8F8F2">})</span></div></div><div class="ec-line"><div class="code"><span style="--0:#D5CED9;--1:#F8F8F2">}</span></div></div><div class="ec-line"><div class="code">
+</div></div><div class="ec-line"><div class="code"><span style="--0:#A0A1A7F4;--1:#96A1C2">/**</span></div></div><div class="ec-line"><div class="code"><span class="indent"><span style="--0:#A0A1A7F4;--1:#96A1C2"> </span></span><span style="--0:#A0A1A7F4;--1:#96A1C2">* 插件名称</span></div></div><div class="ec-line"><div class="code"><span class="indent"><span style="--0:#A0A1A7F4;--1:#96A1C2"> </span></span><span style="--0:#A0A1A7F4;--1:#96A1C2">* </span><span style="--0:#D477F1;--1:#FF79C6">@type</span><span style="--0:#A0A1A7F4;--1:#96A1C2"> </span><span style="--0:#FFE66D;--1:#8BE9FD;--1fs:italic">{string}</span></div></div><div class="ec-line"><div class="code"><span class="indent"><span style="--0:#A0A1A7F4;--1:#96A1C2"> </span></span><span style="--0:#A0A1A7F4;--1:#96A1C2">*/</span></div></div><div class="ec-line"><div class="code"><span style="--0:#D477F1;--1:#8BE9FD;--1fs:italic">exports</span><span style="--1:#F8F8F2"><span style="--0:#D5CED9">.</span><span style="--0:#00E8C6">name</span><span style="--0:#D5CED9"> </span></span><span style="--0:#F17963;--1:#FF79C6">=</span><span style="--0:#D5CED9;--1:#F8F8F2"> </span><span style="--0:#96E072;--1:#E9F284">'</span><span style="--0:#96E072;--1:#F1FA8C">js-lib-temp</span><span style="--0:#96E072;--1:#E9F284">'</span></div></div><div class="ec-line"><div class="code">
+</div></div><div class="ec-line"><div class="code"><span style="--0:#A0A1A7F4;--1:#96A1C2">/**</span></div></div><div class="ec-line"><div class="code"><span class="indent"><span style="--0:#A0A1A7F4;--1:#96A1C2"> </span></span><span style="--0:#A0A1A7F4;--1:#96A1C2">* 构建输出文件的头部注释信息</span></div></div><div class="ec-line"><div class="code"><span class="indent"><span style="--0:#A0A1A7F4;--1:#96A1C2"> </span></span><span style="--0:#A0A1A7F4;--1:#96A1C2">* </span><span style="--0:#D477F1;--1:#FF79C6">@type</span><span style="--0:#A0A1A7F4;--1:#96A1C2"> </span><span style="--0:#FFE66D;--1:#8BE9FD;--1fs:italic">{string}</span></div></div><div class="ec-line"><div class="code"><span class="indent"><span style="--0:#A0A1A7F4;--1:#96A1C2"> </span></span><span style="--0:#A0A1A7F4;--1:#96A1C2">*/</span></div></div><div class="ec-line"><div class="code"><span style="--0:#D477F1;--1:#8BE9FD;--1fs:italic">exports</span><span style="--1:#F8F8F2"><span style="--0:#D5CED9">.</span><span style="--0:#00E8C6">banner</span><span style="--0:#D5CED9"> </span></span><span style="--0:#F17963;--1:#FF79C6">=</span><span style="--1:#F8F8F2"><span style="--0:#D5CED9"> </span><span style="--0:#00E8C6">banner</span></span></div></div><div class="ec-line"><div class="code">
+</div></div><div class="ec-line"><div class="code"><span style="--0:#A0A1A7F4;--1:#96A1C2">/**</span></div></div><div class="ec-line"><div class="code"><span class="indent"><span style="--0:#A0A1A7F4;--1:#96A1C2"> </span></span><span style="--0:#A0A1A7F4;--1:#96A1C2">* 获取 Babel 编译器插件配置</span></div></div><div class="ec-line"><div class="code"><span class="indent"><span style="--0:#A0A1A7F4;--1:#96A1C2"> </span></span><span style="--0:#A0A1A7F4;--1:#96A1C2">* </span><span style="--0:#D477F1;--1:#FF79C6">@type</span><span style="--0:#A0A1A7F4;--1:#96A1C2"> </span><span style="--0:#FFE66D;--1:#8BE9FD;--1fs:italic">{Function}</span></div></div><div class="ec-line"><div class="code"><span class="indent"><span style="--0:#A0A1A7F4;--1:#96A1C2"> </span></span><span style="--0:#A0A1A7F4;--1:#96A1C2">*/</span></div></div><div class="ec-line"><div class="code"><span style="--0:#D477F1;--1:#8BE9FD;--1fs:italic">exports</span><span style="--1:#F8F8F2"><span style="--0:#D5CED9">.</span><span style="--0:#00E8C6">getCompiler</span><span style="--0:#D5CED9"> </span></span><span style="--0:#F17963;--1:#FF79C6">=</span><span style="--1:#F8F8F2"><span style="--0:#D5CED9"> </span><span style="--0:#00E8C6">getCompiler</span></span></div></div></code></pre><div class="copy"><div aria-live="polite"></div><button title="Copy to clipboard" data-copied="Copied!" data-code="const {  babel,} = require(&#x27;@rollup/plugin-babel&#x27;)const pkg = require(&#x27;../package.json&#x27;)const version = pkg.version/** * 构建输出文件的头部注释信息 * @type {string} */let banner = &#x60;/*! * ${pkg.name} ${version} * Licensed under MIT */&#x60;/** * 获取 Babel 编译器插件配置 * @param {object} [opt] - 可选参数（当前未使用） * @returns {import(&#x27;@rollup/plugin-babel&#x27;).BabelInputPlugin} Babel 插件实例 */function getCompiler(_opt) {  return babel({    babelrc: false, // 不读取外部 .babelrc 文件，使用此处配置    presets: [      [        &#x27;@babel/preset-env&#x27;,        {          targets: {            browsers: &#x27;> 0.5%, last 2 versions, not dead&#x27;, // 浏览器兼容性目标            node: &#x27;current&#x27;, // LTS or 版本号          },          modules: false, // 不转换模块类型          loose: false, // 严格模式        },      ],    ],    plugins: [      [        &#x27;@babel/plugin-transform-runtime&#x27;,        {          corejs: 2, // 使用 core-js@2 polyfill          // helpers: false,  // 注释掉，默认 helpers 为 true          regenerator: false, // 不转换 generator        },      ],    ],    babelHelpers: &#x27;runtime&#x27;, // 使用 runtime helpers    exclude: &#x27;node_modules/**&#x27;, // 排除 node_modules  })}/** * 插件名称 * @type {string} */exports.name = &#x27;js-lib-temp&#x27;/** * 构建输出文件的头部注释信息 * @type {string} */exports.banner = banner/** * 获取 Babel 编译器插件配置 * @type {Function} */exports.getCompiler = getCompiler"><div></div></button></div></figure></div>
+<div class="expressive-code"><figure class="frame has-title"><figcaption class="header"><span class="title">config/rollup.config.js</span></figcaption><pre data-language="js"><code><div class="ec-line"><div class="code"><span style="--0:#D477F1;--1:#FF79C6">const</span><span style="--1:#F8F8F2"><span style="--0:#D5CED9"> </span><span style="--0:#00E8C6">common</span><span style="--0:#D5CED9"> </span></span><span style="--0:#F17963;--1:#FF79C6">=</span><span style="--0:#D5CED9;--1:#F8F8F2"> </span><span style="--0:#FFE66D;--1:#50FA7B">require</span><span style="--0:#D5CED9;--1:#F8F8F2">(</span><span style="--0:#96E072;--1:#E9F284">'</span><span style="--0:#96E072;--1:#F1FA8C">./rollup.js</span><span style="--0:#96E072;--1:#E9F284">'</span><span style="--0:#D5CED9;--1:#F8F8F2">)</span></div></div><div class="ec-line"><div class="code">
+</div></div><div class="ec-line"><div class="code"><span style="--0:#D477F1;--1:#8BE9FD;--1fs:italic">module</span><span style="--0:#D5CED9;--1:#F8F8F2">.</span><span style="--0:#D477F1;--1:#8BE9FD;--1fs:italic">exports</span><span style="--0:#D5CED9;--1:#F8F8F2"> </span><span style="--0:#F17963;--1:#FF79C6">=</span><span style="--0:#D5CED9;--1:#F8F8F2"> {</span></div></div><div class="ec-line"><div class="code"><span class="indent"><span style="--0:#D5CED9;--1:#F8F8F2">  </span></span><span style="--0:#D5CED9;--1:#F8F8F2">input</span><span style="--0:#D5CED9;--1:#FF79C6">:</span><span style="--0:#D5CED9;--1:#F8F8F2"> </span><span style="--0:#96E072;--1:#E9F284">'</span><span style="--0:#96E072;--1:#F1FA8C">src/index.js</span><span style="--0:#96E072;--1:#E9F284">'</span><span style="--0:#D5CED9;--1:#F8F8F2">,</span></div></div><div class="ec-line"><div class="code"><span class="indent"><span style="--0:#D5CED9;--1:#F8F8F2">  </span></span><span style="--0:#D5CED9;--1:#F8F8F2">output</span><span style="--0:#D5CED9;--1:#FF79C6">:</span><span style="--0:#D5CED9;--1:#F8F8F2"> {</span></div></div><div class="ec-line"><div class="code"><span class="indent"><span style="--0:#D5CED9;--1:#F8F8F2">    </span></span><span style="--0:#D5CED9;--1:#F8F8F2">file</span><span style="--0:#D5CED9;--1:#FF79C6">:</span><span style="--0:#D5CED9;--1:#F8F8F2"> </span><span style="--0:#96E072;--1:#E9F284">'</span><span style="--0:#96E072;--1:#F1FA8C">dist/index.js</span><span style="--0:#96E072;--1:#E9F284">'</span><span style="--0:#D5CED9;--1:#F8F8F2">,</span></div></div><div class="ec-line"><div class="code"><span class="indent"><span style="--0:#D5CED9;--1:#F8F8F2">    </span></span><span style="--0:#D5CED9;--1:#F8F8F2">format</span><span style="--0:#D5CED9;--1:#FF79C6">:</span><span style="--0:#D5CED9;--1:#F8F8F2"> </span><span style="--0:#96E072;--1:#E9F284">'</span><span style="--0:#96E072;--1:#F1FA8C">cjs</span><span style="--0:#96E072;--1:#E9F284">'</span><span style="--0:#D5CED9;--1:#F8F8F2">,</span></div></div><div class="ec-line"><div class="code"><span class="indent"><span style="--0:#D5CED9;--1:#F8F8F2">    </span></span><span style="--0:#D5CED9;--1:#F8F8F2">banner</span><span style="--0:#D5CED9;--1:#FF79C6">:</span><span style="--1:#F8F8F2"><span style="--0:#D5CED9"> </span><span style="--0:#F39C12">common</span><span style="--0:#D5CED9">.</span><span style="--0:#00E8C6">banner</span><span style="--0:#D5CED9">,</span></span></div></div><div class="ec-line"><div class="code"><span class="indent"><span style="--0:#D5CED9;--1:#F8F8F2">  </span></span><span style="--0:#D5CED9;--1:#F8F8F2">},</span></div></div><div class="ec-line"><div class="code"><span class="indent"><span style="--0:#D5CED9;--1:#F8F8F2">  </span></span><span style="--0:#D5CED9;--1:#F8F8F2">plugins</span><span style="--0:#D5CED9;--1:#FF79C6">:</span><span style="--1:#F8F8F2"><span style="--0:#D5CED9"> [</span><span style="--0:#F39C12">common</span><span style="--0:#D5CED9">.</span></span><span style="--0:#FFE66D;--1:#50FA7B">getCompiler</span><span style="--0:#D5CED9;--1:#F8F8F2">()],</span></div></div><div class="ec-line"><div class="code"><span style="--0:#D5CED9;--1:#F8F8F2">}</span></div></div></code></pre><div class="copy"><div aria-live="polite"></div><button title="Copy to clipboard" data-copied="Copied!" data-code="const common = require(&#x27;./rollup.js&#x27;)module.exports = {  input: &#x27;src/index.js&#x27;,  output: {    file: &#x27;dist/index.js&#x27;,    format: &#x27;cjs&#x27;,    banner: common.banner,  },  plugins: [common.getCompiler()],}"><div></div></button></div></figure></div>
+<div class="expressive-code"><figure class="frame has-title"><figcaption class="header"><span class="title">config/rollup.config.esm.js</span></figcaption><pre data-language="js"><code><div class="ec-line"><div class="code"><span style="--0:#D477F1;--1:#FF79C6">const</span><span style="--1:#F8F8F2"><span style="--0:#D5CED9"> </span><span style="--0:#00E8C6">common</span><span style="--0:#D5CED9"> </span></span><span style="--0:#F17963;--1:#FF79C6">=</span><span style="--0:#D5CED9;--1:#F8F8F2"> </span><span style="--0:#FFE66D;--1:#50FA7B">require</span><span style="--0:#D5CED9;--1:#F8F8F2">(</span><span style="--0:#96E072;--1:#E9F284">'</span><span style="--0:#96E072;--1:#F1FA8C">./rollup.js</span><span style="--0:#96E072;--1:#E9F284">'</span><span style="--0:#D5CED9;--1:#F8F8F2">)</span></div></div><div class="ec-line"><div class="code">
+</div></div><div class="ec-line"><div class="code"><span style="--0:#D477F1;--1:#8BE9FD;--1fs:italic">module</span><span style="--0:#D5CED9;--1:#F8F8F2">.</span><span style="--0:#D477F1;--1:#8BE9FD;--1fs:italic">exports</span><span style="--0:#D5CED9;--1:#F8F8F2"> </span><span style="--0:#F17963;--1:#FF79C6">=</span><span style="--0:#D5CED9;--1:#F8F8F2"> {</span></div></div><div class="ec-line"><div class="code"><span class="indent"><span style="--0:#D5CED9;--1:#F8F8F2">  </span></span><span style="--0:#D5CED9;--1:#F8F8F2">input</span><span style="--0:#D5CED9;--1:#FF79C6">:</span><span style="--0:#D5CED9;--1:#F8F8F2"> </span><span style="--0:#96E072;--1:#E9F284">'</span><span style="--0:#96E072;--1:#F1FA8C">src/index.js</span><span style="--0:#96E072;--1:#E9F284">'</span><span style="--0:#D5CED9;--1:#F8F8F2">,</span></div></div><div class="ec-line"><div class="code"><span class="indent"><span style="--0:#D5CED9;--1:#F8F8F2">  </span></span><span style="--0:#D5CED9;--1:#F8F8F2">output</span><span style="--0:#D5CED9;--1:#FF79C6">:</span><span style="--0:#D5CED9;--1:#F8F8F2"> {</span></div></div><div class="ec-line"><div class="code"><span class="indent"><span style="--0:#D5CED9;--1:#F8F8F2">    </span></span><span style="--0:#D5CED9;--1:#F8F8F2">file</span><span style="--0:#D5CED9;--1:#FF79C6">:</span><span style="--0:#D5CED9;--1:#F8F8F2"> </span><span style="--0:#96E072;--1:#E9F284">'</span><span style="--0:#96E072;--1:#F1FA8C">dist/index.esm.js</span><span style="--0:#96E072;--1:#E9F284">'</span><span style="--0:#D5CED9;--1:#F8F8F2">,</span></div></div><div class="ec-line"><div class="code"><span class="indent"><span style="--0:#D5CED9;--1:#F8F8F2">    </span></span><span style="--0:#D5CED9;--1:#F8F8F2">format</span><span style="--0:#D5CED9;--1:#FF79C6">:</span><span style="--0:#D5CED9;--1:#F8F8F2"> </span><span style="--0:#96E072;--1:#E9F284">'</span><span style="--0:#96E072;--1:#F1FA8C">es</span><span style="--0:#96E072;--1:#E9F284">'</span><span style="--0:#D5CED9;--1:#F8F8F2">,</span></div></div><div class="ec-line"><div class="code"><span class="indent"><span style="--0:#D5CED9;--1:#F8F8F2">    </span></span><span style="--0:#D5CED9;--1:#F8F8F2">banner</span><span style="--0:#D5CED9;--1:#FF79C6">:</span><span style="--1:#F8F8F2"><span style="--0:#D5CED9"> </span><span style="--0:#F39C12">common</span><span style="--0:#D5CED9">.</span><span style="--0:#00E8C6">banner</span><span style="--0:#D5CED9">,</span></span></div></div><div class="ec-line"><div class="code"><span class="indent"><span style="--0:#D5CED9;--1:#F8F8F2">  </span></span><span style="--0:#D5CED9;--1:#F8F8F2">},</span></div></div><div class="ec-line"><div class="code"><span class="indent"><span style="--0:#D5CED9;--1:#F8F8F2">  </span></span><span style="--0:#D5CED9;--1:#F8F8F2">plugins</span><span style="--0:#D5CED9;--1:#FF79C6">:</span><span style="--1:#F8F8F2"><span style="--0:#D5CED9"> [</span><span style="--0:#F39C12">common</span><span style="--0:#D5CED9">.</span></span><span style="--0:#FFE66D;--1:#50FA7B">getCompiler</span><span style="--0:#D5CED9;--1:#F8F8F2">()],</span></div></div><div class="ec-line"><div class="code"><span style="--0:#D5CED9;--1:#F8F8F2">}</span></div></div></code></pre><div class="copy"><div aria-live="polite"></div><button title="Copy to clipboard" data-copied="Copied!" data-code="const common = require(&#x27;./rollup.js&#x27;)module.exports = {  input: &#x27;src/index.js&#x27;,  output: {    file: &#x27;dist/index.esm.js&#x27;,    format: &#x27;es&#x27;,    banner: common.banner,  },  plugins: [common.getCompiler()],}"><div></div></button></div></figure></div>
+<div class="expressive-code"><figure class="frame has-title"><figcaption class="header"><span class="title">config/rollup.config.aio.js</span></figcaption><pre data-language="js"><code><div class="ec-line"><div class="code"><span style="--0:#D477F1;--1:#FF79C6">const</span><span style="--1:#F8F8F2"><span style="--0:#D5CED9"> </span><span style="--0:#00E8C6">commonjs</span><span style="--0:#D5CED9"> </span></span><span style="--0:#F17963;--1:#FF79C6">=</span><span style="--0:#D5CED9;--1:#F8F8F2"> </span><span style="--0:#FFE66D;--1:#50FA7B">require</span><span style="--0:#D5CED9;--1:#F8F8F2">(</span><span style="--0:#96E072;--1:#E9F284">'</span><span style="--0:#96E072;--1:#F1FA8C">@rollup/plugin-commonjs</span><span style="--0:#96E072;--1:#E9F284">'</span><span style="--0:#D5CED9;--1:#F8F8F2">)</span></div></div><div class="ec-line"><div class="code"><span style="--0:#D477F1;--1:#FF79C6">const</span><span style="--1:#F8F8F2"><span style="--0:#D5CED9"> </span><span style="--0:#00E8C6">nodeResolve</span><span style="--0:#D5CED9"> </span></span><span style="--0:#F17963;--1:#FF79C6">=</span><span style="--0:#D5CED9;--1:#F8F8F2"> </span><span style="--0:#FFE66D;--1:#50FA7B">require</span><span style="--0:#D5CED9;--1:#F8F8F2">(</span><span style="--0:#96E072;--1:#E9F284">'</span><span style="--0:#96E072;--1:#F1FA8C">@rollup/plugin-node-resolve</span><span style="--0:#96E072;--1:#E9F284">'</span><span style="--0:#D5CED9;--1:#F8F8F2">)</span></div></div><div class="ec-line"><div class="code">
+</div></div><div class="ec-line"><div class="code"><span style="--0:#D477F1;--1:#FF79C6">const</span><span style="--1:#F8F8F2"><span style="--0:#D5CED9"> </span><span style="--0:#00E8C6">common</span><span style="--0:#D5CED9"> </span></span><span style="--0:#F17963;--1:#FF79C6">=</span><span style="--0:#D5CED9;--1:#F8F8F2"> </span><span style="--0:#FFE66D;--1:#50FA7B">require</span><span style="--0:#D5CED9;--1:#F8F8F2">(</span><span style="--0:#96E072;--1:#E9F284">"</span><span style="--0:#96E072;--1:#F1FA8C">./rollup.js</span><span style="--0:#96E072;--1:#E9F284">"</span><span style="--0:#D5CED9;--1:#F8F8F2">)</span></div></div><div class="ec-line"><div class="code">
+</div></div><div class="ec-line"><div class="code"><span style="--0:#D477F1;--1:#8BE9FD;--1fs:italic">module</span><span style="--0:#D5CED9;--1:#F8F8F2">.</span><span style="--0:#D477F1;--1:#8BE9FD;--1fs:italic">exports</span><span style="--0:#D5CED9;--1:#F8F8F2"> </span><span style="--0:#F17963;--1:#FF79C6">=</span><span style="--0:#D5CED9;--1:#F8F8F2"> {</span></div></div><div class="ec-line"><div class="code"><span class="indent"><span style="--0:#D5CED9;--1:#F8F8F2">  </span></span><span style="--0:#D5CED9;--1:#F8F8F2">input</span><span style="--0:#D5CED9;--1:#FF79C6">:</span><span style="--0:#D5CED9;--1:#F8F8F2"> </span><span style="--0:#96E072;--1:#E9F284">'</span><span style="--0:#96E072;--1:#F1FA8C">src/index.js</span><span style="--0:#96E072;--1:#E9F284">'</span><span style="--0:#D5CED9;--1:#F8F8F2">,</span></div></div><div class="ec-line"><div class="code"><span class="indent"><span style="--0:#D5CED9;--1:#F8F8F2">  </span></span><span style="--0:#D5CED9;--1:#F8F8F2">output</span><span style="--0:#D5CED9;--1:#FF79C6">:</span><span style="--0:#D5CED9;--1:#F8F8F2"> {</span></div></div><div class="ec-line"><div class="code"><span class="indent"><span style="--0:#D5CED9;--1:#F8F8F2">    </span></span><span style="--0:#D5CED9;--1:#F8F8F2">file</span><span style="--0:#D5CED9;--1:#FF79C6">:</span><span style="--0:#D5CED9;--1:#F8F8F2"> </span><span style="--0:#96E072;--1:#E9F284">'</span><span style="--0:#96E072;--1:#F1FA8C">dist/index.aio.js</span><span style="--0:#96E072;--1:#E9F284">'</span><span style="--0:#D5CED9;--1:#F8F8F2">,</span></div></div><div class="ec-line"><div class="code"><span class="indent"><span style="--0:#D5CED9;--1:#F8F8F2">    </span></span><span style="--0:#D5CED9;--1:#F8F8F2">format</span><span style="--0:#D5CED9;--1:#FF79C6">:</span><span style="--0:#D5CED9;--1:#F8F8F2"> </span><span style="--0:#96E072;--1:#E9F284">'</span><span style="--0:#96E072;--1:#F1FA8C">umd</span><span style="--0:#96E072;--1:#E9F284">'</span><span style="--0:#D5CED9;--1:#F8F8F2">,</span></div></div><div class="ec-line"><div class="code"><span class="indent"><span style="--0:#D5CED9;--1:#F8F8F2">    </span></span><span style="--0:#D5CED9;--1:#F8F8F2">name</span><span style="--0:#D5CED9;--1:#FF79C6">:</span><span style="--1:#F8F8F2"><span style="--0:#D5CED9"> </span><span style="--0:#F39C12">common</span><span style="--0:#D5CED9">.</span><span style="--0:#00E8C6">name</span><span style="--0:#D5CED9">,</span></span></div></div><div class="ec-line"><div class="code"><span class="indent"><span style="--0:#D5CED9;--1:#F8F8F2">    </span></span><span style="--0:#D5CED9;--1:#F8F8F2">banner</span><span style="--0:#D5CED9;--1:#FF79C6">:</span><span style="--1:#F8F8F2"><span style="--0:#D5CED9"> </span><span style="--0:#F39C12">common</span><span style="--0:#D5CED9">.</span><span style="--0:#00E8C6">banner</span><span style="--0:#D5CED9">,</span></span></div></div><div class="ec-line"><div class="code"><span class="indent"><span style="--0:#D5CED9;--1:#F8F8F2">  </span></span><span style="--0:#D5CED9;--1:#F8F8F2">},</span></div></div><div class="ec-line"><div class="code"><span class="indent"><span style="--0:#D5CED9;--1:#F8F8F2">  </span></span><span style="--0:#D5CED9;--1:#F8F8F2">plugins</span><span style="--0:#D5CED9;--1:#FF79C6">:</span><span style="--0:#D5CED9;--1:#F8F8F2"> [</span></div></div><div class="ec-line"><div class="code"><span class="indent">    </span><span style="--0:#FFE66D;--1:#50FA7B">nodeResolve</span><span style="--0:#D5CED9;--1:#F8F8F2">({</span></div></div><div class="ec-line"><div class="code"><span class="indent"><span style="--0:#D5CED9;--1:#F8F8F2">      </span></span><span style="--0:#D5CED9;--1:#F8F8F2">main</span><span style="--0:#D5CED9;--1:#FF79C6">:</span><span style="--0:#D5CED9;--1:#F8F8F2"> </span><span style="--0:#F17963;--1:#BD93F9">true</span><span style="--0:#D5CED9;--1:#F8F8F2">,</span></div></div><div class="ec-line"><div class="code"><span class="indent"><span style="--0:#D5CED9;--1:#F8F8F2">      </span></span><span style="--0:#D5CED9;--1:#F8F8F2">extensions</span><span style="--0:#D5CED9;--1:#FF79C6">:</span><span style="--0:#D5CED9;--1:#F8F8F2"> [</span><span style="--0:#96E072;--1:#E9F284">'</span><span style="--0:#96E072;--1:#F1FA8C">.js</span><span style="--0:#96E072;--1:#E9F284">'</span><span style="--0:#D5CED9;--1:#F8F8F2">],</span></div></div><div class="ec-line"><div class="code"><span class="indent"><span style="--0:#D5CED9;--1:#F8F8F2">    </span></span><span style="--0:#D5CED9;--1:#F8F8F2">}),</span></div></div><div class="ec-line"><div class="code"><span class="indent">    </span><span style="--0:#FFE66D;--1:#50FA7B">commonjs</span><span style="--0:#D5CED9;--1:#F8F8F2">({</span></div></div><div class="ec-line"><div class="code"><span class="indent"><span style="--0:#D5CED9;--1:#F8F8F2">      </span></span><span style="--0:#D5CED9;--1:#F8F8F2">include</span><span style="--0:#D5CED9;--1:#FF79C6">:</span><span style="--0:#D5CED9;--1:#F8F8F2"> </span><span style="--0:#96E072;--1:#E9F284">'</span><span style="--0:#96E072;--1:#F1FA8C">node_modules/**</span><span style="--0:#96E072;--1:#E9F284">'</span><span style="--0:#D5CED9;--1:#F8F8F2">,</span></div></div><div class="ec-line"><div class="code"><span class="indent"><span style="--0:#D5CED9;--1:#F8F8F2">    </span></span><span style="--0:#D5CED9;--1:#F8F8F2">}),</span></div></div><div class="ec-line"><div class="code"><span class="indent"><span style="--1:#F8F8F2">    </span></span><span style="--0:#F39C12;--1:#F8F8F2">common</span><span style="--0:#D5CED9;--1:#F8F8F2">.</span><span style="--0:#FFE66D;--1:#50FA7B">getCompiler</span><span style="--0:#D5CED9;--1:#F8F8F2">(),</span></div></div><div class="ec-line"><div class="code"><span class="indent"><span style="--0:#D5CED9;--1:#F8F8F2">  </span></span><span style="--0:#D5CED9;--1:#F8F8F2">],</span></div></div><div class="ec-line"><div class="code"><span style="--0:#D5CED9;--1:#F8F8F2">}</span></div></div></code></pre><div class="copy"><div aria-live="polite"></div><button title="Copy to clipboard" data-copied="Copied!" data-code="const commonjs = require(&#x27;@rollup/plugin-commonjs&#x27;)const nodeResolve = require(&#x27;@rollup/plugin-node-resolve&#x27;)const common = require(&#x22;./rollup.js&#x22;)module.exports = {  input: &#x27;src/index.js&#x27;,  output: {    file: &#x27;dist/index.aio.js&#x27;,    format: &#x27;umd&#x27;,    name: common.name,    banner: common.banner,  },  plugins: [    nodeResolve({      main: true,      extensions: [&#x27;.js&#x27;],    }),    commonjs({      include: &#x27;node_modules/**&#x27;,    }),    common.getCompiler(),  ],}"><div></div></button></div></figure></div>
+<h4 id="修改-packagejson-相关内容">修改 package.json 相关内容</h4>
+<ul>
+<li>main：CommonJS 规范的入口文件</li>
+<li>module：ES Module 规范的入口文件，</li>
+</ul>
+<div class="expressive-code"><figure class="frame"><figcaption class="header"></figcaption><pre data-language="json"><code><div class="ec-line"><div class="code"><span style="--0:#D5CED9;--1:#F8F8F2">{</span></div></div><div class="ec-line"><div class="code"><span class="indent">  </span><span style="--0:#00E8C6;--1:#8BE9FE">"</span><span style="--0:#00E8C6;--1:#8BE9FD">main</span><span style="--0:#00E8C6;--1:#8BE9FE">"</span><span style="--0:#D5CED9;--1:#FF79C6">:</span><span style="--0:#D5CED9;--1:#F8F8F2"> </span><span style="--0:#96E072;--1:#E9F284">"</span><span style="--0:#96E072;--1:#F1FA8C">dist/index.js</span><span style="--0:#96E072;--1:#E9F284">"</span><span style="--0:#D5CED9;--1:#F8F8F2">, </span><span style="--0:#A0A1A7F4;--1:#96A1C2">// 指定 CommonJS 规范的入口文件</span></div></div><div class="ec-line"><div class="code"><span class="indent">  </span><span style="--0:#00E8C6;--1:#8BE9FE">"</span><span style="--0:#00E8C6;--1:#8BE9FD">module</span><span style="--0:#00E8C6;--1:#8BE9FE">"</span><span style="--0:#D5CED9;--1:#FF79C6">:</span><span style="--0:#D5CED9;--1:#F8F8F2"> </span><span style="--0:#96E072;--1:#E9F284">"</span><span style="--0:#96E072;--1:#F1FA8C">dist/index.esm.js</span><span style="--0:#96E072;--1:#E9F284">"</span><span style="--0:#D5CED9;--1:#F8F8F2">, </span><span style="--0:#A0A1A7F4;--1:#96A1C2">// 指定 ES Module 规范的入口文件</span></div></div><div class="ec-line"><div class="code"><span class="indent">  </span><span style="--0:#00E8C6;--1:#8BE9FE">"</span><span style="--0:#00E8C6;--1:#8BE9FD">scripts</span><span style="--0:#00E8C6;--1:#8BE9FE">"</span><span style="--0:#D5CED9;--1:#FF79C6">:</span><span style="--0:#D5CED9;--1:#F8F8F2"> {</span></div></div><div class="ec-line"><div class="code"><span class="indent">    </span><span style="--0:#00E8C6;--1:#8BE9FE">"</span><span style="--0:#00E8C6;--1:#8BE9FD">build:self</span><span style="--0:#00E8C6;--1:#8BE9FE">"</span><span style="--0:#D5CED9;--1:#FF79C6">:</span><span style="--0:#D5CED9;--1:#F8F8F2"> </span><span style="--0:#96E072;--1:#E9F284">"</span><span style="--0:#96E072;--1:#F1FA8C">rollup -c config/rollup.config.js</span><span style="--0:#96E072;--1:#E9F284">"</span><span style="--0:#D5CED9;--1:#F8F8F2">,</span></div></div><div class="ec-line"><div class="code"><span class="indent">    </span><span style="--0:#00E8C6;--1:#8BE9FE">"</span><span style="--0:#00E8C6;--1:#8BE9FD">build:esm</span><span style="--0:#00E8C6;--1:#8BE9FE">"</span><span style="--0:#D5CED9;--1:#FF79C6">:</span><span style="--0:#D5CED9;--1:#F8F8F2"> </span><span style="--0:#96E072;--1:#E9F284">"</span><span style="--0:#96E072;--1:#F1FA8C">rollup -c config/rollup.config.esm.js</span><span style="--0:#96E072;--1:#E9F284">"</span><span style="--0:#D5CED9;--1:#F8F8F2">,</span></div></div><div class="ec-line"><div class="code"><span class="indent">    </span><span style="--0:#00E8C6;--1:#8BE9FE">"</span><span style="--0:#00E8C6;--1:#8BE9FD">build:aio</span><span style="--0:#00E8C6;--1:#8BE9FE">"</span><span style="--0:#D5CED9;--1:#FF79C6">:</span><span style="--0:#D5CED9;--1:#F8F8F2"> </span><span style="--0:#96E072;--1:#E9F284">"</span><span style="--0:#96E072;--1:#F1FA8C">rollup -c config/rollup.config.aio.js</span><span style="--0:#96E072;--1:#E9F284">"</span><span style="--0:#D5CED9;--1:#F8F8F2">,</span></div></div><div class="ec-line"><div class="code"><span class="indent">    </span><span style="--0:#00E8C6;--1:#8BE9FE">"</span><span style="--0:#00E8C6;--1:#8BE9FD">build</span><span style="--0:#00E8C6;--1:#8BE9FE">"</span><span style="--0:#D5CED9;--1:#FF79C6">:</span><span style="--0:#D5CED9;--1:#F8F8F2"> </span><span style="--0:#96E072;--1:#E9F284">"</span><span style="--0:#96E072;--1:#F1FA8C">npm run build:self &#x26;&#x26; npm run build:esm &#x26;&#x26; npm run build:aio</span><span style="--0:#96E072;--1:#E9F284">"</span><span style="--0:#D5CED9;--1:#F8F8F2">,</span></div></div><div class="ec-line"><div class="code"><span class="indent"><span style="--0:#D5CED9;--1:#F8F8F2">  </span></span><span style="--0:#D5CED9;--1:#F8F8F2">}</span></div></div><div class="ec-line"><div class="code"><span style="--0:#D5CED9;--1:#F8F8F2">}</span></div></div></code></pre><div class="copy"><div aria-live="polite"></div><button title="Copy to clipboard" data-copied="Copied!" data-code="{  &#x22;main&#x22;: &#x22;dist/index.js&#x22;, // 指定 CommonJS 规范的入口文件  &#x22;module&#x22;: &#x22;dist/index.esm.js&#x22;, // 指定 ES Module 规范的入口文件  &#x22;scripts&#x22;: {    &#x22;build:self&#x22;: &#x22;rollup -c config/rollup.config.js&#x22;,    &#x22;build:esm&#x22;: &#x22;rollup -c config/rollup.config.esm.js&#x22;,    &#x22;build:aio&#x22;: &#x22;rollup -c config/rollup.config.aio.js&#x22;,    &#x22;build&#x22;: &#x22;npm run build:self &#x26;&#x26; npm run build:esm &#x26;&#x26; npm run build:aio&#x22;,  }}"><div></div></button></div></figure></div>
+<p>运行 <code>npm run build</code> 后，即可在 CommonJS、ESModule、UMD 三个环境中运行了，调用示例：</p>
+<h4 id="关于调用">关于调用</h4>
+<h5 id="commonjs-nodejs-环境">CommonJS (Node.js 环境)</h5>
+<div class="expressive-code"><figure class="frame has-title"><figcaption class="header"><span class="title">test-cjs.js</span></figcaption><pre data-language="js"><code><div class="ec-line"><div class="code"><span style="--0:#D477F1;--1:#FF79C6">const</span><span style="--1:#F8F8F2"><span style="--0:#D5CED9"> </span><span style="--0:#00E8C6">sayHi</span><span style="--0:#D5CED9"> </span></span><span style="--0:#F17963;--1:#FF79C6">=</span><span style="--0:#D5CED9;--1:#F8F8F2"> </span><span style="--0:#FFE66D;--1:#50FA7B">require</span><span style="--0:#D5CED9;--1:#F8F8F2">(</span><span style="--0:#96E072;--1:#E9F284">'</span><span style="--0:#96E072;--1:#F1FA8C">./dist/index.js</span><span style="--0:#96E072;--1:#E9F284">'</span><span style="--0:#D5CED9;--1:#F8F8F2">);</span></div></div><div class="ec-line"><div class="code"><span style="--0:#FFE66D;--1:#50FA7B">sayHi</span><span style="--0:#D5CED9;--1:#F8F8F2">(); </span><span style="--0:#A0A1A7F4;--1:#96A1C2">// 输出: hello world</span></div></div></code></pre><div class="copy"><div aria-live="polite"></div><button title="Copy to clipboard" data-copied="Copied!" data-code="const sayHi = require(&#x27;./dist/index.js&#x27;);sayHi(); // 输出: hello world"><div></div></button></div></figure></div>
+<h5 id="esmodule-现代打包工具或浏览器支持-esmodule">ESModule (现代打包工具或浏览器支持 ESModule)</h5>
+<div class="expressive-code"><figure class="frame has-title"><figcaption class="header"><span class="title">test-esm.mjs</span></figcaption><pre data-language="js"><code><div class="ec-line"><div class="code"><span style="--0:#D477F1;--1:#FF79C6">import</span><span style="--1:#F8F8F2"><span style="--0:#D5CED9"> </span><span style="--0:#00E8C6">sayHi</span><span style="--0:#D5CED9"> </span></span><span style="--0:#D477F1;--1:#FF79C6">from</span><span style="--0:#D5CED9;--1:#F8F8F2"> </span><span style="--0:#96E072;--1:#E9F284">'</span><span style="--0:#96E072;--1:#F1FA8C">./dist/index.esm.js</span><span style="--0:#96E072;--1:#E9F284">'</span><span style="--0:#D5CED9;--1:#F8F8F2">;</span></div></div><div class="ec-line"><div class="code"><span style="--0:#FFE66D;--1:#50FA7B">sayHi</span><span style="--0:#D5CED9;--1:#F8F8F2">(); </span><span style="--0:#A0A1A7F4;--1:#96A1C2">// 输出: hello world</span></div></div></code></pre><div class="copy"><div aria-live="polite"></div><button title="Copy to clipboard" data-copied="Copied!" data-code="import sayHi from &#x27;./dist/index.esm.js&#x27;;sayHi(); // 输出: hello world"><div></div></button></div></figure></div>
+<h5 id="umd-浏览器全局引用">UMD (浏览器全局引用)</h5>
+<div class="expressive-code"><figure class="frame"><figcaption class="header"></figcaption><pre data-language="html"><code><div class="ec-line"><div class="code"><span style="--0:#D5CED9;--1:#F8F8F2">&#x3C;</span><span style="--0:#FB6A9E;--1:#FF79C6">script</span><span style="--0:#D5CED9;--1:#F8F8F2"> </span><span style="--0:#FFE66D;--1:#50FA7B;--1fs:italic">src</span><span style="--0:#D5CED9;--1:#FF79C6">=</span><span style="--0:#96E072;--1:#E9F284">"</span><span style="--0:#96E072;--1:#F1FA8C">./dist/index.aio.js</span><span style="--0:#96E072;--1:#E9F284">"</span><span style="--0:#D5CED9;--1:#F8F8F2">>&#x3C;/</span><span style="--0:#FB6A9E;--1:#FF79C6">script</span><span style="--0:#D5CED9;--1:#F8F8F2">></span></div></div><div class="ec-line"><div class="code"><span style="--0:#D5CED9;--1:#F8F8F2">&#x3C;</span><span style="--0:#FB6A9E;--1:#FF79C6">script</span><span style="--0:#D5CED9;--1:#F8F8F2">></span></div></div><div class="ec-line"><div class="code"><span class="indent">  </span><span style="--0:#A0A1A7F4;--1:#96A1C2">// 假设 package.json 的 name 字段为 js-lib-temp</span></div></div><div class="ec-line"><div class="code"><span class="indent">  </span><span style="--0:#FFE66D;--1:#50FA7B">jsLibTemp</span><span style="--0:#D5CED9;--1:#F8F8F2">(); </span><span style="--0:#A0A1A7F4;--1:#96A1C2">// 输出: hello world</span></div></div><div class="ec-line"><div class="code"><span style="--0:#D5CED9;--1:#F8F8F2">&#x3C;/</span><span style="--0:#FB6A9E;--1:#FF79C6">script</span><span style="--0:#D5CED9;--1:#F8F8F2">></span></div></div></code></pre><div class="copy"><div aria-live="polite"></div><button title="Copy to clipboard" data-copied="Copied!" data-code="<script src=&#x22;./dist/index.aio.js&#x22;></script><script>  // 假设 package.json 的 name 字段为 js-lib-temp  jsLibTemp(); // 输出: hello world</script>"><div></div></button></div></figure></div>
+<h3 id="关于礼仪">关于礼仪</h3>
+<h4 id="完善对应的目录与注释部份">完善对应的目录与注释部份</h4>
+<div class="expressive-code"><figure class="frame is-terminal"><figcaption class="header"><span class="title"></span><span class="sr-only">Terminal window</span></figcaption><pre data-language="bash"><code><div class="ec-line"><div class="code"><span style="--0:#FFE66D;--1:#50FA7B">├──</span><span style="--0:#D5CED9;--1:#F8F8F2"> </span><span style="--0:#96E072;--1:#F1FA8C">README.md</span><span style="--0:#D5CED9;--1:#F8F8F2">               </span><span style="--0:#A0A1A7F4;--1:#96A1C2"># 项目说明文档</span></div></div><div class="ec-line"><div class="code"><span style="--0:#FFE66D;--1:#50FA7B">├──</span><span style="--0:#D5CED9;--1:#F8F8F2"> </span><span style="--0:#96E072;--1:#F1FA8C">TODO.md</span><span style="--0:#D5CED9;--1:#F8F8F2">                 </span><span style="--0:#A0A1A7F4;--1:#96A1C2"># 待办事项记录（可选</span></div></div><div class="ec-line"><div class="code"><span style="--0:#FFE66D;--1:#50FA7B">├──</span><span style="--0:#D5CED9;--1:#F8F8F2"> </span><span style="--0:#96E072;--1:#F1FA8C">CHANGELOG.md</span><span style="--0:#D5CED9;--1:#F8F8F2">            </span><span style="--0:#A0A1A7F4;--1:#96A1C2"># 变更日志（可选</span></div></div><div class="ec-line"><div class="code"><span style="--0:#FFE66D;--1:#50FA7B">├──</span><span style="--0:#D5CED9;--1:#F8F8F2"> </span><span style="--0:#96E072;--1:#F1FA8C">config</span><span style="--0:#D5CED9;--1:#F8F8F2">                   </span><span style="--0:#A0A1A7F4;--1:#96A1C2"># Rollup 配置文件夹</span></div></div><div class="ec-line"><div class="code"><span style="--0:#FFE66D;--1:#50FA7B">│</span><span style="--0:#D5CED9;--1:#F8F8F2">   </span><span style="--0:#96E072;--1:#F1FA8C">├──</span><span style="--0:#D5CED9;--1:#F8F8F2"> </span><span style="--0:#96E072;--1:#F1FA8C">rollup.config.aio.js</span><span style="--0:#D5CED9;--1:#F8F8F2">   </span><span style="--0:#A0A1A7F4;--1:#96A1C2"># UMD 打包配置（适用于浏览器全局引用）</span></div></div><div class="ec-line"><div class="code"><span style="--0:#FFE66D;--1:#50FA7B">│</span><span style="--0:#D5CED9;--1:#F8F8F2">   </span><span style="--0:#96E072;--1:#F1FA8C">├──</span><span style="--0:#D5CED9;--1:#F8F8F2"> </span><span style="--0:#96E072;--1:#F1FA8C">rollup.config.esm.js</span><span style="--0:#D5CED9;--1:#F8F8F2">   </span><span style="--0:#A0A1A7F4;--1:#96A1C2"># ES Module 打包配置（适用于现代打包工具）</span></div></div><div class="ec-line"><div class="code"><span style="--0:#FFE66D;--1:#50FA7B">│</span><span style="--0:#D5CED9;--1:#F8F8F2">   </span><span style="--0:#96E072;--1:#F1FA8C">├──</span><span style="--0:#D5CED9;--1:#F8F8F2"> </span><span style="--0:#96E072;--1:#F1FA8C">rollup.config.js</span><span style="--0:#D5CED9;--1:#F8F8F2">       </span><span style="--0:#A0A1A7F4;--1:#96A1C2"># CommonJS 打包配置（适用于 Node.js）</span></div></div><div class="ec-line"><div class="code"><span style="--0:#FFE66D;--1:#50FA7B">│</span><span style="--0:#D5CED9;--1:#F8F8F2">   </span><span style="--0:#96E072;--1:#F1FA8C">└──</span><span style="--0:#D5CED9;--1:#F8F8F2"> </span><span style="--0:#96E072;--1:#F1FA8C">rollup.js</span><span style="--0:#D5CED9;--1:#F8F8F2">              </span><span style="--0:#A0A1A7F4;--1:#96A1C2"># 公共 Rollup 配置与工具函数</span></div></div><div class="ec-line"><div class="code"><span style="--0:#FFE66D;--1:#50FA7B">├──</span><span style="--0:#D5CED9;--1:#F8F8F2"> </span><span style="--0:#96E072;--1:#F1FA8C">dist</span><span style="--0:#D5CED9;--1:#F8F8F2">                    </span><span style="--0:#A0A1A7F4;--1:#96A1C2"># 打包输出目录</span></div></div><div class="ec-line"><div class="code"><span style="--0:#FFE66D;--1:#50FA7B">│</span><span style="--0:#D5CED9;--1:#F8F8F2">   </span><span style="--0:#96E072;--1:#F1FA8C">├──</span><span style="--0:#D5CED9;--1:#F8F8F2"> </span><span style="--0:#96E072;--1:#F1FA8C">index.aio.js</span><span style="--0:#D5CED9;--1:#F8F8F2">            </span><span style="--0:#A0A1A7F4;--1:#96A1C2"># UMD 格式输出文件</span></div></div><div class="ec-line"><div class="code"><span style="--0:#FFE66D;--1:#50FA7B">│</span><span style="--0:#D5CED9;--1:#F8F8F2">   </span><span style="--0:#96E072;--1:#F1FA8C">├──</span><span style="--0:#D5CED9;--1:#F8F8F2"> </span><span style="--0:#96E072;--1:#F1FA8C">index.esm.js</span><span style="--0:#D5CED9;--1:#F8F8F2">            </span><span style="--0:#A0A1A7F4;--1:#96A1C2"># ES Module 格式输出文件</span></div></div><div class="ec-line"><div class="code"><span style="--0:#FFE66D;--1:#50FA7B">│</span><span style="--0:#D5CED9;--1:#F8F8F2">   </span><span style="--0:#96E072;--1:#F1FA8C">└──</span><span style="--0:#D5CED9;--1:#F8F8F2"> </span><span style="--0:#96E072;--1:#F1FA8C">index.js</span><span style="--0:#D5CED9;--1:#F8F8F2">                </span><span style="--0:#A0A1A7F4;--1:#96A1C2"># CommonJS 格式输出文件</span></div></div><div class="ec-line"><div class="code"><span style="--0:#FFE66D;--1:#50FA7B">├──</span><span style="--0:#D5CED9;--1:#F8F8F2"> </span><span style="--0:#96E072;--1:#F1FA8C">package.json</span><span style="--0:#D5CED9;--1:#F8F8F2">            </span><span style="--0:#A0A1A7F4;--1:#96A1C2"># 项目依赖与配置信息</span></div></div><div class="ec-line"><div class="code"><span style="--0:#FFE66D;--1:#50FA7B">└──</span><span style="--0:#D5CED9;--1:#F8F8F2"> </span><span style="--0:#96E072;--1:#F1FA8C">src</span><span style="--0:#D5CED9;--1:#F8F8F2">                     </span><span style="--0:#A0A1A7F4;--1:#96A1C2"># 源码目录</span></div></div><div class="ec-line"><div class="code"><span class="indent">    </span><span style="--0:#FFE66D;--1:#50FA7B">└──</span><span style="--0:#D5CED9;--1:#F8F8F2"> </span><span style="--0:#96E072;--1:#F1FA8C">index.js</span><span style="--0:#D5CED9;--1:#F8F8F2">                </span><span style="--0:#A0A1A7F4;--1:#96A1C2"># 主入口文件</span></div></div></code></pre><div class="copy"><div aria-live="polite"></div><button title="Copy to clipboard" data-copied="Copied!" data-code="├── README.md               # 项目说明文档├── TODO.md                 # 待办事项记录（可选├── CHANGELOG.md            # 变更日志（可选├── config                   # Rollup 配置文件夹│   ├── rollup.config.aio.js   # UMD 打包配置（适用于浏览器全局引用）│   ├── rollup.config.esm.js   # ES Module 打包配置（适用于现代打包工具）│   ├── rollup.config.js       # CommonJS 打包配置（适用于 Node.js）│   └── rollup.js              # 公共 Rollup 配置与工具函数├── dist                    # 打包输出目录│   ├── index.aio.js            # UMD 格式输出文件│   ├── index.esm.js            # ES Module 格式输出文件│   └── index.js                # CommonJS 格式输出文件├── package.json            # 项目依赖与配置信息└── src                     # 源码目录    └── index.js                # 主入口文件"><div></div></button></div></figure></div>
+<h5 id="readme通常包含以下内容">README通常包含以下内容：</h5>
+<ol>
+<li><strong>库介绍</strong>：简要说明库的功能、解决的问题和适用场景，帮助用户快速了解项目价值。</li>
+<li><strong>使用指南</strong>：提供安装、引入、调用等基础用法示例，让用户能快速上手。</li>
+<li><strong>贡献指南</strong>：说明如何参与贡献，包括代码规范、提 issue、提 PR 的流程，鼓励社区参与。</li>
+</ol>
+<h4 id="关于开源协议">关于开源协议</h4>
+<p>选择合适的开源协议对于 JS 库的传播和社区贡献非常重要。常见的协议有 MIT、BSD、Apache 等，不同协议在专利授权、商标使用、责任承担等方面略有差异。下表对比了三种主流协议的常见权利：</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th></th><th>MIT</th><th>BSD</th><th>Apache</th></tr></thead><tbody><tr><td>商业用途</td><td>[x]</td><td>[x]</td><td>[x]</td></tr><tr><td>可以修改</td><td>[x]</td><td>[x]</td><td>[x]</td></tr><tr><td>可以分发</td><td>[x]</td><td>[x]</td><td>[x]</td></tr><tr><td>授予专利许可</td><td></td><td></td><td>[x]</td></tr><tr><td>私人使用</td><td>[x]</td><td>[x]</td><td>[x]</td></tr><tr><td>商标使用</td><td></td><td></td><td>[ ]</td></tr><tr><td>承担责任</td><td>[ ]</td><td>[ ]</td><td>[ ]</td></tr></tbody></table>
+<p>一般来说，MIT 协议最为宽松，适合大多数 JS 库项目。</p>
+<h3 id="qa">Q&#x26;A</h3>
+<h4 id="qvite-与-rollup-的关系分别在什么场景下使用">Q：Vite 与 Rollup 的关系、分别在什么场景下使用</h4>
+<p>A：Vite 和 Rollup 都是现代前端构建工具。Rollup 专注于库/包的打包，支持多种模块格式（如 CJS、ESM、UMD），适合开发 npm 包和 JS 库。Vite 则是基于 Rollup 的开发服务器和构建工具，主打开发体验（如热更新、极速冷启动），适合开发应用（如 SPA、组件库 demo），但底层生产构建依然用 Rollup。简单来说，开发库用 Rollup，开发应用用 Vite。</p>
+<h4 id="q为什么要分别输出-cjsesmumd-三种格式">Q：为什么要分别输出 CJS、ESM、UMD 三种格式？</h4>
+<p>A：不同的使用场景和工具链对模块格式有不同要求。CJS 主要用于 Node.js 环境，ESM 适合现代打包工具和浏览器原生支持，UMD 兼容性最好，适合直接在浏览器通过 script 标签引入。三种格式都输出，能让你的库被更多场景和用户使用。</p>
+<h4 id="q如何让库支持-typescript">Q：如何让库支持 TypeScript？</h4>
+<p>A：可以在 src 目录下使用 TypeScript（如 src/index.ts），并安装相关依赖（typescript、@rollup/plugin-typescript 等）。Rollup 配置中引入 typescript 插件即可。建议同时生成类型声明文件（.d.ts），方便 TypeScript 用户使用。</p>
+<h4 id="q如何保证库的体积最小">Q：如何保证库的体积最小？</h4>
+<p>A：可以通过合理配置 Babel（如只引入需要的 polyfill）、使用 Rollup 的 tree-shaking、external 配置排除外部依赖、压缩输出（如使用 terser 插件）等方式减小包体积。</p>
+<h3 id="总结">总结</h3>
+<p><code>感谢阅读</code></p>
+<p>本文属于是阅读完《现代 JS 库开发：原理、技术与实践》的读后感</p> </article> </main> <div class="random"> <div class="w-full h-1 bg-gray-600 mb-4 dark:bg-gray-300"></div> <h1 class="mb-4 text-xl font-heading font-bold text-zinc-900 dark:text-zinc-100">
+Random Read
+</h1> <ul class="flex flex-col gap-1.5"> <li> <a href="/posts/amap-js-api-summary" class="group flex justify-between gap-3 text-sm" data-umami-event="Random-article"> <span class="group-hover:underline">高德地图JS_api小总结</span> <span class="text-nowrap text-zinc-500 font-mono"> 2018-03-29 </span> </a> </li><li> <a href="/posts/js-api-reduce" class="group flex justify-between gap-3 text-sm" data-umami-event="Random-article"> <span class="group-hover:underline">理解 JavaScript 中 Reduce()</span> <span class="text-nowrap text-zinc-500 font-mono"> 2020-10-25 </span> </a> </li><li> <a href="/posts/github-weekly-wakatime" class="group flex justify-between gap-3 text-sm" data-umami-event="Random-article"> <span class="group-hover:underline">Github-Weekly-WakaTime</span> <span class="text-nowrap text-zinc-500 font-mono"> 2020-05-14 </span> </a> </li> </ul> </div>  <script data-astro-rerun>
+    (() => {
+      if (window.__lightboxInstalled) return;
+      window.__lightboxInstalled = true;
+
+      const prefersReduced = window.matchMedia?.("(prefers-reduced-motion: reduce)")?.matches;
+      const D = prefersReduced ? 0 : 180;
+      const state = { overlay: null };
+
+      const close = () => {
+        const overlay = state.overlay;
+        if (!overlay) return;
+        const img = overlay.querySelector(".lightbox-img");
+
+        const fade = overlay.animate([{ opacity: 1 }, { opacity: 0 }], { duration: D, easing: "ease-in", fill: "forwards" });
+        const shrink = img?.animate([{ transform: "scale(1)" }, { transform: "scale(0.96)" }], { duration: D, easing: "ease-in", fill: "forwards" });
+
+        Promise.allSettled([fade?.finished ?? Promise.resolve(), shrink?.finished ?? Promise.resolve()]).finally(() => {
+          overlay.remove();
+          state.overlay = null;
+          document.body.style.overflow = "";
+          document.body.style.paddingRight = "";
+          document.removeEventListener("keydown", onKeydown);
+        });
+      };
+
+      const onKeydown = (e) => { if (e.key === "Escape") close(); };
+
+      const openFrom = (thumb) => {
+        if (state.overlay) return;
+
+        const overlay = document.createElement("div");
+        overlay.className = "lightbox-overlay";
+        overlay.dataset.armed = "0";
+        setTimeout(() => { if (overlay.isConnected) overlay.dataset.armed = "1"; }, D || 120);
+
+        const big = thumb.cloneNode(true);
+        big.classList.add("lightbox-img");
+        big.removeAttribute("width");
+        big.removeAttribute("height");
+        big.style.maxWidth = "";
+        big.style.maxHeight = "";
+        big.draggable = false;
+
+        overlay.appendChild(big);
+        document.body.appendChild(overlay);
+        state.overlay = overlay;
+
+        const pad = window.innerWidth - document.documentElement.clientWidth;
+        if (pad > 0) document.body.style.paddingRight = pad + "px";
+        document.body.style.overflow = "hidden";
+
+        overlay.animate([{ opacity: 0 }, { opacity: 1 }], { duration: D, easing: "ease-out", fill: "forwards" });
+        big.animate([{ transform: "scale(0.96)" }, { transform: "scale(1)" }], { duration: D, easing: "ease-out", fill: "forwards" });
+
+        overlay.addEventListener("click", () => { if (overlay?.dataset.armed === "1") close(); });
+        document.addEventListener("keydown", onKeydown);
+      };
+
+      const onDocClick = (e) => {
+        const target = e.target;
+        if (!(target instanceof Element)) return;
+        const article = target.closest("article[data-pagefind-body]");
+        if (!article) return;
+        const img = target.closest("img");
+        if (!img) return;
+        if (e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
+
+        e.preventDefault();
+        e.stopPropagation();
+        openFrom(img);
+      };
+
+      document.addEventListener("click", onDocClick, { passive: false });
+      document.addEventListener("astro:before-swap", close);
+    })();
+  </script>   </div> <script>
+  function setTheme() {
+    let theme
+
+    if (typeof localStorage !== 'undefined' && localStorage.getItem('theme')) {
+      theme = localStorage.getItem('theme')
+    } else {
+      theme = window.matchMedia('(prefers-color-scheme: dark)').matches
+        ? 'dark'
+        : 'light'
+    }
+
+    document.documentElement.classList[theme ? 'add' : 'remove'](theme)
+
+    if (typeof localStorage !== 'undefined') {
+      const observer = new MutationObserver(() => {
+        const isDark = document.documentElement.classList.contains('dark')
+        localStorage.setItem('theme', isDark ? 'dark' : 'light')
+      })
+      observer.observe(document.documentElement, {
+        attributes: true,
+        attributeFilter: ['class'],
+      })
+    }
+  }
+
+  setTheme()
+
+  document.addEventListener('astro:after-swap', setTheme)
+</script></body></html>

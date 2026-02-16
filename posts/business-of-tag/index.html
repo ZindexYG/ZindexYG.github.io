@@ -1,0 +1,510 @@
+<!DOCTYPE html><html lang="en" class="relative bg-fontdefault dark:bg-bgdefault"> <head><meta name="generator" content="Astro"><!-- Global Metadata --><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><link rel="icon" type="image/svg+xml" href="/favicon.svg"><meta name="generator" content="Astro v5.16.6"><!-- Font preloads --><link rel="preload" href="/fonts/geist-variable.woff2" as="font" type="font/woff2" crossorigin><link rel="preload" href="/fonts/geist-mono-variable.woff2" as="font" type="font/woff2" crossorigin><!-- Canonical URL --><link rel="canonical" href="https://z-index.me/posts/business-of-tag/"><!-- Primary Meta Tags --><title>管理系统内 Tag 功能的实现</title><meta name="title" content="管理系统内 Tag 功能的实现"><meta name="description" content="愈发纯熟的业务代码——开始做菜"><!-- Open Graph / Facebook --><meta property="og:type" content="website"><meta property="og:url" content="https://z-index.me/posts/business-of-tag/"><meta property="og:title" content="管理系统内 Tag 功能的实现"><meta property="og:description" content="愈发纯熟的业务代码——开始做菜"><meta property="og:image" content="https://z-index.me/static/ogimage.png"><!-- Twitter --><meta property="twitter:card" content="summary_large_image"><meta property="twitter:url" content="https://z-index.me/posts/business-of-tag/"><meta property="twitter:title" content="管理系统内 Tag 功能的实现"><meta property="twitter:description" content="愈发纯熟的业务代码——开始做菜"><meta property="twitter:image" content="https://z-index.me/static/ogimage.png"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/twikoo@1.6.44/dist/twikoo.css" crossorigin="anonymous"><link rel="stylesheet" href="/_astro/index.wYwjb_5q.css">
+<style>.toc-root[data-astro-cid-6t6zfk7k] .toc-inline[data-astro-cid-6t6zfk7k]{display:block}.toc-root[data-astro-cid-6t6zfk7k] .toc-float[data-astro-cid-6t6zfk7k]{display:none}@media(min-width:1200px){.toc-root[data-astro-cid-6t6zfk7k] .toc-inline[data-astro-cid-6t6zfk7k]{display:none}.toc-root[data-astro-cid-6t6zfk7k] .toc-float[data-astro-cid-6t6zfk7k]{display:block}}.toc-root[data-astro-cid-6t6zfk7k] .toc[data-astro-cid-6t6zfk7k] details[data-astro-cid-6t6zfk7k]{padding:1rem;border-radius:10px;border:1px solid #83838330;margin-bottom:1rem}.toc-root[data-astro-cid-6t6zfk7k] .toc-float[data-astro-cid-6t6zfk7k]{position:fixed;top:84px;right:max(12px,env(safe-area-inset-right));width:260px;max-height:78vh;overflow:auto;z-index:40;transition:opacity .25s ease,transform .25s ease}.toc-root[data-astro-cid-6t6zfk7k] .toc-float[data-astro-cid-6t6zfk7k].at-top{opacity:0;pointer-events:none;transform:translateY(-4px)}.toc-root[data-astro-cid-6t6zfk7k] .toc[data-astro-cid-6t6zfk7k] a[data-astro-cid-6t6zfk7k].toc-link{position:relative;display:block;padding:.125rem 0;color:#6b7280;text-decoration:none;transition:color .15s ease}.dark[data-astro-cid-6t6zfk7k] .toc-root[data-astro-cid-6t6zfk7k] .toc[data-astro-cid-6t6zfk7k] a[data-astro-cid-6t6zfk7k].toc-link{color:#a1a1aa}.toc-root[data-astro-cid-6t6zfk7k] .toc[data-astro-cid-6t6zfk7k] a[data-astro-cid-6t6zfk7k].toc-link:hover{color:#3f3f46}.dark[data-astro-cid-6t6zfk7k] .toc-root[data-astro-cid-6t6zfk7k] .toc[data-astro-cid-6t6zfk7k] a[data-astro-cid-6t6zfk7k].toc-link:hover{color:#e4e4e7}.toc-root[data-astro-cid-6t6zfk7k] .toc[data-astro-cid-6t6zfk7k] a[data-astro-cid-6t6zfk7k].toc-link.is-active:before{content:"";position:absolute;left:-12px;top:.6em;width:5px;height:5px;border-radius:50%;background:currentColor}.toc-root[data-astro-cid-6t6zfk7k] .toc[data-astro-cid-6t6zfk7k] a[data-astro-cid-6t6zfk7k][data-depth="1"]{font-weight:600}.toc-root[data-astro-cid-6t6zfk7k] .toc[data-astro-cid-6t6zfk7k] a[data-astro-cid-6t6zfk7k][data-depth="3"],.toc-root[data-astro-cid-6t6zfk7k] .toc[data-astro-cid-6t6zfk7k] a[data-astro-cid-6t6zfk7k][data-depth="4"],.toc-root[data-astro-cid-6t6zfk7k] .toc[data-astro-cid-6t6zfk7k] a[data-astro-cid-6t6zfk7k][data-depth="5"]{opacity:.8;font-size:.9em}.toc-root[data-astro-cid-6t6zfk7k] .toc-float[data-astro-cid-6t6zfk7k] .toc[data-astro-cid-6t6zfk7k] details[data-astro-cid-6t6zfk7k]{padding:.75rem;border:1px solid rgba(0,0,0,.08);background-color:#00000008}.dark[data-astro-cid-6t6zfk7k] .toc-root[data-astro-cid-6t6zfk7k] .toc-float[data-astro-cid-6t6zfk7k] .toc[data-astro-cid-6t6zfk7k] details[data-astro-cid-6t6zfk7k]{border-color:#ffffff14;background-color:#ffffff0a}article[data-pagefind-body] :is(h1[id],h2[id],h3[id],h4[id],h5[id]){scroll-margin-top:96px}article[data-pagefind-body] img{cursor:pointer}article[data-pagefind-body] img{transition:transform .18s ease,filter .18s ease;transform-origin:center center;will-change:transform;backface-visibility:hidden}article[data-pagefind-body] img:hover{transform:scale(1.01)}.lightbox-img:hover{transform:none!important}@media(prefers-reduced-motion:reduce){article[data-pagefind-body] img{transition:none}}.lightbox-overlay{position:fixed;inset:0;display:flex;align-items:center;justify-content:center;background:#0009;cursor:zoom-out;z-index:1000;opacity:0;touch-action:none;-webkit-tap-highlight-color:transparent}.dark .lightbox-overlay{background:#000000b3}.lightbox-img{max-width:92vw;max-height:92vh;border-radius:12px;box-shadow:0 10px 40px #0006;will-change:transform}.dark .lightbox-img{box-shadow:0 10px 40px #000000b3}@media(prefers-reduced-motion:reduce){.lightbox-overlay,.lightbox-img{animation:none !重要;transition:none !重要}}.expressive-code .frame{all:unset;position:relative;display:block;--header-border-radius: calc(var(--ec-brdRad) + var(--ec-brdWd));--tab-border-radius: calc(var(--ec-frm-edTabBrdRad) + var(--ec-brdWd));--button-spacing: .4rem;--code-background: var(--ec-frm-edBg);border-radius:var(--header-border-radius);box-shadow:0 0 0 var(--ec-brdWd) var(--ec-frm-edBrdClr)!important}
+</style></head> <body class="font-sans min-h-svh text-zinc-900 bg-fontdefault antialiased transition-colors dark:bg-bgdefault dark:text-fontdefault"> <div class="mx-auto p-4 pb-16 max-w-3xl"> <header class="sticky top-0 z-50 w-full mb-6
+         bg-fontdefault dark:bg-bgdefault transition-colors" data-astro-cid-3ef6ksr2> <!-- 仅内容限宽；背景全屏铺开 --> <div class="mx-auto w-full max-w-screen-md
+              flex h-12 items-center justify-between" data-astro-cid-3ef6ksr2>  <nav class="hidden md:flex items-center gap-4" data-astro-cid-3ef6ksr2> <a href="/" data-astro-cid-3ef6ksr2>Home</a> <a href="/posts" data-astro-cid-3ef6ksr2>Posts</a> <a href="/library" data-astro-cid-3ef6ksr2>Library</a> <!-- <a href="/bmmg">Media</a> --> <!-- <a href="https://exercise.asyncx.top" target="_blank" rel="noopener noreferrer">Steps</a> --> </nav>  <div class="hidden md:block" data-astro-cid-3ef6ksr2> <div class="flex justify-end space-x-2"> <button id="search" class="inline-flex items-center rounded-md border p-1 transition-colors hover:bg-zinc-50 dark:border-zinc-700 dark:hover:bg-zinc-800 [&_svg]:text-zinc-500 [&_svg]:hover:text-zinc-900 [&_svg]:dark:hover:text-zinc-100" aria-label="Search" onclick="window.location.href='/search'" data-umami-event="Button-Search" type="button"> <span class="sr-only">Search</span> <svg class="size-4" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"> <g transform="scale(0.015625)"> <path d="M975.474921 917.123519l-152.442347-152.502577c150.575215-165.512276 146.419339-421.550372-13.431309-581.40102a421.610602 421.610602 0 0 0-596.217622 596.277851c138.890578 138.890578 350.47887 160.151799 512.136422 64.626882l161.47686 161.537091a62.518829 62.518829 0 1 0 88.477996-88.538227z m-251.038998-222.851318a301.15043 301.15043 0 0 1-425.886938 0 301.15043 301.15043 0 0 1 0-425.886938 301.15043 301.15043 0 1 1 425.886938 425.886938z" fill="currentColor"></path> </g> </svg> </button> <button id="rss" class="inline-flex items-center rounded-md border p-1 transition-colors hover:bg-zinc-50 dark:border-zinc-700 dark:hover:bg-zinc-800 [&_svg]:text-zinc-500 [&_svg]:hover:text-zinc-900 [&_svg]:dark:hover:text-zinc-100" aria-label="RSS Feed" onclick="window.location.href='/rss.xml'" data-umami-event="Button-RSS" type="button"> <span class="sr-only">RSS Feed</span> <svg class="size-4" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"> <g transform="scale(0.015625)"> <path d="M42.666667 853.333333a128 128 0 1 1 256 0 128 128 0 0 1-256 0z m938.666666 128h-178.773333c0-418.986667-340.906667-759.893333-759.893333-759.893333V42.666667c517.546667 0 938.666667 421.12 938.666666 938.666666z m-298.666666 0h-182.826667c0-252.074667-205.098667-457.130667-457.173333-457.130666V341.333333c352.896 0 640 287.104 640 640z" fill="currentColor"></path> </g> </svg> </button> <button id="douban" class="inline-flex items-center rounded-md border p-1 transition-colors hover:bg-zinc-50 dark:border-zinc-700 dark:hover:bg-zinc-800 [&_svg]:text-zinc-500 [&_svg]:hover:text-zinc-900 [&_svg]:dark:hover:text-zinc-100" aria-label="Douban" onclick="window.open('https://douban.com/people/141874159/', '_blank')" data-umami-event="Button-Douban" type="button"> <span class="sr-only">Douban</span> <svg class="size-4" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" fill="currentColor"> <path d="M.51 3.06h22.98V.755H.51V3.06Zm20.976 2.537v9.608h-2.137l-1.669 5.76H24v2.28H0v-2.28h6.32l-1.67-5.76H2.515V5.597h18.972Zm-5.066 9.608H7.58l1.67 5.76h5.501l1.67-5.76ZM18.367 7.9H5.634v5.025h12.733V7.9Z"></path> </svg> </button> <button id="github" class="inline-flex items-center rounded-md border p-1 transition-colors hover:bg-zinc-50 dark:border-zinc-700 dark:hover:bg-zinc-800 [&_svg]:text-zinc-500 [&_svg]:hover:text-zinc-900 [&_svg]:dark:hover:text-zinc-100" aria-label="GitHub" onclick="window.open('https://github.com/ZindexYG/z-index.me', '_blank')" data-umami-event="Button-GitHub" type="button"> <span class="sr-only">GitHub</span> <svg class="size-4" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" fill="currentColor"> <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"></path> </svg> </button> <button id="theme-toggle" class="inline-flex items-center rounded-md border p-1 transition-colors hover:bg-zinc-50 dark:border-zinc-700 dark:hover:bg-zinc-800 [&_svg]:text-zinc-500 [&_svg]:hover:text-zinc-900 [&_svg]:dark:hover:text-zinc-100" aria-label="Toggle theme" data-umami-event="Button-Theme" type="button"> <span class="sr-only">Toggle theme</span> <svg id="sun" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor" class="hidden size-4 dark:block"> <path d="M8 1a.75.75 0 0 1 .75.75v1.5a.75.75 0 0 1-1.5 0v-1.5A.75.75 0 0 1 8 1ZM10.5 8a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0ZM12.95 4.11a.75.75 0 1 0-1.06-1.06l-1.062 1.06a.75.75 0 0 0 1.061 1.062l1.06-1.061ZM15 8a.75.75 0 0 1-.75.75h-1.5a.75.75 0 0 1 0-1.5h1.5A.75.75 0 0 1 15 8ZM11.89 12.95a.75.75 0 0 0 1.06-1.06l-1.06-1.062a.75.75 0 0 0-1.062 1.061l1.061 1.06ZM8 12a.75.75 0 0 1 .75.75v1.5a.75.75 0 0 1-1.5 0v-1.5A.75.75 0 0 1 8 12ZM5.172 11.89a.75.75 0 0 0-1.061-1.062L3.05 11.89a.75.75 0 1 0 1.06 1.06l1.06-1.06ZM4 8a.75.75 0 0 1-.75.75h-1.5a.75.75 0 0 1 0-1.5h1.5A.75.75 0 0 1 4 8ZM4.11 5.172A.75.75 0 0 0 5.173 4.11L4.11 3.05a.75.75 0 1 0-1.06 1.06l1.06 1.06Z"></path> </svg> <svg id="moon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor" class="size-4 dark:hidden"> <path d="M14.438 10.148c.19-.425-.321-.787-.748-.601A5.5 5.5 0 0 1 6.453 2.31c.186-.427-.176-.938-.6-.748a6.501 6.501 0 1 0 8.585 8.586Z"></path> </svg> </button> </div> <script type="module">function t(){document.getElementById("theme-toggle")?.addEventListener("click",()=>{document.documentElement.classList.toggle("dark")})}t();document.addEventListener("astro:after-swap",t);</script> </div>  <div class="md:hidden flex items-center gap-2" data-astro-cid-3ef6ksr2> <details class="relative" data-astro-cid-3ef6ksr2> <summary class="list-none cursor-pointer p-2 rounded-md
+                 hover:bg-zinc-100 dark:hover:bg-zinc-800
+                 outline-none focus-visible:ring-2
+                 focus-visible:ring-zinc-400 dark:focus-visible:ring-zinc-600" aria-label="Open menu" data-astro-cid-3ef6ksr2> <!-- 汉堡图标 --> <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" data-astro-cid-3ef6ksr2> <path stroke-linecap="round" stroke-linejoin="round" d="M4 7h16M4 12h16M4 17h16" data-astro-cid-3ef6ksr2></path> </svg> </summary> <!-- 下拉菜单背景也跟随站点配色 --> <nav class="absolute top-0 left-[calc(100%+0.5rem)] z-50
+                  w-56 max-w-[80vw]
+                  rounded-lg border border-zinc-200 dark:border-zinc-800
+                  bg-fontdefault dark:bg-bgdefault shadow-lg" data-astro-cid-3ef6ksr2> <ul class="py-1" data-astro-cid-3ef6ksr2> <li data-astro-cid-3ef6ksr2> <a class="block px-3 py-2 rounded hover:bg-zinc-100 dark:hover:bg-zinc-800" href="/" data-astro-cid-3ef6ksr2>Home</a> </li> <li data-astro-cid-3ef6ksr2> <a class="block px-3 py-2 rounded hover:bg-zinc-100 dark:hover:bg-zinc-800" href="/posts" data-astro-cid-3ef6ksr2>Posts</a> </li> <!-- <li>
+              <a
+                class='block px-3 py-2 rounded hover:bg-zinc-100 dark:hover:bg-zinc-800'
+                href='/tags'>Tag</a
+              >
+            </li> --> <!-- <li>
+              <a
+                class='block px-3 py-2 rounded hover:bg-zinc-100 dark:hover:bg-zinc-800'
+                href='/bmmg'>Media</a
+              >
+            </li> --> <!-- <li>
+              <a
+                class='block px-3 py-2 rounded hover:bg-zinc-100 dark:hover:bg-zinc-800'
+                href='https://exercise.asyncx.top'
+                target='_blank'
+                rel='noopener noreferrer'>Steps</a
+              >
+            </li> --> <!-- <li>
+              <a
+                class='block px-3 py-2 rounded hover:bg-zinc-100 dark:hover:bg-zinc-800'
+                href='/about'>README.md</a
+              >
+            </li> --> </ul> </nav> </details> <div class="flex justify-end space-x-2"> <button id="search" class="inline-flex items-center rounded-md border p-1 transition-colors hover:bg-zinc-50 dark:border-zinc-700 dark:hover:bg-zinc-800 [&_svg]:text-zinc-500 [&_svg]:hover:text-zinc-900 [&_svg]:dark:hover:text-zinc-100" aria-label="Search" onclick="window.location.href='/search'" data-umami-event="Button-Search" type="button"> <span class="sr-only">Search</span> <svg class="size-4" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"> <g transform="scale(0.015625)"> <path d="M975.474921 917.123519l-152.442347-152.502577c150.575215-165.512276 146.419339-421.550372-13.431309-581.40102a421.610602 421.610602 0 0 0-596.217622 596.277851c138.890578 138.890578 350.47887 160.151799 512.136422 64.626882l161.47686 161.537091a62.518829 62.518829 0 1 0 88.477996-88.538227z m-251.038998-222.851318a301.15043 301.15043 0 0 1-425.886938 0 301.15043 301.15043 0 0 1 0-425.886938 301.15043 301.15043 0 1 1 425.886938 425.886938z" fill="currentColor"></path> </g> </svg> </button> <button id="rss" class="inline-flex items-center rounded-md border p-1 transition-colors hover:bg-zinc-50 dark:border-zinc-700 dark:hover:bg-zinc-800 [&_svg]:text-zinc-500 [&_svg]:hover:text-zinc-900 [&_svg]:dark:hover:text-zinc-100" aria-label="RSS Feed" onclick="window.location.href='/rss.xml'" data-umami-event="Button-RSS" type="button"> <span class="sr-only">RSS Feed</span> <svg class="size-4" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"> <g transform="scale(0.015625)"> <path d="M42.666667 853.333333a128 128 0 1 1 256 0 128 128 0 0 1-256 0z m938.666666 128h-178.773333c0-418.986667-340.906667-759.893333-759.893333-759.893333V42.666667c517.546667 0 938.666667 421.12 938.666666 938.666666z m-298.666666 0h-182.826667c0-252.074667-205.098667-457.130667-457.173333-457.130666V341.333333c352.896 0 640 287.104 640 640z" fill="currentColor"></path> </g> </svg> </button> <button id="douban" class="inline-flex items-center rounded-md border p-1 transition-colors hover:bg-zinc-50 dark:border-zinc-700 dark:hover:bg-zinc-800 [&_svg]:text-zinc-500 [&_svg]:hover:text-zinc-900 [&_svg]:dark:hover:text-zinc-100" aria-label="Douban" onclick="window.open('https://douban.com/people/141874159/', '_blank')" data-umami-event="Button-Douban" type="button"> <span class="sr-only">Douban</span> <svg class="size-4" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" fill="currentColor"> <path d="M.51 3.06h22.98V.755H.51V3.06Zm20.976 2.537v9.608h-2.137l-1.669 5.76H24v2.28H0v-2.28h6.32l-1.67-5.76H2.515V5.597h18.972Zm-5.066 9.608H7.58l1.67 5.76h5.501l1.67-5.76ZM18.367 7.9H5.634v5.025h12.733V7.9Z"></path> </svg> </button> <button id="github" class="inline-flex items-center rounded-md border p-1 transition-colors hover:bg-zinc-50 dark:border-zinc-700 dark:hover:bg-zinc-800 [&_svg]:text-zinc-500 [&_svg]:hover:text-zinc-900 [&_svg]:dark:hover:text-zinc-100" aria-label="GitHub" onclick="window.open('https://github.com/ZindexYG/z-index.me', '_blank')" data-umami-event="Button-GitHub" type="button"> <span class="sr-only">GitHub</span> <svg class="size-4" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" fill="currentColor"> <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"></path> </svg> </button> <button id="theme-toggle" class="inline-flex items-center rounded-md border p-1 transition-colors hover:bg-zinc-50 dark:border-zinc-700 dark:hover:bg-zinc-800 [&_svg]:text-zinc-500 [&_svg]:hover:text-zinc-900 [&_svg]:dark:hover:text-zinc-100" aria-label="Toggle theme" data-umami-event="Button-Theme" type="button"> <span class="sr-only">Toggle theme</span> <svg id="sun" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor" class="hidden size-4 dark:block"> <path d="M8 1a.75.75 0 0 1 .75.75v1.5a.75.75 0 0 1-1.5 0v-1.5A.75.75 0 0 1 8 1ZM10.5 8a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0ZM12.95 4.11a.75.75 0 1 0-1.06-1.06l-1.062 1.06a.75.75 0 0 0 1.061 1.062l1.06-1.061ZM15 8a.75.75 0 0 1-.75.75h-1.5a.75.75 0 0 1 0-1.5h1.5A.75.75 0 0 1 15 8ZM11.89 12.95a.75.75 0 0 0 1.06-1.06l-1.06-1.062a.75.75 0 0 0-1.062 1.061l1.061 1.06ZM8 12a.75.75 0 0 1 .75.75v1.5a.75.75 0 0 1-1.5 0v-1.5A.75.75 0 0 1 8 12ZM5.172 11.89a.75.75 0 0 0-1.061-1.062L3.05 11.89a.75.75 0 1 0 1.06 1.06l1.06-1.06ZM4 8a.75.75 0 0 1-.75.75h-1.5a.75.75 0 0 1 0-1.5h1.5A.75.75 0 0 1 4 8ZM4.11 5.172A.75.75 0 0 0 5.173 4.11L4.11 3.05a.75.75 0 1 0-1.06 1.06l1.06 1.06Z"></path> </svg> <svg id="moon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor" class="size-4 dark:hidden"> <path d="M14.438 10.148c.19-.425-.321-.787-.748-.601A5.5 5.5 0 0 1 6.453 2.31c.186-.427-.176-.938-.6-.748a6.501 6.501 0 1 0 8.585 8.586Z"></path> </svg> </button> </div>  </div> </div> </header>   <main> <div class="mb-5 flex items-center justify-between"> <h1 class="text-xl font-heading font-bold text-zinc-900 dark:text-zinc-100"> 管理系统内 Tag 功能的实现 </h1> <p class="ml-4 text-sm font-medium text-zinc-500"> 2019-08-08 </p> </div>  <div class="mb-5" data-pagefind-ignore="all"> <ul class="flex flex-wrap gap-2"> <li> <a href="/tags/业务/" class="group flex justify-between gap-3 rounded px-2 py-1 text-sm bg-bgdefault text-fontdefault dark:bg-fontdefault dark:text-bgdefault">
+# 业务 </a> </li><li> <a href="/tags/react/" class="group flex justify-between gap-3 rounded px-2 py-1 text-sm bg-bgdefault text-fontdefault dark:bg-fontdefault dark:text-bgdefault">
+# react </a> </li><li> <a href="/tags/vue/" class="group flex justify-between gap-3 rounded px-2 py-1 text-sm bg-bgdefault text-fontdefault dark:bg-fontdefault dark:text-bgdefault">
+# vue </a> </li> </ul> </div>  <div class="toc-root" data-astro-cid-6t6zfk7k><nav class="toc toc-inline" aria-label="Table Of Contents" data-astro-cid-6t6zfk7k><details open data-astro-cid-6t6zfk7k><summary class="text-sm font-semibold" data-astro-cid-6t6zfk7k>Table of Contents</summary><div class="mt-4 ml-4" data-astro-cid-6t6zfk7k>
+    <ul class="space-y-1 pl-4">
+      
+        <li class="text-sm leading-tight">
+          <a href="#1背景--需求分析" class="toc-link toc-h3" data-depth="3">
+            1.背景 && 需求分析
+          </a>
+          
+    <ul class="space-y-1 pl-4">
+      
+        <li class="text-sm leading-tight">
+          <a href="#11-背景" class="toc-link toc-h4" data-depth="4">
+            1.1 背景
+          </a>
+          
+        </li>
+      
+        <li class="text-sm leading-tight">
+          <a href="#12-需求分析" class="toc-link toc-h4" data-depth="4">
+            1.2 需求分析
+          </a>
+          
+        </li>
+      
+    </ul>
+  
+        </li>
+      
+        <li class="text-sm leading-tight">
+          <a href="#2-实现逻辑" class="toc-link toc-h3" data-depth="3">
+            2. 实现逻辑
+          </a>
+          
+    <ul class="space-y-1 pl-4">
+      
+        <li class="text-sm leading-tight">
+          <a href="#21-内存逻辑" class="toc-link toc-h4" data-depth="4">
+            2.1 内存逻辑
+          </a>
+          
+        </li>
+      
+        <li class="text-sm leading-tight">
+          <a href="#22-外部交互逻辑" class="toc-link toc-h4" data-depth="4">
+            2.2 外部交互逻辑
+          </a>
+          
+        </li>
+      
+        <li class="text-sm leading-tight">
+          <a href="#23-内部交互逻辑" class="toc-link toc-h4" data-depth="4">
+            2.3 内部交互逻辑
+          </a>
+          
+        </li>
+      
+    </ul>
+  
+        </li>
+      
+        <li class="text-sm leading-tight">
+          <a href="#3-对比" class="toc-link toc-h3" data-depth="3">
+            3. 对比
+          </a>
+          
+    <ul class="space-y-1 pl-4">
+      
+        <li class="text-sm leading-tight">
+          <a href="#31-vue-的实现" class="toc-link toc-h4" data-depth="4">
+            3.1 Vue 的实现
+          </a>
+          
+        </li>
+      
+        <li class="text-sm leading-tight">
+          <a href="#32-react-的实现" class="toc-link toc-h4" data-depth="4">
+            3.2 React 的实现
+          </a>
+          
+        </li>
+      
+    </ul>
+  
+        </li>
+      
+        <li class="text-sm leading-tight">
+          <a href="#4-总结" class="toc-link toc-h3" data-depth="3">
+            4. 总结
+          </a>
+          
+        </li>
+      
+    </ul>
+  </div></details></nav><aside class="toc-float" data-astro-cid-6t6zfk7k><nav class="toc" aria-label="Table Of Contents" data-astro-cid-6t6zfk7k><details open data-astro-cid-6t6zfk7k><summary class="text-sm font-semibold" data-astro-cid-6t6zfk7k>Table of Contents</summary><div class="mt-2" data-astro-cid-6t6zfk7k>
+    <ul class="space-y-1 pl-4">
+      
+        <li class="text-sm leading-tight">
+          <a href="#1背景--需求分析" class="toc-link toc-h3" data-depth="3">
+            1.背景 && 需求分析
+          </a>
+          
+    <ul class="space-y-1 pl-4">
+      
+        <li class="text-sm leading-tight">
+          <a href="#11-背景" class="toc-link toc-h4" data-depth="4">
+            1.1 背景
+          </a>
+          
+        </li>
+      
+        <li class="text-sm leading-tight">
+          <a href="#12-需求分析" class="toc-link toc-h4" data-depth="4">
+            1.2 需求分析
+          </a>
+          
+        </li>
+      
+    </ul>
+  
+        </li>
+      
+        <li class="text-sm leading-tight">
+          <a href="#2-实现逻辑" class="toc-link toc-h3" data-depth="3">
+            2. 实现逻辑
+          </a>
+          
+    <ul class="space-y-1 pl-4">
+      
+        <li class="text-sm leading-tight">
+          <a href="#21-内存逻辑" class="toc-link toc-h4" data-depth="4">
+            2.1 内存逻辑
+          </a>
+          
+        </li>
+      
+        <li class="text-sm leading-tight">
+          <a href="#22-外部交互逻辑" class="toc-link toc-h4" data-depth="4">
+            2.2 外部交互逻辑
+          </a>
+          
+        </li>
+      
+        <li class="text-sm leading-tight">
+          <a href="#23-内部交互逻辑" class="toc-link toc-h4" data-depth="4">
+            2.3 内部交互逻辑
+          </a>
+          
+        </li>
+      
+    </ul>
+  
+        </li>
+      
+        <li class="text-sm leading-tight">
+          <a href="#3-对比" class="toc-link toc-h3" data-depth="3">
+            3. 对比
+          </a>
+          
+    <ul class="space-y-1 pl-4">
+      
+        <li class="text-sm leading-tight">
+          <a href="#31-vue-的实现" class="toc-link toc-h4" data-depth="4">
+            3.1 Vue 的实现
+          </a>
+          
+        </li>
+      
+        <li class="text-sm leading-tight">
+          <a href="#32-react-的实现" class="toc-link toc-h4" data-depth="4">
+            3.2 React 的实现
+          </a>
+          
+        </li>
+      
+    </ul>
+  
+        </li>
+      
+        <li class="text-sm leading-tight">
+          <a href="#4-总结" class="toc-link toc-h3" data-depth="3">
+            4. 总结
+          </a>
+          
+        </li>
+      
+    </ul>
+  </div></details></nav></aside></div><script data-astro-rerun>
+  ;(() => {
+    const ready = fn => {
+      if (document.readyState === 'loading')
+        document.addEventListener('DOMContentLoaded', fn, { once: true })
+      else fn()
+    }
+
+    function boot() {
+      const root = document.querySelector('.toc-root')
+      if (!root) return
+
+      const float = root.querySelector('.toc-float')
+      const atTop = () => window.scrollY <= 2
+      const onScroll = () => {
+        float?.classList.toggle('at-top', atTop())
+      }
+      onScroll()
+      window.addEventListener('scroll', onScroll, { passive: true })
+
+      const article = document.querySelector('article[data-pagefind-body]')
+      if (!article) return
+
+      // 更新选择器：支持 h1 到 h5
+      const heads = [
+        ...article.querySelectorAll('h1[id], h2[id], h3[id], h4[id], h5[id]'),
+      ]
+      if (!heads.length) return
+
+      const allLinks = [...root.querySelectorAll('.toc a.toc-link')]
+      const map = new Map()
+      for (const a of allLinks) {
+        const href = a.getAttribute('href') || ''
+        if (!href.startsWith('#')) continue
+        const id = href.slice(1)
+        if (!map.has(id)) map.set(id, [])
+        map.get(id).push(a)
+      }
+
+      let activeId = null
+      const setActive = id => {
+        if (activeId === id) return
+        if (activeId && map.has(activeId))
+          map.get(activeId).forEach(el => el.classList.remove('is-active'))
+        activeId = id
+        if (activeId && map.has(activeId))
+          map.get(activeId).forEach(el => el.classList.add('is-active'))
+      }
+
+      const io = new IntersectionObserver(
+        entries => {
+          const visible = entries
+            .filter(e => e.isIntersecting)
+            .sort((a, b) => a.boundingClientRect.top - b.boundingClientRect.top)
+          if (visible.length) {
+            setActive(visible[0].target.id)
+          } else {
+            const nearest = heads
+              .map(h => ({
+                id: h.id,
+                top: Math.abs(h.getBoundingClientRect().top),
+              }))
+              .sort((a, b) => a.top - b.top)[0]
+            if (nearest) setActive(nearest.id)
+          }
+        },
+        { root: null, threshold: [0, 1], rootMargin: '-96px 0px -60% 0px' },
+      )
+
+      heads.forEach(h => io.observe(h))
+
+      const onClick = e => {
+        const a = e.target.closest('.toc a.toc-link')
+        if (!a) return
+        const href = a.getAttribute('href') || ''
+        if (!href.startsWith('#')) return
+        const id = href.slice(1)
+        const el = document.getElementById(id)
+        if (!el) return
+        e.preventDefault()
+        el.scrollIntoView({ behavior: 'smooth', block: 'start' })
+      }
+      root.addEventListener('click', onClick)
+
+      const cleanup = () => {
+        window.removeEventListener('scroll', onScroll)
+        io.disconnect()
+        root.removeEventListener('click', onClick)
+      }
+      document.addEventListener('astro:before-swap', cleanup, { once: true })
+    }
+
+    ready(boot)
+    document.addEventListener('astro:page-load', boot)
+  })()
+</script> <article data-pagefind-body> <img src="/posts/tagImage-banner.jpg" alt="">
+<blockquote>
+<p>愈发纯熟的业务代码——开始做菜</p>
+</blockquote>
+<!-- more -->
+<style>
+.posts-expand .post-body img{
+  margin: 10px 0;
+}
+</style>
+<h3 id="1背景--需求分析">1.背景 &#x26;&#x26; 需求分析</h3>
+<h4 id="11-背景">1.1 背景</h4>
+<p>某日，被后台拿着一个别人实现好的管理系统说道了一顿，说需要实现得比某框架更好</p>
+<p>地址：<a href="https://pigx.pig4cloud.com/">pig4cloud</a></p>
+<h4 id="12-需求分析">1.2 需求分析</h4>
+<p>需求：管理系统内实现浏览器 Tag 标签的功能</p>
+<p>分析：</p>
+<ol>
+<li><code>切换 Tag 不主动更新页面（重点）</code></li>
+<li>关闭活动中的 Tag 切换至后一个</li>
+<li>若关闭 Tag 为最后一个，切换至前一个</li>
+</ol>
+<h3 id="2-实现逻辑">2. 实现逻辑</h3>
+<p>技术栈：react + react-router + react-redux + react-saga</p>
+<p>重点：<code>组件更新，页面不变</code></p>
+<p>上 demo ：<a href="https://codesandbox.io/s/react-tag-demo-z88jy?fontsize=14"><img src="https://codesandbox.io/static/img/play-codesandbox.svg" alt="Edit react-tag-demo"></a></p>
+<h4 id="21-内存逻辑">2.1 内存逻辑</h4>
+<p>思路：却分活动状态内的存，和在打开过的内存，两个内存同事更新，切换 Tag 从打开过的数组内调取数据，有数据使用该数据，无数据则发起请求</p>
+<ul>
+<li>tagList 侧栏点击过的 Tag 数组</li>
+<li>activeTag 活动状态的 Tag</li>
+</ul>
+<p>操作同归在 <code>Reduce</code> 内，方便后续 Tag 内外部交互</p>
+<div class="expressive-code"><link rel="stylesheet" href="/_astro/ec.c86xd.css"><script type="module" src="/_astro/ec.0vx5m.js"></script><figure class="frame"><figcaption class="header"></figcaption><pre data-language="javascript"><code><div class="ec-line"><div class="code"><span style="--0:#A0A1A7F4;--1:#96A1C2">/*.</span></div></div><div class="ec-line"><div class="code"><span style="--0:#A0A1A7F4;--1:#96A1C2">目录：/src/store/index.js</span></div></div><div class="ec-line"><div class="code"><span style="--0:#A0A1A7F4;--1:#96A1C2">*/</span></div></div><div class="ec-line"><div class="code"><span style="--0:#D477F1;--1:#FF79C6">const</span><span style="--1:#F8F8F2"><span style="--0:#D5CED9"> </span><span style="--0:#00E8C6">appReducer</span><span style="--0:#D5CED9"> </span></span><span style="--0:#F17963;--1:#FF79C6">=</span><span style="--0:#D5CED9;--1:#F8F8F2">{</span></div></div><div class="ec-line"><div class="code"><span class="indent">  </span><span style="--0:#FFE66D;--1:#50FA7B">tabListStatus</span><span style="--0:#D5CED9;--1:#FF79C6">:</span><span style="--0:#D5CED9;--1:#F8F8F2"> (</span><span style="--0:#00E8C6;--1:#FFB86C;--1fs:italic">state</span><span style="--0:#D5CED9;--1:#F8F8F2"> </span><span style="--0:#F17963;--1:#FF79C6">=</span><span style="--0:#D5CED9;--1:#F8F8F2"> { tabList</span><span style="--0:#D5CED9;--1:#FF79C6">:</span><span style="--0:#D5CED9;--1:#F8F8F2"> [], activeTab</span><span style="--0:#D5CED9;--1:#FF79C6">:</span><span style="--0:#D5CED9;--1:#F8F8F2"> </span><span style="--0:#F17963;--1:#BD93F9">null</span><span style="--0:#D5CED9;--1:#F8F8F2"> }, </span><span style="--0:#00E8C6;--1:#FFB86C;--1fs:italic">action</span><span style="--0:#D5CED9;--1:#F8F8F2">) </span><span style="--0:#D477F1;--1:#FF79C6">=></span><span style="--0:#D5CED9;--1:#F8F8F2"> {</span></div></div><div class="ec-line"><div class="code"><span class="indent">    </span><span style="--0:#D477F1;--1:#FF79C6">switch</span><span style="--1:#F8F8F2"><span style="--0:#D5CED9"> (</span><span style="--0:#F39C12">action</span><span style="--0:#D5CED9">.</span><span style="--0:#00E8C6">type</span><span style="--0:#D5CED9">) {</span></span></div></div><div class="ec-line"><div class="code"><span class="indent">      </span><span style="--0:#D477F1;--1:#FF79C6">case</span><span style="--0:#D5CED9;--1:#F8F8F2"> </span><span style="--0:#96E072;--1:#E9F284">'</span><span style="--0:#96E072;--1:#F1FA8C">tabListChange</span><span style="--0:#96E072;--1:#E9F284">'</span><span style="--0:#D5CED9;--1:#F8F8F2">:</span></div></div><div class="ec-line"><div class="code"><span class="indent">          </span><span style="--0:#A0A1A7F4;--1:#96A1C2">//</span></div></div><div class="ec-line"><div class="code"><span class="indent">      </span><span style="--0:#D477F1;--1:#FF79C6">case</span><span style="--0:#D5CED9;--1:#F8F8F2"> </span><span style="--0:#96E072;--1:#E9F284">'</span><span style="--0:#96E072;--1:#F1FA8C">tabListAdd</span><span style="--0:#96E072;--1:#E9F284">'</span><span style="--0:#D5CED9;--1:#F8F8F2">:</span></div></div><div class="ec-line"><div class="code"><span class="indent">          </span><span style="--0:#A0A1A7F4;--1:#96A1C2">//</span></div></div><div class="ec-line"><div class="code"><span class="indent">      </span><span style="--0:#D477F1;--1:#FF79C6">case</span><span style="--0:#D5CED9;--1:#F8F8F2"> </span><span style="--0:#96E072;--1:#E9F284">'</span><span style="--0:#96E072;--1:#F1FA8C">tabListRemove</span><span style="--0:#96E072;--1:#E9F284">'</span><span style="--0:#D5CED9;--1:#F8F8F2">:</span></div></div><div class="ec-line"><div class="code"><span class="indent">          </span><span style="--0:#A0A1A7F4;--1:#96A1C2">//</span></div></div><div class="ec-line"><div class="code"><span class="indent">      </span><span style="--0:#D477F1;--1:#FF79C6">case</span><span style="--0:#D5CED9;--1:#F8F8F2"> </span><span style="--0:#96E072;--1:#E9F284">'</span><span style="--0:#96E072;--1:#F1FA8C">tabListClear</span><span style="--0:#96E072;--1:#E9F284">'</span><span style="--0:#D5CED9;--1:#F8F8F2">:</span></div></div><div class="ec-line"><div class="code"><span class="indent">          </span><span style="--0:#A0A1A7F4;--1:#96A1C2">//</span></div></div><div class="ec-line"><div class="code"><span class="indent">      </span><span style="--0:#D477F1;--1:#FF79C6">default</span><span style="--0:#D5CED9;--1:#F8F8F2">:</span></div></div><div class="ec-line"><div class="code"><span class="indent">        </span><span style="--0:#D477F1;--1:#FF79C6">return</span><span style="--1:#F8F8F2"><span style="--0:#D5CED9"> </span><span style="--0:#00E8C6">state</span></span></div></div><div class="ec-line"><div class="code"><span class="indent"><span style="--0:#D5CED9;--1:#F8F8F2">    </span></span><span style="--0:#D5CED9;--1:#F8F8F2">}</span></div></div><div class="ec-line"><div class="code"><span class="indent"><span style="--0:#D5CED9;--1:#F8F8F2">  </span></span><span style="--0:#D5CED9;--1:#F8F8F2">},</span></div></div><div class="ec-line"><div class="code"><span class="indent">  </span><span style="--0:#A0A1A7F4;--1:#96A1C2">// ...</span></div></div><div class="ec-line"><div class="code"><span style="--0:#D5CED9;--1:#F8F8F2">}</span></div></div></code></pre><div class="copy"><div aria-live="polite"></div><button title="Copy to clipboard" data-copied="Copied!" data-code="/*.目录：/src/store/index.js*/const appReducer ={  tabListStatus: (state = { tabList: [], activeTab: null }, action) => {    switch (action.type) {      case &#x27;tabListChange&#x27;:          //      case &#x27;tabListAdd&#x27;:          //      case &#x27;tabListRemove&#x27;:          //      case &#x27;tabListClear&#x27;:          //      default:        return state    }  },  // ...}"><div></div></button></div></figure></div>
+<p>所有内存初始状态，都在 <code>App.js</code>-><code>componentDidUpdate</code> 生命周期内存操作</p>
+<div class="expressive-code"><figure class="frame"><figcaption class="header"></figcaption><pre data-language="javascript"><code><div class="ec-line"><div class="code"><span style="--0:#A0A1A7F4;--1:#96A1C2">/*</span></div></div><div class="ec-line"><div class="code"><span style="--0:#A0A1A7F4;--1:#96A1C2">目录：/src/App.js</span></div></div><div class="ec-line"><div class="code"><span class="indent"><span style="--0:#A0A1A7F4;--1:#96A1C2"> </span></span><span style="--0:#A0A1A7F4;--1:#96A1C2">*/</span></div></div><div class="ec-line"><div class="code">
+</div></div><div class="ec-line"><div class="code"><span style="--0:#FFE66D;--1:#50FA7B">componentDidUpdate</span><span style="--1:#F8F8F2"><span style="--0:#D5CED9">(</span><span style="--0:#00E8C6">prevProps</span><span style="--0:#D5CED9">, </span><span style="--0:#00E8C6">prevState</span><span style="--0:#D5CED9">) {</span></span></div></div><div class="ec-line"><div class="code"><span class="indent">  </span><span style="--0:#D477F1;--1:#FF79C6">if</span><span style="--0:#D5CED9;--1:#F8F8F2"> (</span><span style="--0:#FF5EC9;--1:#BD93F9;--1fs:italic">this</span><span style="--1:#F8F8F2"><span style="--0:#D5CED9">.</span><span style="--0:#00E8C6">props</span><span style="--0:#D5CED9">.</span><span style="--0:#00E8C6">tabListStatus</span><span style="--0:#D5CED9"> </span></span><span style="--0:#F17963;--1:#FF79C6">!==</span><span style="--1:#F8F8F2"><span style="--0:#D5CED9"> </span><span style="--0:#F39C12">prevProps</span><span style="--0:#D5CED9">.</span><span style="--0:#00E8C6">tabListStatus</span><span style="--0:#D5CED9">) {</span></span></div></div><div class="ec-line"><div class="code"><span class="indent">    </span><span style="--0:#D477F1;--1:#FF79C6">const</span><span style="--1:#F8F8F2"><span style="--0:#D5CED9"> { </span><span style="--0:#00E8C6">tabList</span><span style="--0:#D5CED9">, </span><span style="--0:#00E8C6">activeTab</span><span style="--0:#D5CED9"> } </span></span><span style="--0:#F17963;--1:#FF79C6">=</span><span style="--0:#D5CED9;--1:#F8F8F2"> </span><span style="--0:#FF5EC9;--1:#BD93F9;--1fs:italic">this</span><span style="--1:#F8F8F2"><span style="--0:#D5CED9">.</span><span style="--0:#00E8C6">props</span><span style="--0:#D5CED9">.</span><span style="--0:#00E8C6">tabListStatus</span></span></div></div><div class="ec-line"><div class="code"><span class="indent"><span style="--1:#F8F8F2">    </span></span><span style="--0:#F39C12;--1:#F8F8F2">sessionStorage</span><span style="--0:#D5CED9;--1:#F8F8F2">.</span><span style="--0:#FFE66D;--1:#50FA7B">setItem</span><span style="--0:#D5CED9;--1:#F8F8F2">(</span><span style="--0:#96E072;--1:#E9F284">'</span><span style="--0:#96E072;--1:#F1FA8C">tabList</span><span style="--0:#96E072;--1:#E9F284">'</span><span style="--0:#D5CED9;--1:#F8F8F2">, </span><span style="--0:#00E8C6;--1:#BD93F9">JSON</span><span style="--0:#D5CED9;--1:#F8F8F2">.</span><span style="--0:#FFE66D;--1:#50FA7B">stringify</span><span style="--1:#F8F8F2"><span style="--0:#D5CED9">(</span><span style="--0:#00E8C6">tabList</span><span style="--0:#D5CED9">))</span></span></div></div><div class="ec-line"><div class="code"><span class="indent"><span style="--1:#F8F8F2">    </span></span><span style="--0:#F39C12;--1:#F8F8F2">sessionStorage</span><span style="--0:#D5CED9;--1:#F8F8F2">.</span><span style="--0:#FFE66D;--1:#50FA7B">setItem</span><span style="--0:#D5CED9;--1:#F8F8F2">(</span><span style="--0:#96E072;--1:#E9F284">'</span><span style="--0:#96E072;--1:#F1FA8C">activeTab</span><span style="--0:#96E072;--1:#E9F284">'</span><span style="--0:#D5CED9;--1:#F8F8F2">, </span><span style="--0:#00E8C6;--1:#BD93F9">JSON</span><span style="--0:#D5CED9;--1:#F8F8F2">.</span><span style="--0:#FFE66D;--1:#50FA7B">stringify</span><span style="--1:#F8F8F2"><span style="--0:#D5CED9">(</span><span style="--0:#00E8C6">activeTab</span><span style="--0:#D5CED9">))</span></span></div></div><div class="ec-line"><div class="code"><span class="indent">    </span><span style="--0:#FF5EC9;--1:#BD93F9;--1fs:italic">this</span><span style="--0:#D5CED9;--1:#F8F8F2">.</span><span style="--0:#FFE66D;--1:#50FA7B">setState</span><span style="--0:#D5CED9;--1:#F8F8F2">({</span></div></div><div class="ec-line"><div class="code"><span class="indent"><span style="--1:#F8F8F2">      </span></span><span style="--0:#00E8C6;--1:#F8F8F2">tabList</span><span style="--0:#D5CED9;--1:#F8F8F2">,</span></div></div><div class="ec-line"><div class="code"><span class="indent"><span style="--0:#D5CED9;--1:#F8F8F2">      </span></span><span style="--0:#D5CED9;--1:#F8F8F2">activeTab</span><span style="--0:#D5CED9;--1:#FF79C6">:</span><span style="--1:#F8F8F2"><span style="--0:#D5CED9"> </span><span style="--0:#00E8C6">activeTab</span><span style="--0:#D5CED9"> </span></span><span style="--0:#F17963;--1:#FF79C6">!==</span><span style="--0:#D5CED9;--1:#F8F8F2"> </span><span style="--0:#F17963;--1:#BD93F9">null</span><span style="--0:#D5CED9;--1:#F8F8F2"> </span><span style="--0:#F17963;--1:#FF79C6">?</span><span style="--1:#F8F8F2"><span style="--0:#D5CED9"> </span><span style="--0:#F39C12">activeTab</span><span style="--0:#D5CED9">.</span><span style="--0:#00E8C6">key</span><span style="--0:#D5CED9"> </span></span><span style="--0:#F17963;--1:#FF79C6">:</span><span style="--0:#D5CED9;--1:#F8F8F2"> </span><span style="--0:#96E072;--1:#E9F284">'</span><span style="--0:#96E072;--1:#F1FA8C">/</span><span style="--0:#96E072;--1:#E9F284">'</span></div></div><div class="ec-line"><div class="code"><span class="indent"><span style="--0:#D5CED9;--1:#F8F8F2">    </span></span><span style="--0:#D5CED9;--1:#F8F8F2">})</span></div></div><div class="ec-line"><div class="code"><span class="indent"><span style="--0:#D5CED9;--1:#F8F8F2">  </span></span><span style="--0:#D5CED9;--1:#F8F8F2">}</span></div></div><div class="ec-line"><div class="code"><span style="--0:#D5CED9;--1:#F8F8F2">}</span></div></div></code></pre><div class="copy"><div aria-live="polite"></div><button title="Copy to clipboard" data-copied="Copied!" data-code="/*目录：/src/App.js */componentDidUpdate(prevProps, prevState) {  if (this.props.tabListStatus !== prevProps.tabListStatus) {    const { tabList, activeTab } = this.props.tabListStatus    sessionStorage.setItem(&#x27;tabList&#x27;, JSON.stringify(tabList))    sessionStorage.setItem(&#x27;activeTab&#x27;, JSON.stringify(activeTab))    this.setState({      tabList,      activeTab: activeTab !== null ? activeTab.key : &#x27;/&#x27;    })  }}"><div></div></button></div></figure></div>
+<h4 id="22-外部交互逻辑">2.2 外部交互逻辑</h4>
+<ol>
+<li>侧栏逻辑，新增</li>
+<li>点击逻辑，切换 Tag</li>
+<li>关闭 Tag</li>
+</ol>
+<div class="expressive-code"><figure class="frame"><figcaption class="header"></figcaption><pre data-language="javascript"><code><div class="ec-line"><div class="code"><span style="--0:#D477F1;--1:#FF79C6">class</span><span style="--0:#D5CED9;--1:#F8F8F2"> </span><span style="--0:#FFE66D;--1:#8BE9FD">App</span><span style="--0:#D5CED9;--1:#F8F8F2"> </span><span style="--0:#D477F1;--1:#FF79C6">extends</span><span style="--0:#D5CED9;--1:#F8F8F2"> </span><span style="--0:#FFE66D;--0td:underline;--1:#8BE9FD;--1fs:italic">Component</span><span style="--0:#D5CED9;--1:#F8F8F2"> {</span></div></div><div class="ec-line"><div class="code"><span class="indent">  </span><span style="--0:#A0A1A7F4;--1:#96A1C2">// 点击侧栏</span></div></div><div class="ec-line"><div class="code"><span class="indent">  </span><span style="--0:#FFE66D;--1:#50FA7B">handleOnMenuItem</span><span style="--0:#D5CED9;--1:#F8F8F2"> </span><span style="--0:#F17963;--1:#FF79C6">=</span><span style="--0:#D5CED9;--1:#F8F8F2"> </span><span style="--0:#00E8C6;--1:#FFB86C;--1fs:italic">param</span><span style="--0:#D5CED9;--1:#F8F8F2"> </span><span style="--0:#D477F1;--1:#FF79C6">=></span><span style="--0:#D5CED9;--1:#F8F8F2"> {</span></div></div><div class="ec-line"><div class="code"><span class="indent">    </span><span style="--0:#D477F1;--1:#FF79C6">const</span><span style="--1:#F8F8F2"><span style="--0:#D5CED9"> { </span><span style="--0:#00E8C6">tabListAdd</span><span style="--0:#D5CED9">, </span><span style="--0:#00E8C6">tabListStatus</span><span style="--0:#D5CED9"> } </span></span><span style="--0:#F17963;--1:#FF79C6">=</span><span style="--0:#D5CED9;--1:#F8F8F2"> </span><span style="--0:#FF5EC9;--1:#BD93F9;--1fs:italic">this</span><span style="--1:#F8F8F2"><span style="--0:#D5CED9">.</span><span style="--0:#00E8C6">props</span></span></div></div><div class="ec-line"><div class="code"><span class="indent">    </span><span style="--0:#D477F1;--1:#FF79C6">const</span><span style="--1:#F8F8F2"><span style="--0:#D5CED9"> { </span><span style="--0:#00E8C6">tabList</span><span style="--0:#D5CED9"> } </span></span><span style="--0:#F17963;--1:#FF79C6">=</span><span style="--1:#F8F8F2"><span style="--0:#D5CED9"> </span><span style="--0:#00E8C6">tabListStatus</span></span></div></div><div class="ec-line"><div class="code"><span class="indent">    </span><span style="--0:#D477F1;--1:#FF79C6">const</span><span style="--1:#F8F8F2"><span style="--0:#D5CED9"> </span><span style="--0:#00E8C6">userMenu</span><span style="--0:#D5CED9"> </span></span><span style="--0:#F17963;--1:#FF79C6">=</span><span style="--1:#F8F8F2"><span style="--0:#D5CED9"> </span><span style="--0:#00E8C6">menuDataSource</span></span></div></div><div class="ec-line"><div class="code"><span class="indent">    </span><span style="--0:#D477F1;--1:#FF79C6">const</span><span style="--1:#F8F8F2"><span style="--0:#D5CED9"> </span><span style="--0:#00E8C6">menu</span><span style="--0:#D5CED9"> </span></span><span style="--0:#F17963;--1:#FF79C6">=</span><span style="--0:#D5CED9;--1:#F8F8F2"> </span><span style="--0:#FF5EC9;--1:#BD93F9;--1fs:italic">this</span><span style="--0:#D5CED9;--1:#F8F8F2">.</span><span style="--0:#FFE66D;--1:#50FA7B">menuItemFilter</span><span style="--1:#F8F8F2"><span style="--0:#D5CED9">(</span><span style="--0:#00E8C6">userMenu</span><span style="--0:#D5CED9">, </span></span><span style="--0:#96E072;--1:#F1FA8C">`/nav_</span><span style="--0:#FB6A9E;--1:#FF79C6">${</span><span style="--1:#F8F8F2"><span style="--0:#F39C12">param</span><span style="--0:#D5CED9">.</span><span style="--0:#00E8C6">key</span></span><span style="--0:#FB6A9E;--1:#FF79C6">}</span><span style="--0:#96E072;--1:#F1FA8C">`</span><span style="--0:#D5CED9;--1:#F8F8F2">)</span></div></div><div class="ec-line"><div class="code">
+</div></div><div class="ec-line"><div class="code"><span class="indent">    </span><span style="--0:#D477F1;--1:#FF79C6">let</span><span style="--1:#F8F8F2"><span style="--0:#D5CED9"> </span><span style="--0:#00E8C6">paramTab</span><span style="--0:#D5CED9"> </span></span><span style="--0:#F17963;--1:#FF79C6">=</span><span style="--0:#D5CED9;--1:#F8F8F2"> {</span></div></div><div class="ec-line"><div class="code"><span class="indent"><span style="--0:#D5CED9;--1:#F8F8F2">      </span></span><span style="--0:#D5CED9;--1:#F8F8F2">title</span><span style="--0:#D5CED9;--1:#FF79C6">:</span><span style="--1:#F8F8F2"><span style="--0:#D5CED9"> </span><span style="--0:#F39C12">menu</span><span style="--0:#D5CED9">.</span><span style="--0:#00E8C6">name</span><span style="--0:#D5CED9">,</span></span></div></div><div class="ec-line"><div class="code"><span class="indent"><span style="--0:#D5CED9;--1:#F8F8F2">      </span></span><span style="--0:#D5CED9;--1:#F8F8F2">key</span><span style="--0:#D5CED9;--1:#FF79C6">:</span><span style="--1:#F8F8F2"><span style="--0:#D5CED9"> </span><span style="--0:#F39C12">menu</span><span style="--0:#D5CED9">.</span><span style="--0:#00E8C6">path</span><span style="--0:#D5CED9">,</span></span></div></div><div class="ec-line"><div class="code"><span class="indent"><span style="--0:#D5CED9;--1:#F8F8F2">      </span></span><span style="--0:#D5CED9;--1:#F8F8F2">queryParam</span><span style="--0:#D5CED9;--1:#FF79C6">:</span><span style="--0:#D5CED9;--1:#F8F8F2"> {},</span></div></div><div class="ec-line"><div class="code"><span class="indent"><span style="--0:#D5CED9;--1:#F8F8F2">      </span></span><span style="--0:#D5CED9;--1:#F8F8F2">dataSource</span><span style="--0:#D5CED9;--1:#FF79C6">:</span><span style="--0:#D5CED9;--1:#F8F8F2"> {}</span></div></div><div class="ec-line"><div class="code"><span class="indent"><span style="--0:#D5CED9;--1:#F8F8F2">    </span></span><span style="--0:#D5CED9;--1:#F8F8F2">}</span></div></div><div class="ec-line"><div class="code">
+</div></div><div class="ec-line"><div class="code"><span class="indent">    </span><span style="--0:#A0A1A7F4;--1:#96A1C2">//判断是否为新增</span></div></div><div class="ec-line"><div class="code"><span class="indent">    </span><span style="--0:#D477F1;--1:#FF79C6">let</span><span style="--1:#F8F8F2"><span style="--0:#D5CED9"> </span><span style="--0:#00E8C6">pushBol</span><span style="--0:#D5CED9"> </span></span><span style="--0:#F17963;--1:#FF79C6">=</span><span style="--0:#D5CED9;--1:#F8F8F2"> </span><span style="--0:#F17963;--1:#BD93F9">true</span></div></div><div class="ec-line"><div class="code"><span class="indent"><span style="--1:#F8F8F2">    </span></span><span style="--0:#F39C12;--1:#F8F8F2">tabList</span><span style="--0:#D5CED9;--1:#F8F8F2">.</span><span style="--0:#FFE66D;--1:#50FA7B">map</span><span style="--0:#D5CED9;--1:#F8F8F2">(</span><span style="--0:#00E8C6;--1:#FFB86C;--1fs:italic">tab</span><span style="--0:#D5CED9;--1:#F8F8F2"> </span><span style="--0:#D477F1;--1:#FF79C6">=></span><span style="--0:#D5CED9;--1:#F8F8F2"> {</span></div></div><div class="ec-line"><div class="code"><span class="indent">      </span><span style="--0:#D477F1;--1:#FF79C6">if</span><span style="--1:#F8F8F2"><span style="--0:#D5CED9"> (</span><span style="--0:#F39C12">tab</span><span style="--0:#D5CED9">.</span><span style="--0:#00E8C6">key</span><span style="--0:#D5CED9"> </span></span><span style="--0:#F17963;--1:#FF79C6">===</span><span style="--1:#F8F8F2"><span style="--0:#D5CED9"> </span><span style="--0:#F39C12">paramTab</span><span style="--0:#D5CED9">.</span><span style="--0:#00E8C6">key</span><span style="--0:#D5CED9">) {</span></span></div></div><div class="ec-line"><div class="code"><span class="indent"><span style="--1:#F8F8F2">        </span></span><span style="--0:#00E8C6;--1:#F8F8F2">pushBol</span><span style="--0:#D5CED9;--1:#F8F8F2"> </span><span style="--0:#F17963;--1:#FF79C6">=</span><span style="--0:#D5CED9;--1:#F8F8F2"> </span><span style="--0:#F17963;--1:#BD93F9">false</span></div></div><div class="ec-line"><div class="code"><span class="indent"><span style="--1:#F8F8F2">        </span></span><span style="--0:#00E8C6;--1:#F8F8F2">paramTab</span><span style="--0:#D5CED9;--1:#F8F8F2"> </span><span style="--0:#F17963;--1:#FF79C6">=</span><span style="--1:#F8F8F2"><span style="--0:#D5CED9"> </span><span style="--0:#F39C12">Object</span><span style="--0:#D5CED9">.</span></span><span style="--0:#FFE66D;--1:#50FA7B">assign</span><span style="--1:#F8F8F2"><span style="--0:#D5CED9">({},</span><span style="--0:#00E8C6">paramTab</span><span style="--0:#D5CED9">,</span><span style="--0:#00E8C6">tab</span><span style="--0:#D5CED9">)</span></span></div></div><div class="ec-line"><div class="code"><span class="indent"><span style="--0:#D5CED9;--1:#F8F8F2">      </span></span><span style="--0:#D5CED9;--1:#F8F8F2">}</span></div></div><div class="ec-line"><div class="code"><span class="indent">      </span><span style="--0:#D477F1;--1:#FF79C6">return</span><span style="--1:#F8F8F2"><span style="--0:#D5CED9"> </span><span style="--0:#00E8C6">tab</span></span></div></div><div class="ec-line"><div class="code"><span class="indent"><span style="--0:#D5CED9;--1:#F8F8F2">    </span></span><span style="--0:#D5CED9;--1:#F8F8F2">})</span></div></div><div class="ec-line"><div class="code">
+</div></div><div class="ec-line"><div class="code"><span class="indent">    </span><span style="--0:#D477F1;--1:#FF79C6">if</span><span style="--1:#F8F8F2"><span style="--0:#D5CED9"> (</span><span style="--0:#00E8C6">pushBol</span><span style="--0:#D5CED9">) {</span></span></div></div><div class="ec-line"><div class="code"><span class="indent"><span style="--1:#F8F8F2">      </span></span><span style="--0:#F39C12;--1:#F8F8F2">tabList</span><span style="--0:#D5CED9;--1:#F8F8F2">.</span><span style="--0:#FFE66D;--1:#50FA7B">push</span><span style="--1:#F8F8F2"><span style="--0:#D5CED9">(</span><span style="--0:#00E8C6">paramTab</span><span style="--0:#D5CED9">)</span></span></div></div><div class="ec-line"><div class="code"><span class="indent"><span style="--0:#D5CED9;--1:#F8F8F2">    </span></span><span style="--0:#D5CED9;--1:#F8F8F2">}</span></div></div><div class="ec-line"><div class="code">
+</div></div><div class="ec-line"><div class="code"><span class="indent">    </span><span style="--0:#FFE66D;--1:#50FA7B">tabListAdd</span><span style="--0:#D5CED9;--1:#F8F8F2">({</span></div></div><div class="ec-line"><div class="code"><span class="indent"><span style="--1:#F8F8F2">      </span></span><span style="--0:#00E8C6;--1:#F8F8F2">tabList</span><span style="--0:#D5CED9;--1:#F8F8F2">,</span></div></div><div class="ec-line"><div class="code"><span class="indent"><span style="--0:#D5CED9;--1:#F8F8F2">      </span></span><span style="--0:#D5CED9;--1:#F8F8F2">activeTab</span><span style="--0:#D5CED9;--1:#FF79C6">:</span><span style="--1:#F8F8F2"><span style="--0:#D5CED9"> </span><span style="--0:#00E8C6">paramTab</span></span></div></div><div class="ec-line"><div class="code"><span class="indent"><span style="--0:#D5CED9;--1:#F8F8F2">    </span></span><span style="--0:#D5CED9;--1:#F8F8F2">})</span></div></div><div class="ec-line"><div class="code">
+</div></div><div class="ec-line"><div class="code"><span class="indent">    </span><span style="--0:#FF5EC9;--1:#BD93F9;--1fs:italic">this</span><span style="--0:#D5CED9;--1:#F8F8F2">.</span><span style="--0:#FFE66D;--1:#50FA7B">toPath</span><span style="--0:#D5CED9;--1:#F8F8F2">(</span><span style="--0:#96E072;--1:#F1FA8C">`nav_</span><span style="--0:#FB6A9E;--1:#FF79C6">${</span><span style="--1:#F8F8F2"><span style="--0:#F39C12">param</span><span style="--0:#D5CED9">.</span><span style="--0:#00E8C6">key</span></span><span style="--0:#FB6A9E;--1:#FF79C6">}</span><span style="--0:#96E072;--1:#F1FA8C">`</span><span style="--0:#D5CED9;--1:#F8F8F2">)</span></div></div><div class="ec-line"><div class="code"><span class="indent"><span style="--0:#D5CED9;--1:#F8F8F2">  </span></span><span style="--0:#D5CED9;--1:#F8F8F2">}</span></div></div><div class="ec-line"><div class="code"><span class="indent">  </span><span style="--0:#A0A1A7F4;--1:#96A1C2">// 点击 Tag</span></div></div><div class="ec-line"><div class="code"><span class="indent">  </span><span style="--0:#FFE66D;--1:#50FA7B">onChange</span><span style="--0:#D5CED9;--1:#F8F8F2"> </span><span style="--0:#F17963;--1:#FF79C6">=</span><span style="--0:#D5CED9;--1:#F8F8F2"> </span><span style="--0:#00E8C6;--1:#FFB86C;--1fs:italic">activeKey</span><span style="--0:#D5CED9;--1:#F8F8F2"> </span><span style="--0:#D477F1;--1:#FF79C6">=></span><span style="--0:#D5CED9;--1:#F8F8F2"> {</span></div></div><div class="ec-line"><div class="code"><span class="indent">    </span><span style="--0:#A0A1A7F4;--1:#96A1C2">// console.log('....', activeKey)</span></div></div><div class="ec-line"><div class="code"><span class="indent">    </span><span style="--0:#D477F1;--1:#FF79C6">const</span><span style="--1:#F8F8F2"><span style="--0:#D5CED9"> { </span><span style="--0:#00E8C6">tabListStatus</span><span style="--0:#D5CED9">, </span><span style="--0:#00E8C6">tabListAdd</span><span style="--0:#D5CED9"> } </span></span><span style="--0:#F17963;--1:#FF79C6">=</span><span style="--0:#D5CED9;--1:#F8F8F2"> </span><span style="--0:#FF5EC9;--1:#BD93F9;--1fs:italic">this</span><span style="--1:#F8F8F2"><span style="--0:#D5CED9">.</span><span style="--0:#00E8C6">props</span></span></div></div><div class="ec-line"><div class="code"><span class="indent">    </span><span style="--0:#D477F1;--1:#FF79C6">const</span><span style="--1:#F8F8F2"><span style="--0:#D5CED9"> { </span><span style="--0:#00E8C6">tabList</span><span style="--0:#D5CED9"> } </span></span><span style="--0:#F17963;--1:#FF79C6">=</span><span style="--1:#F8F8F2"><span style="--0:#D5CED9"> </span><span style="--0:#00E8C6">tabListStatus</span></span></div></div><div class="ec-line"><div class="code"><span class="indent">    </span><span style="--0:#D477F1;--1:#FF79C6">const</span><span style="--1:#F8F8F2"><span style="--0:#D5CED9"> </span><span style="--0:#00E8C6">userMenu</span><span style="--0:#D5CED9"> </span></span><span style="--0:#F17963;--1:#FF79C6">=</span><span style="--1:#F8F8F2"><span style="--0:#D5CED9"> </span><span style="--0:#00E8C6">tabList</span></span></div></div><div class="ec-line"><div class="code"><span class="indent">    </span><span style="--0:#D477F1;--1:#FF79C6">const</span><span style="--1:#F8F8F2"><span style="--0:#D5CED9"> </span><span style="--0:#00E8C6">menu</span><span style="--0:#D5CED9"> </span></span><span style="--0:#F17963;--1:#FF79C6">=</span><span style="--0:#D5CED9;--1:#F8F8F2"> </span><span style="--0:#FF5EC9;--1:#BD93F9;--1fs:italic">this</span><span style="--0:#D5CED9;--1:#F8F8F2">.</span><span style="--0:#FFE66D;--1:#50FA7B">menuChangeFilter</span><span style="--1:#F8F8F2"><span style="--0:#D5CED9">(</span><span style="--0:#00E8C6">userMenu</span><span style="--0:#D5CED9">, </span><span style="--0:#00E8C6">activeKey</span><span style="--0:#D5CED9">)</span></span></div></div><div class="ec-line"><div class="code">
+</div></div><div class="ec-line"><div class="code"><span class="indent">    </span><span style="--0:#D477F1;--1:#FF79C6">const</span><span style="--1:#F8F8F2"><span style="--0:#D5CED9"> </span><span style="--0:#00E8C6">paramTab</span><span style="--0:#D5CED9"> </span></span><span style="--0:#F17963;--1:#FF79C6">=</span><span style="--0:#D5CED9;--1:#F8F8F2"> {</span></div></div><div class="ec-line"><div class="code"><span class="indent">      </span><span style="--0:#F17963;--1:#FF79C6">...</span><span style="--0:#00E8C6;--1:#F8F8F2">menu</span></div></div><div class="ec-line"><div class="code"><span class="indent"><span style="--0:#D5CED9;--1:#F8F8F2">    </span></span><span style="--0:#D5CED9;--1:#F8F8F2">}</span></div></div><div class="ec-line"><div class="code">
+</div></div><div class="ec-line"><div class="code"><span class="indent">    </span><span style="--0:#FFE66D;--1:#50FA7B">tabListAdd</span><span style="--0:#D5CED9;--1:#F8F8F2">({</span></div></div><div class="ec-line"><div class="code"><span class="indent"><span style="--1:#F8F8F2">      </span></span><span style="--0:#00E8C6;--1:#F8F8F2">tabList</span><span style="--0:#D5CED9;--1:#F8F8F2">,</span></div></div><div class="ec-line"><div class="code"><span class="indent"><span style="--0:#D5CED9;--1:#F8F8F2">      </span></span><span style="--0:#D5CED9;--1:#F8F8F2">activeTab</span><span style="--0:#D5CED9;--1:#FF79C6">:</span><span style="--1:#F8F8F2"><span style="--0:#D5CED9"> </span><span style="--0:#00E8C6">paramTab</span></span></div></div><div class="ec-line"><div class="code"><span class="indent"><span style="--0:#D5CED9;--1:#F8F8F2">    </span></span><span style="--0:#D5CED9;--1:#F8F8F2">})</span></div></div><div class="ec-line"><div class="code">
+</div></div><div class="ec-line"><div class="code"><span class="indent">    </span><span style="--0:#FF5EC9;--1:#BD93F9;--1fs:italic">this</span><span style="--0:#D5CED9;--1:#F8F8F2">.</span><span style="--0:#FFE66D;--1:#50FA7B">toPath</span><span style="--1:#F8F8F2"><span style="--0:#D5CED9">(</span><span style="--0:#00E8C6">activeKey</span><span style="--0:#D5CED9">)</span></span></div></div><div class="ec-line"><div class="code"><span class="indent"><span style="--0:#D5CED9;--1:#F8F8F2">  </span></span><span style="--0:#D5CED9;--1:#F8F8F2">}</span></div></div><div class="ec-line"><div class="code"><span class="indent">  </span><span style="--0:#A0A1A7F4;--1:#96A1C2">// 关闭逻辑</span></div></div><div class="ec-line"><div class="code"><span class="indent">  </span><span style="--0:#FFE66D;--1:#50FA7B">remove</span><span style="--0:#D5CED9;--1:#F8F8F2"> </span><span style="--0:#F17963;--1:#FF79C6">=</span><span style="--0:#D5CED9;--1:#F8F8F2"> </span><span style="--0:#00E8C6;--1:#FFB86C;--1fs:italic">targetKey</span><span style="--0:#D5CED9;--1:#F8F8F2"> </span><span style="--0:#D477F1;--1:#FF79C6">=></span><span style="--0:#D5CED9;--1:#F8F8F2"> {</span></div></div><div class="ec-line"><div class="code"><span class="indent">    </span><span style="--0:#D477F1;--1:#FF79C6">let</span><span style="--1:#F8F8F2"><span style="--0:#D5CED9"> </span><span style="--0:#00E8C6">activeKey</span><span style="--0:#D5CED9"> </span></span><span style="--0:#F17963;--1:#FF79C6">=</span><span style="--0:#D5CED9;--1:#F8F8F2"> </span><span style="--0:#FF5EC9;--1:#BD93F9;--1fs:italic">this</span><span style="--1:#F8F8F2"><span style="--0:#D5CED9">.</span><span style="--0:#00E8C6">state</span><span style="--0:#D5CED9">.</span><span style="--0:#00E8C6">activeTab</span></span></div></div><div class="ec-line"><div class="code"><span class="indent">    </span><span style="--0:#D477F1;--1:#FF79C6">let</span><span style="--1:#F8F8F2"><span style="--0:#D5CED9"> </span><span style="--0:#00E8C6">panes</span><span style="--0:#D5CED9"> </span></span><span style="--0:#F17963;--1:#FF79C6">=</span><span style="--0:#D5CED9;--1:#F8F8F2"> </span><span style="--0:#FF5EC9;--1:#BD93F9;--1fs:italic">this</span><span style="--1:#F8F8F2"><span style="--0:#D5CED9">.</span><span style="--0:#00E8C6">state</span><span style="--0:#D5CED9">.</span><span style="--0:#00E8C6">tabList</span></span></div></div><div class="ec-line"><div class="code"><span class="indent">    </span><span style="--0:#D477F1;--1:#FF79C6">let</span><span style="--1:#F8F8F2"><span style="--0:#D5CED9"> </span><span style="--0:#00E8C6">lastIndex</span></span></div></div><div class="ec-line"><div class="code"><span class="indent"><span style="--1:#F8F8F2">    </span></span><span style="--0:#F39C12;--1:#F8F8F2">panes</span><span style="--0:#D5CED9;--1:#F8F8F2">.</span><span style="--0:#FFE66D;--1:#50FA7B">forEach</span><span style="--0:#D5CED9;--1:#F8F8F2">((</span><span style="--0:#00E8C6;--1:#FFB86C;--1fs:italic">pane</span><span style="--0:#D5CED9;--1:#F8F8F2">, </span><span style="--0:#00E8C6;--1:#FFB86C;--1fs:italic">i</span><span style="--0:#D5CED9;--1:#F8F8F2">) </span><span style="--0:#D477F1;--1:#FF79C6">=></span><span style="--0:#D5CED9;--1:#F8F8F2"> {</span></div></div><div class="ec-line"><div class="code"><span class="indent">      </span><span style="--0:#D477F1;--1:#FF79C6">if</span><span style="--1:#F8F8F2"><span style="--0:#D5CED9"> (</span><span style="--0:#F39C12">pane</span><span style="--0:#D5CED9">.</span><span style="--0:#00E8C6">key</span><span style="--0:#D5CED9"> </span></span><span style="--0:#F17963;--1:#FF79C6">===</span><span style="--1:#F8F8F2"><span style="--0:#D5CED9"> </span><span style="--0:#00E8C6">targetKey</span><span style="--0:#D5CED9">) {</span></span></div></div><div class="ec-line"><div class="code"><span class="indent"><span style="--1:#F8F8F2">        </span></span><span style="--0:#00E8C6;--1:#F8F8F2">lastIndex</span><span style="--0:#D5CED9;--1:#F8F8F2"> </span><span style="--0:#F17963;--1:#FF79C6">=</span><span style="--1:#F8F8F2"><span style="--0:#D5CED9"> </span><span style="--0:#F39C12">panes</span><span style="--0:#D5CED9">.</span><span style="--0:#00E8C6">length</span><span style="--0:#D5CED9"> </span></span><span style="--0:#F17963;--1:#FF79C6">-</span><span style="--0:#D5CED9;--1:#F8F8F2"> </span><span style="--0:#F39C12;--1:#BD93F9">1</span><span style="--0:#D5CED9;--1:#F8F8F2"> </span><span style="--0:#F17963;--1:#FF79C6">===</span><span style="--1:#F8F8F2"><span style="--0:#D5CED9"> </span><span style="--0:#00E8C6">i</span><span style="--0:#D5CED9"> </span></span><span style="--0:#F17963;--1:#FF79C6">?</span><span style="--1:#F8F8F2"><span style="--0:#D5CED9"> </span><span style="--0:#00E8C6">i</span><span style="--0:#D5CED9"> </span></span><span style="--0:#F17963;--1:#FF79C6">-</span><span style="--0:#D5CED9;--1:#F8F8F2"> </span><span style="--0:#F39C12;--1:#BD93F9">1</span><span style="--0:#D5CED9;--1:#F8F8F2"> </span><span style="--0:#F17963;--1:#FF79C6">:</span><span style="--1:#F8F8F2"><span style="--0:#D5CED9"> </span><span style="--0:#00E8C6">i</span></span></div></div><div class="ec-line"><div class="code"><span class="indent"><span style="--0:#D5CED9;--1:#F8F8F2">      </span></span><span style="--0:#D5CED9;--1:#F8F8F2">}</span></div></div><div class="ec-line"><div class="code"><span class="indent"><span style="--0:#D5CED9;--1:#F8F8F2">    </span></span><span style="--0:#D5CED9;--1:#F8F8F2">})</span></div></div><div class="ec-line"><div class="code"><span class="indent">    </span><span style="--0:#D477F1;--1:#FF79C6">const</span><span style="--1:#F8F8F2"><span style="--0:#D5CED9"> </span><span style="--0:#00E8C6">panesFilter</span><span style="--0:#D5CED9"> </span></span><span style="--0:#F17963;--1:#FF79C6">=</span><span style="--1:#F8F8F2"><span style="--0:#D5CED9"> </span><span style="--0:#F39C12">panes</span><span style="--0:#D5CED9">.</span></span><span style="--0:#FFE66D;--1:#50FA7B">filter</span><span style="--0:#D5CED9;--1:#F8F8F2">(</span><span style="--0:#00E8C6;--1:#FFB86C;--1fs:italic">pane</span><span style="--0:#D5CED9;--1:#F8F8F2"> </span><span style="--0:#D477F1;--1:#FF79C6">=></span><span style="--1:#F8F8F2"><span style="--0:#D5CED9"> </span><span style="--0:#F39C12">pane</span><span style="--0:#D5CED9">.</span><span style="--0:#00E8C6">key</span><span style="--0:#D5CED9"> </span></span><span style="--0:#F17963;--1:#FF79C6">!==</span><span style="--1:#F8F8F2"><span style="--0:#D5CED9"> </span><span style="--0:#00E8C6">targetKey</span><span style="--0:#D5CED9">)</span></span></div></div><div class="ec-line"><div class="code">
+</div></div><div class="ec-line"><div class="code"><span class="indent">    </span><span style="--0:#D477F1;--1:#FF79C6">if</span><span style="--1:#F8F8F2"><span style="--0:#D5CED9"> (</span><span style="--0:#F39C12">panesFilter</span><span style="--0:#D5CED9">.</span><span style="--0:#00E8C6">length</span><span style="--0:#D5CED9"> </span></span><span style="--0:#F17963;--1:#FF79C6">&#x26;&#x26;</span><span style="--1:#F8F8F2"><span style="--0:#D5CED9"> </span><span style="--0:#00E8C6">activeKey</span><span style="--0:#D5CED9"> </span></span><span style="--0:#F17963;--1:#FF79C6">===</span><span style="--1:#F8F8F2"><span style="--0:#D5CED9"> </span><span style="--0:#00E8C6">targetKey</span><span style="--0:#D5CED9">) {</span></span></div></div><div class="ec-line"><div class="code"><span class="indent">      </span><span style="--0:#D477F1;--1:#FF79C6">if</span><span style="--1:#F8F8F2"><span style="--0:#D5CED9"> (</span><span style="--0:#00E8C6">lastIndex</span><span style="--0:#D5CED9"> </span></span><span style="--0:#F17963;--1:#FF79C6">>=</span><span style="--0:#D5CED9;--1:#F8F8F2"> </span><span style="--0:#F39C12;--1:#BD93F9">0</span><span style="--0:#D5CED9;--1:#F8F8F2">) {</span></div></div><div class="ec-line"><div class="code"><span class="indent"><span style="--1:#F8F8F2">        </span></span><span style="--0:#00E8C6;--1:#F8F8F2">activeKey</span><span style="--0:#D5CED9;--1:#F8F8F2"> </span><span style="--0:#F17963;--1:#FF79C6">=</span><span style="--1:#F8F8F2"><span style="--0:#D5CED9"> </span><span style="--0:#00E8C6">panesFilter</span><span style="--0:#D5CED9">[</span><span style="--0:#00E8C6">lastIndex</span><span style="--0:#D5CED9">]</span></span></div></div><div class="ec-line"><div class="code"><span class="indent"><span style="--0:#D5CED9;--1:#F8F8F2">      </span></span><span style="--0:#D5CED9;--1:#F8F8F2">} </span><span style="--0:#D477F1;--1:#FF79C6">else</span><span style="--0:#D5CED9;--1:#F8F8F2"> {</span></div></div><div class="ec-line"><div class="code"><span class="indent"><span style="--1:#F8F8F2">        </span></span><span style="--0:#00E8C6;--1:#F8F8F2">activeKey</span><span style="--0:#D5CED9;--1:#F8F8F2"> </span><span style="--0:#F17963;--1:#FF79C6">=</span><span style="--1:#F8F8F2"><span style="--0:#D5CED9"> </span><span style="--0:#00E8C6">panesFilter</span><span style="--0:#D5CED9">[</span></span><span style="--0:#F39C12;--1:#BD93F9">0</span><span style="--0:#D5CED9;--1:#F8F8F2">]</span></div></div><div class="ec-line"><div class="code"><span class="indent"><span style="--0:#D5CED9;--1:#F8F8F2">      </span></span><span style="--0:#D5CED9;--1:#F8F8F2">}</span></div></div><div class="ec-line"><div class="code"><span class="indent"><span style="--0:#D5CED9;--1:#F8F8F2">    </span></span><span style="--0:#D5CED9;--1:#F8F8F2">} </span><span style="--0:#D477F1;--1:#FF79C6">else</span><span style="--0:#D5CED9;--1:#F8F8F2"> {</span></div></div><div class="ec-line"><div class="code"><span class="indent"><span style="--1:#F8F8F2">      </span></span><span style="--0:#00E8C6;--1:#F8F8F2">activeKey</span><span style="--0:#D5CED9;--1:#F8F8F2"> </span><span style="--0:#F17963;--1:#FF79C6">=</span><span style="--0:#D5CED9;--1:#F8F8F2"> </span><span style="--0:#F17963;--1:#BD93F9">null</span></div></div><div class="ec-line"><div class="code"><span class="indent"><span style="--0:#D5CED9;--1:#F8F8F2">    </span></span><span style="--0:#D5CED9;--1:#F8F8F2">}</span></div></div><div class="ec-line"><div class="code">
+</div></div><div class="ec-line"><div class="code"><span class="indent">    </span><span style="--0:#FF5EC9;--1:#BD93F9;--1fs:italic">this</span><span style="--1:#F8F8F2"><span style="--0:#D5CED9">.</span><span style="--0:#00E8C6">props</span><span style="--0:#D5CED9">.</span></span><span style="--0:#FFE66D;--1:#50FA7B">tabListAdd</span><span style="--0:#D5CED9;--1:#F8F8F2">({</span></div></div><div class="ec-line"><div class="code"><span class="indent"><span style="--0:#D5CED9;--1:#F8F8F2">      </span></span><span style="--0:#D5CED9;--1:#F8F8F2">tabList</span><span style="--0:#D5CED9;--1:#FF79C6">:</span><span style="--1:#F8F8F2"><span style="--0:#D5CED9"> </span><span style="--0:#00E8C6">panesFilter</span><span style="--0:#D5CED9">,</span></span></div></div><div class="ec-line"><div class="code"><span class="indent"><span style="--0:#D5CED9;--1:#F8F8F2">      </span></span><span style="--0:#D5CED9;--1:#F8F8F2">activeTab</span><span style="--0:#D5CED9;--1:#FF79C6">:</span><span style="--1:#F8F8F2"><span style="--0:#D5CED9"> </span><span style="--0:#00E8C6">activeKey</span></span></div></div><div class="ec-line"><div class="code"><span class="indent"><span style="--0:#D5CED9;--1:#F8F8F2">    </span></span><span style="--0:#D5CED9;--1:#F8F8F2">})</span></div></div><div class="ec-line"><div class="code">
+</div></div><div class="ec-line"><div class="code"><span class="indent">    </span><span style="--0:#FF5EC9;--1:#BD93F9;--1fs:italic">this</span><span style="--0:#D5CED9;--1:#F8F8F2">.</span><span style="--0:#FFE66D;--1:#50FA7B">toPath</span><span style="--1:#F8F8F2"><span style="--0:#D5CED9">(</span><span style="--0:#00E8C6">activeKey</span><span style="--0:#D5CED9"> </span></span><span style="--0:#F17963;--1:#FF79C6">!==</span><span style="--0:#D5CED9;--1:#F8F8F2"> </span><span style="--0:#F17963;--1:#BD93F9">null</span><span style="--0:#D5CED9;--1:#F8F8F2"> </span><span style="--0:#F17963;--1:#FF79C6">?</span><span style="--1:#F8F8F2"><span style="--0:#D5CED9"> </span><span style="--0:#F39C12">activeKey</span><span style="--0:#D5CED9">.</span><span style="--0:#00E8C6">key</span><span style="--0:#D5CED9"> </span></span><span style="--0:#F17963;--1:#FF79C6">:</span><span style="--0:#D5CED9;--1:#F8F8F2"> </span><span style="--0:#96E072;--1:#E9F284">'</span><span style="--0:#96E072;--1:#F1FA8C">/</span><span style="--0:#96E072;--1:#E9F284">'</span><span style="--0:#D5CED9;--1:#F8F8F2">)</span></div></div><div class="ec-line"><div class="code"><span class="indent"><span style="--0:#D5CED9;--1:#F8F8F2">  </span></span><span style="--0:#D5CED9;--1:#F8F8F2">}</span></div></div><div class="ec-line"><div class="code">
+</div></div><div class="ec-line"><div class="code"><span class="indent">  </span><span style="--0:#A0A1A7F4;--1:#96A1C2">// ...</span></div></div><div class="ec-line"><div class="code"><span style="--0:#D5CED9;--1:#F8F8F2">}</span></div></div></code></pre><div class="copy"><div aria-live="polite"></div><button title="Copy to clipboard" data-copied="Copied!" data-code="class App extends Component {  // 点击侧栏  handleOnMenuItem = param => {    const { tabListAdd, tabListStatus } = this.props    const { tabList } = tabListStatus    const userMenu = menuDataSource    const menu = this.menuItemFilter(userMenu, &#x60;/nav_${param.key}&#x60;)    let paramTab = {      title: menu.name,      key: menu.path,      queryParam: {},      dataSource: {}    }    //判断是否为新增    let pushBol = true    tabList.map(tab => {      if (tab.key === paramTab.key) {        pushBol = false        paramTab = Object.assign({},paramTab,tab)      }      return tab    })    if (pushBol) {      tabList.push(paramTab)    }    tabListAdd({      tabList,      activeTab: paramTab    })    this.toPath(&#x60;nav_${param.key}&#x60;)  }  // 点击 Tag  onChange = activeKey => {    // console.log(&#x27;....&#x27;, activeKey)    const { tabListStatus, tabListAdd } = this.props    const { tabList } = tabListStatus    const userMenu = tabList    const menu = this.menuChangeFilter(userMenu, activeKey)    const paramTab = {      ...menu    }    tabListAdd({      tabList,      activeTab: paramTab    })    this.toPath(activeKey)  }  // 关闭逻辑  remove = targetKey => {    let activeKey = this.state.activeTab    let panes = this.state.tabList    let lastIndex    panes.forEach((pane, i) => {      if (pane.key === targetKey) {        lastIndex = panes.length - 1 === i ? i - 1 : i      }    })    const panesFilter = panes.filter(pane => pane.key !== targetKey)    if (panesFilter.length &#x26;&#x26; activeKey === targetKey) {      if (lastIndex >= 0) {        activeKey = panesFilter[lastIndex]      } else {        activeKey = panesFilter[0]      }    } else {      activeKey = null    }    this.props.tabListAdd({      tabList: panesFilter,      activeTab: activeKey    })    this.toPath(activeKey !== null ? activeKey.key : &#x27;/&#x27;)  }  // ...}"><div></div></button></div></figure></div>
+<h4 id="23-内部交互逻辑">2.3 内部交互逻辑</h4>
+<ul>
+<li>判断是否新增</li>
+<li>操作更新 <code>onChange</code>, <code>onClear</code>, <code>onSubmit</code></li>
+</ul>
+<p>使用标记符号，或者直接判断一个 key 值是否存在值，来发送请求，demo 内使用 dataSource 是否存在为空来判断是否需要发送请求</p>
+<div class="expressive-code"><figure class="frame"><figcaption class="header"></figcaption><pre data-language="javascript"><code><div class="ec-line"><div class="code"><span style="--0:#FFE66D;--1:#50FA7B">componentDidMount</span><span style="--0:#D5CED9;--1:#F8F8F2">() {</span></div></div><div class="ec-line"><div class="code"><span class="indent">  </span><span style="--0:#D477F1;--1:#FF79C6">const</span><span style="--1:#F8F8F2"><span style="--0:#D5CED9"> { </span><span style="--0:#00E8C6">tabListStatus</span><span style="--0:#D5CED9">, </span><span style="--0:#00E8C6">musicList_query_param</span><span style="--0:#D5CED9">, </span><span style="--0:#00E8C6">musicList</span><span style="--0:#D5CED9"> } </span></span><span style="--0:#F17963;--1:#FF79C6">=</span><span style="--0:#D5CED9;--1:#F8F8F2"> </span><span style="--0:#FF5EC9;--1:#BD93F9;--1fs:italic">this</span><span style="--1:#F8F8F2"><span style="--0:#D5CED9">.</span><span style="--0:#00E8C6">props</span></span></div></div><div class="ec-line"><div class="code"><span class="indent">  </span><span style="--0:#D477F1;--1:#FF79C6">const</span><span style="--1:#F8F8F2"><span style="--0:#D5CED9"> { </span><span style="--0:#00E8C6">dataSource</span><span style="--0:#D5CED9"> } </span></span><span style="--0:#F17963;--1:#FF79C6">=</span><span style="--1:#F8F8F2"><span style="--0:#D5CED9"> </span><span style="--0:#F39C12">tabListStatus</span><span style="--0:#D5CED9">.</span><span style="--0:#00E8C6">activeTab</span></span></div></div><div class="ec-line"><div class="code">
+</div></div><div class="ec-line"><div class="code"><span class="indent">  </span><span style="--0:#D477F1;--1:#FF79C6">if</span><span style="--0:#D5CED9;--1:#F8F8F2"> (</span><span style="--0:#F17963;--1:#FF79C6">!</span><span style="--1:#F8F8F2"><span style="--0:#F39C12">Object</span><span style="--0:#D5CED9">.</span></span><span style="--0:#FFE66D;--1:#50FA7B">keys</span><span style="--1:#F8F8F2"><span style="--0:#D5CED9">(</span><span style="--0:#00E8C6">dataSource</span><span style="--0:#D5CED9">).</span><span style="--0:#00E8C6">length</span><span style="--0:#D5CED9">) {</span></span></div></div><div class="ec-line"><div class="code"><span class="indent">    </span><span style="--0:#FFE66D;--1:#50FA7B">musicList</span><span style="--1:#F8F8F2"><span style="--0:#D5CED9">(</span><span style="--0:#00E8C6">musicList_query_param</span><span style="--0:#D5CED9">)</span></span></div></div><div class="ec-line"><div class="code"><span class="indent"><span style="--0:#D5CED9;--1:#F8F8F2">  </span></span><span style="--0:#D5CED9;--1:#F8F8F2">}</span></div></div><div class="ec-line"><div class="code"><span style="--0:#D5CED9;--1:#F8F8F2">}</span></div></div></code></pre><div class="copy"><div aria-live="polite"></div><button title="Copy to clipboard" data-copied="Copied!" data-code="componentDidMount() {  const { tabListStatus, musicList_query_param, musicList } = this.props  const { dataSource } = tabListStatus.activeTab  if (!Object.keys(dataSource).length) {    musicList(musicList_query_param)  }}"><div></div></button></div></figure></div>
+<p>操作更新 <code>onChange</code>, <code>onClear</code>, <code>onSubmit</code> 除了这一些以外还会存在不同的操作，demo 大致分了这几个操作，均使用 reducer 操作，App.js 内监听操作，更改内存，模块内不参与内存更改</p>
+<div class="expressive-code"><figure class="frame"><figcaption class="header"></figcaption><pre data-language="javascript"><code><div class="ec-line"><div class="code"><span style="--0:#FFE66D;--1:#50FA7B">onChange</span><span style="--0:#D5CED9;--1:#F8F8F2"> </span><span style="--0:#F17963;--1:#FF79C6">=</span><span style="--0:#D5CED9;--1:#F8F8F2"> (</span><span style="--0:#00E8C6;--1:#FFB86C;--1fs:italic">tabList</span><span style="--0:#D5CED9;--1:#F8F8F2">, </span><span style="--0:#00E8C6;--1:#FFB86C;--1fs:italic">e</span><span style="--0:#D5CED9;--1:#F8F8F2">) </span><span style="--0:#D477F1;--1:#FF79C6">=></span><span style="--0:#D5CED9;--1:#F8F8F2"> {</span></div></div><div class="ec-line"><div class="code"><span class="indent"><span style="--1:#F8F8F2">  </span></span><span style="--0:#F39C12;--1:#F8F8F2">e</span><span style="--0:#D5CED9;--1:#F8F8F2">.</span><span style="--0:#FFE66D;--1:#50FA7B">persist</span><span style="--0:#D5CED9;--1:#F8F8F2">()</span></div></div><div class="ec-line"><div class="code"><span class="indent">  </span><span style="--0:#D477F1;--1:#FF79C6">if</span><span style="--0:#D5CED9;--1:#F8F8F2"> (</span><span style="--0:#F17963;--1:#FF79C6">!</span><span style="--1:#F8F8F2"><span style="--0:#00E8C6">e</span><span style="--0:#D5CED9"> </span></span><span style="--0:#F17963;--1:#FF79C6">||</span><span style="--0:#D5CED9;--1:#F8F8F2"> </span><span style="--0:#F17963;--1:#FF79C6">!</span><span style="--1:#F8F8F2"><span style="--0:#F39C12">e</span><span style="--0:#D5CED9">.</span><span style="--0:#00E8C6">target</span><span style="--0:#D5CED9">) {</span></span></div></div><div class="ec-line"><div class="code"><span class="indent">    </span><span style="--0:#D477F1;--1:#FF79C6">return</span></div></div><div class="ec-line"><div class="code"><span class="indent"><span style="--0:#D5CED9;--1:#F8F8F2">  </span></span><span style="--0:#D5CED9;--1:#F8F8F2">}</span></div></div><div class="ec-line"><div class="code"><span class="indent">  </span><span style="--0:#D477F1;--1:#FF79C6">const</span><span style="--1:#F8F8F2"><span style="--0:#D5CED9"> { </span><span style="--0:#00E8C6">target</span><span style="--0:#D5CED9"> } </span></span><span style="--0:#F17963;--1:#FF79C6">=</span><span style="--1:#F8F8F2"><span style="--0:#D5CED9"> </span><span style="--0:#00E8C6">e</span></span></div></div><div class="ec-line"><div class="code"><span class="indent">  </span><span style="--0:#D477F1;--1:#FF79C6">const</span><span style="--1:#F8F8F2"><span style="--0:#D5CED9"> </span><span style="--0:#00E8C6">operateParam</span><span style="--0:#D5CED9"> </span></span><span style="--0:#F17963;--1:#FF79C6">=</span><span style="--0:#D5CED9;--1:#F8F8F2"> </span><span style="--0:#FFE66D;--1:#50FA7B">operateQuery</span><span style="--1:#F8F8F2"><span style="--0:#D5CED9">(</span><span style="--0:#00E8C6">tabList</span><span style="--0:#D5CED9">, {</span></span></div></div><div class="ec-line"><div class="code"><span class="indent"><span style="--0:#D5CED9;--1:#F8F8F2">    </span></span><span style="--0:#D5CED9;--1:#F8F8F2">[</span><span style="--0:#F39C12;--1:#F8F8F2">target</span><span style="--0:#D5CED9;--1:#F8F8F2">.</span><span style="--0:#00E8C6;--1:#F8F8F2">id</span><span style="--0:#D5CED9;--1:#F8F8F2">]</span><span style="--0:#D5CED9;--1:#FF79C6">:</span><span style="--1:#F8F8F2"><span style="--0:#D5CED9"> </span><span style="--0:#F39C12">target</span><span style="--0:#D5CED9">.</span><span style="--0:#00E8C6">type</span><span style="--0:#D5CED9"> </span></span><span style="--0:#F17963;--1:#FF79C6">===</span><span style="--0:#D5CED9;--1:#F8F8F2"> </span><span style="--0:#96E072;--1:#E9F284">'</span><span style="--0:#96E072;--1:#F1FA8C">checkbox</span><span style="--0:#96E072;--1:#E9F284">'</span><span style="--0:#D5CED9;--1:#F8F8F2"> </span><span style="--0:#F17963;--1:#FF79C6">?</span><span style="--1:#F8F8F2"><span style="--0:#D5CED9"> </span><span style="--0:#F39C12">target</span><span style="--0:#D5CED9">.</span><span style="--0:#00E8C6">checked</span><span style="--0:#D5CED9"> </span></span><span style="--0:#F17963;--1:#FF79C6">:</span><span style="--1:#F8F8F2"><span style="--0:#D5CED9"> </span><span style="--0:#F39C12">target</span><span style="--0:#D5CED9">.</span><span style="--0:#00E8C6">value</span></span></div></div><div class="ec-line"><div class="code"><span class="indent"><span style="--0:#D5CED9;--1:#F8F8F2">  </span></span><span style="--0:#D5CED9;--1:#F8F8F2">})</span></div></div><div class="ec-line"><div class="code">
+</div></div><div class="ec-line"><div class="code"><span class="indent">  </span><span style="--0:#FF5EC9;--1:#BD93F9;--1fs:italic">this</span><span style="--1:#F8F8F2"><span style="--0:#D5CED9">.</span><span style="--0:#00E8C6">props</span><span style="--0:#D5CED9">.</span></span><span style="--0:#FFE66D;--1:#50FA7B">tabListChange</span><span style="--1:#F8F8F2"><span style="--0:#D5CED9">(</span><span style="--0:#00E8C6">operateParam</span><span style="--0:#D5CED9">)</span></span></div></div><div class="ec-line"><div class="code"><span style="--0:#D5CED9;--1:#F8F8F2">}</span></div></div></code></pre><div class="copy"><div aria-live="polite"></div><button title="Copy to clipboard" data-copied="Copied!" data-code="onChange = (tabList, e) => {  e.persist()  if (!e || !e.target) {    return  }  const { target } = e  const operateParam = operateQuery(tabList, {    [target.id]: target.type === &#x27;checkbox&#x27; ? target.checked : target.value  })  this.props.tabListChange(operateParam)}"><div></div></button></div></figure></div>
+<h3 id="3-对比">3. 对比</h3>
+<h4 id="31-vue-的实现">3.1 Vue 的实现</h4>
+<ul>
+<li>技术栈：vue + vue-router + vuex</li>
+<li>UI 框架：ant-design</li>
+</ul>
+<p>关键：keep-alive</p>
+<p><a href="https://codesandbox.io/s/vue-tag-demo-qi4dr?fontsize=14"><img src="https://codesandbox.io/static/img/play-codesandbox.svg" alt="Edit vue-tag-demo"></a></p>
+<h4 id="32-react-的实现">3.2 React 的实现</h4>
+<ul>
+<li>技术栈：react + react-router + redux</li>
+<li>UI 框架：ant-design</li>
+</ul>
+<p>关键：redux 与内存处理</p>
+<p><a href="https://codesandbox.io/s/react-tag-demo-z88jy?fontsize=14"><img src="https://codesandbox.io/static/img/play-codesandbox.svg" alt="Edit react-tag-demo"></a></p>
+<h3 id="4-总结">4. 总结</h3>
+<p>实现上面肯定是 Vue 更快实现的，但对使用 React 内存的控制也是一件非常好玩的事情，如果项目大了，就更好玩了</p>
+<p>实际上这种实现有点鸡肋，因为用户一个不留意，关了页面，这些 Tag 就不存在了，无论是那种管理系统，这个实现如果配合到后台，可能就更好玩了</p>
+<p>感谢 <a href="https://github.com/ZhangPuXi">@白白</a>，感谢 <a href="">@同事</a>，都提供了很不错的思路</p>
+<p>感谢阅读，代码很烂，请轻喷</p> </article> </main> <div class="random"> <div class="w-full h-1 bg-gray-600 mb-4 dark:bg-gray-300"></div> <h1 class="mb-4 text-xl font-heading font-bold text-zinc-900 dark:text-zinc-100">
+Random Read
+</h1> <ul class="flex flex-col gap-1.5"> <li> <a href="/posts/hexo-config-notes" class="group flex justify-between gap-3 text-sm" data-umami-event="Random-article"> <span class="group-hover:underline">Hexo配置随记</span> <span class="text-nowrap text-zinc-500 font-mono"> 2018-04-01 </span> </a> </li><li> <a href="/posts/2026-01-17-read" class="group flex justify-between gap-3 text-sm" data-umami-event="Random-article"> <span class="group-hover:underline">Read -《大力出奇迹》</span> <span class="text-nowrap text-zinc-500 font-mono"> 2026-01-17 </span> </a> </li><li> <a href="/posts/js-api-reduce" class="group flex justify-between gap-3 text-sm" data-umami-event="Random-article"> <span class="group-hover:underline">理解 JavaScript 中 Reduce()</span> <span class="text-nowrap text-zinc-500 font-mono"> 2020-10-25 </span> </a> </li> </ul> </div>  <script data-astro-rerun>
+    (() => {
+      if (window.__lightboxInstalled) return;
+      window.__lightboxInstalled = true;
+
+      const prefersReduced = window.matchMedia?.("(prefers-reduced-motion: reduce)")?.matches;
+      const D = prefersReduced ? 0 : 180;
+      const state = { overlay: null };
+
+      const close = () => {
+        const overlay = state.overlay;
+        if (!overlay) return;
+        const img = overlay.querySelector(".lightbox-img");
+
+        const fade = overlay.animate([{ opacity: 1 }, { opacity: 0 }], { duration: D, easing: "ease-in", fill: "forwards" });
+        const shrink = img?.animate([{ transform: "scale(1)" }, { transform: "scale(0.96)" }], { duration: D, easing: "ease-in", fill: "forwards" });
+
+        Promise.allSettled([fade?.finished ?? Promise.resolve(), shrink?.finished ?? Promise.resolve()]).finally(() => {
+          overlay.remove();
+          state.overlay = null;
+          document.body.style.overflow = "";
+          document.body.style.paddingRight = "";
+          document.removeEventListener("keydown", onKeydown);
+        });
+      };
+
+      const onKeydown = (e) => { if (e.key === "Escape") close(); };
+
+      const openFrom = (thumb) => {
+        if (state.overlay) return;
+
+        const overlay = document.createElement("div");
+        overlay.className = "lightbox-overlay";
+        overlay.dataset.armed = "0";
+        setTimeout(() => { if (overlay.isConnected) overlay.dataset.armed = "1"; }, D || 120);
+
+        const big = thumb.cloneNode(true);
+        big.classList.add("lightbox-img");
+        big.removeAttribute("width");
+        big.removeAttribute("height");
+        big.style.maxWidth = "";
+        big.style.maxHeight = "";
+        big.draggable = false;
+
+        overlay.appendChild(big);
+        document.body.appendChild(overlay);
+        state.overlay = overlay;
+
+        const pad = window.innerWidth - document.documentElement.clientWidth;
+        if (pad > 0) document.body.style.paddingRight = pad + "px";
+        document.body.style.overflow = "hidden";
+
+        overlay.animate([{ opacity: 0 }, { opacity: 1 }], { duration: D, easing: "ease-out", fill: "forwards" });
+        big.animate([{ transform: "scale(0.96)" }, { transform: "scale(1)" }], { duration: D, easing: "ease-out", fill: "forwards" });
+
+        overlay.addEventListener("click", () => { if (overlay?.dataset.armed === "1") close(); });
+        document.addEventListener("keydown", onKeydown);
+      };
+
+      const onDocClick = (e) => {
+        const target = e.target;
+        if (!(target instanceof Element)) return;
+        const article = target.closest("article[data-pagefind-body]");
+        if (!article) return;
+        const img = target.closest("img");
+        if (!img) return;
+        if (e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
+
+        e.preventDefault();
+        e.stopPropagation();
+        openFrom(img);
+      };
+
+      document.addEventListener("click", onDocClick, { passive: false });
+      document.addEventListener("astro:before-swap", close);
+    })();
+  </script>   </div> <script>
+  function setTheme() {
+    let theme
+
+    if (typeof localStorage !== 'undefined' && localStorage.getItem('theme')) {
+      theme = localStorage.getItem('theme')
+    } else {
+      theme = window.matchMedia('(prefers-color-scheme: dark)').matches
+        ? 'dark'
+        : 'light'
+    }
+
+    document.documentElement.classList[theme ? 'add' : 'remove'](theme)
+
+    if (typeof localStorage !== 'undefined') {
+      const observer = new MutationObserver(() => {
+        const isDark = document.documentElement.classList.contains('dark')
+        localStorage.setItem('theme', isDark ? 'dark' : 'light')
+      })
+      observer.observe(document.documentElement, {
+        attributes: true,
+        attributeFilter: ['class'],
+      })
+    }
+  }
+
+  setTheme()
+
+  document.addEventListener('astro:after-swap', setTheme)
+</script></body></html>

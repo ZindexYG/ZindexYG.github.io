@@ -1,0 +1,757 @@
+<!DOCTYPE html><html lang="en" class="relative bg-fontdefault dark:bg-bgdefault"> <head><meta name="generator" content="Astro"><!-- Global Metadata --><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><link rel="icon" type="image/svg+xml" href="/favicon.svg"><meta name="generator" content="Astro v5.16.6"><!-- Font preloads --><link rel="preload" href="/fonts/geist-variable.woff2" as="font" type="font/woff2" crossorigin><link rel="preload" href="/fonts/geist-mono-variable.woff2" as="font" type="font/woff2" crossorigin><!-- Canonical URL --><link rel="canonical" href="https://z-index.me/posts/jquery-usage-notes/"><!-- Primary Meta Tags --><title>jQuery的使用心得</title><meta name="title" content="jQuery的使用心得"><meta name="description" content="是读书笔记哇"><!-- Open Graph / Facebook --><meta property="og:type" content="website"><meta property="og:url" content="https://z-index.me/posts/jquery-usage-notes/"><meta property="og:title" content="jQuery的使用心得"><meta property="og:description" content="是读书笔记哇"><meta property="og:image" content="https://z-index.me/static/ogimage.png"><!-- Twitter --><meta property="twitter:card" content="summary_large_image"><meta property="twitter:url" content="https://z-index.me/posts/jquery-usage-notes/"><meta property="twitter:title" content="jQuery的使用心得"><meta property="twitter:description" content="是读书笔记哇"><meta property="twitter:image" content="https://z-index.me/static/ogimage.png"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/twikoo@1.6.44/dist/twikoo.css" crossorigin="anonymous"><link rel="stylesheet" href="/_astro/index.wYwjb_5q.css">
+<style>.toc-root[data-astro-cid-6t6zfk7k] .toc-inline[data-astro-cid-6t6zfk7k]{display:block}.toc-root[data-astro-cid-6t6zfk7k] .toc-float[data-astro-cid-6t6zfk7k]{display:none}@media(min-width:1200px){.toc-root[data-astro-cid-6t6zfk7k] .toc-inline[data-astro-cid-6t6zfk7k]{display:none}.toc-root[data-astro-cid-6t6zfk7k] .toc-float[data-astro-cid-6t6zfk7k]{display:block}}.toc-root[data-astro-cid-6t6zfk7k] .toc[data-astro-cid-6t6zfk7k] details[data-astro-cid-6t6zfk7k]{padding:1rem;border-radius:10px;border:1px solid #83838330;margin-bottom:1rem}.toc-root[data-astro-cid-6t6zfk7k] .toc-float[data-astro-cid-6t6zfk7k]{position:fixed;top:84px;right:max(12px,env(safe-area-inset-right));width:260px;max-height:78vh;overflow:auto;z-index:40;transition:opacity .25s ease,transform .25s ease}.toc-root[data-astro-cid-6t6zfk7k] .toc-float[data-astro-cid-6t6zfk7k].at-top{opacity:0;pointer-events:none;transform:translateY(-4px)}.toc-root[data-astro-cid-6t6zfk7k] .toc[data-astro-cid-6t6zfk7k] a[data-astro-cid-6t6zfk7k].toc-link{position:relative;display:block;padding:.125rem 0;color:#6b7280;text-decoration:none;transition:color .15s ease}.dark[data-astro-cid-6t6zfk7k] .toc-root[data-astro-cid-6t6zfk7k] .toc[data-astro-cid-6t6zfk7k] a[data-astro-cid-6t6zfk7k].toc-link{color:#a1a1aa}.toc-root[data-astro-cid-6t6zfk7k] .toc[data-astro-cid-6t6zfk7k] a[data-astro-cid-6t6zfk7k].toc-link:hover{color:#3f3f46}.dark[data-astro-cid-6t6zfk7k] .toc-root[data-astro-cid-6t6zfk7k] .toc[data-astro-cid-6t6zfk7k] a[data-astro-cid-6t6zfk7k].toc-link:hover{color:#e4e4e7}.toc-root[data-astro-cid-6t6zfk7k] .toc[data-astro-cid-6t6zfk7k] a[data-astro-cid-6t6zfk7k].toc-link.is-active:before{content:"";position:absolute;left:-12px;top:.6em;width:5px;height:5px;border-radius:50%;background:currentColor}.toc-root[data-astro-cid-6t6zfk7k] .toc[data-astro-cid-6t6zfk7k] a[data-astro-cid-6t6zfk7k][data-depth="1"]{font-weight:600}.toc-root[data-astro-cid-6t6zfk7k] .toc[data-astro-cid-6t6zfk7k] a[data-astro-cid-6t6zfk7k][data-depth="3"],.toc-root[data-astro-cid-6t6zfk7k] .toc[data-astro-cid-6t6zfk7k] a[data-astro-cid-6t6zfk7k][data-depth="4"],.toc-root[data-astro-cid-6t6zfk7k] .toc[data-astro-cid-6t6zfk7k] a[data-astro-cid-6t6zfk7k][data-depth="5"]{opacity:.8;font-size:.9em}.toc-root[data-astro-cid-6t6zfk7k] .toc-float[data-astro-cid-6t6zfk7k] .toc[data-astro-cid-6t6zfk7k] details[data-astro-cid-6t6zfk7k]{padding:.75rem;border:1px solid rgba(0,0,0,.08);background-color:#00000008}.dark[data-astro-cid-6t6zfk7k] .toc-root[data-astro-cid-6t6zfk7k] .toc-float[data-astro-cid-6t6zfk7k] .toc[data-astro-cid-6t6zfk7k] details[data-astro-cid-6t6zfk7k]{border-color:#ffffff14;background-color:#ffffff0a}article[data-pagefind-body] :is(h1[id],h2[id],h3[id],h4[id],h5[id]){scroll-margin-top:96px}article[data-pagefind-body] img{cursor:pointer}article[data-pagefind-body] img{transition:transform .18s ease,filter .18s ease;transform-origin:center center;will-change:transform;backface-visibility:hidden}article[data-pagefind-body] img:hover{transform:scale(1.01)}.lightbox-img:hover{transform:none!important}@media(prefers-reduced-motion:reduce){article[data-pagefind-body] img{transition:none}}.lightbox-overlay{position:fixed;inset:0;display:flex;align-items:center;justify-content:center;background:#0009;cursor:zoom-out;z-index:1000;opacity:0;touch-action:none;-webkit-tap-highlight-color:transparent}.dark .lightbox-overlay{background:#000000b3}.lightbox-img{max-width:92vw;max-height:92vh;border-radius:12px;box-shadow:0 10px 40px #0006;will-change:transform}.dark .lightbox-img{box-shadow:0 10px 40px #000000b3}@media(prefers-reduced-motion:reduce){.lightbox-overlay,.lightbox-img{animation:none !重要;transition:none !重要}}.expressive-code .frame{all:unset;position:relative;display:block;--header-border-radius: calc(var(--ec-brdRad) + var(--ec-brdWd));--tab-border-radius: calc(var(--ec-frm-edTabBrdRad) + var(--ec-brdWd));--button-spacing: .4rem;--code-background: var(--ec-frm-edBg);border-radius:var(--header-border-radius);box-shadow:0 0 0 var(--ec-brdWd) var(--ec-frm-edBrdClr)!important}
+</style></head> <body class="font-sans min-h-svh text-zinc-900 bg-fontdefault antialiased transition-colors dark:bg-bgdefault dark:text-fontdefault"> <div class="mx-auto p-4 pb-16 max-w-3xl"> <header class="sticky top-0 z-50 w-full mb-6
+         bg-fontdefault dark:bg-bgdefault transition-colors" data-astro-cid-3ef6ksr2> <!-- 仅内容限宽；背景全屏铺开 --> <div class="mx-auto w-full max-w-screen-md
+              flex h-12 items-center justify-between" data-astro-cid-3ef6ksr2>  <nav class="hidden md:flex items-center gap-4" data-astro-cid-3ef6ksr2> <a href="/" data-astro-cid-3ef6ksr2>Home</a> <a href="/posts" data-astro-cid-3ef6ksr2>Posts</a> <a href="/library" data-astro-cid-3ef6ksr2>Library</a> <!-- <a href="/bmmg">Media</a> --> <!-- <a href="https://exercise.asyncx.top" target="_blank" rel="noopener noreferrer">Steps</a> --> </nav>  <div class="hidden md:block" data-astro-cid-3ef6ksr2> <div class="flex justify-end space-x-2"> <button id="search" class="inline-flex items-center rounded-md border p-1 transition-colors hover:bg-zinc-50 dark:border-zinc-700 dark:hover:bg-zinc-800 [&_svg]:text-zinc-500 [&_svg]:hover:text-zinc-900 [&_svg]:dark:hover:text-zinc-100" aria-label="Search" onclick="window.location.href='/search'" data-umami-event="Button-Search" type="button"> <span class="sr-only">Search</span> <svg class="size-4" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"> <g transform="scale(0.015625)"> <path d="M975.474921 917.123519l-152.442347-152.502577c150.575215-165.512276 146.419339-421.550372-13.431309-581.40102a421.610602 421.610602 0 0 0-596.217622 596.277851c138.890578 138.890578 350.47887 160.151799 512.136422 64.626882l161.47686 161.537091a62.518829 62.518829 0 1 0 88.477996-88.538227z m-251.038998-222.851318a301.15043 301.15043 0 0 1-425.886938 0 301.15043 301.15043 0 0 1 0-425.886938 301.15043 301.15043 0 1 1 425.886938 425.886938z" fill="currentColor"></path> </g> </svg> </button> <button id="rss" class="inline-flex items-center rounded-md border p-1 transition-colors hover:bg-zinc-50 dark:border-zinc-700 dark:hover:bg-zinc-800 [&_svg]:text-zinc-500 [&_svg]:hover:text-zinc-900 [&_svg]:dark:hover:text-zinc-100" aria-label="RSS Feed" onclick="window.location.href='/rss.xml'" data-umami-event="Button-RSS" type="button"> <span class="sr-only">RSS Feed</span> <svg class="size-4" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"> <g transform="scale(0.015625)"> <path d="M42.666667 853.333333a128 128 0 1 1 256 0 128 128 0 0 1-256 0z m938.666666 128h-178.773333c0-418.986667-340.906667-759.893333-759.893333-759.893333V42.666667c517.546667 0 938.666667 421.12 938.666666 938.666666z m-298.666666 0h-182.826667c0-252.074667-205.098667-457.130667-457.173333-457.130666V341.333333c352.896 0 640 287.104 640 640z" fill="currentColor"></path> </g> </svg> </button> <button id="douban" class="inline-flex items-center rounded-md border p-1 transition-colors hover:bg-zinc-50 dark:border-zinc-700 dark:hover:bg-zinc-800 [&_svg]:text-zinc-500 [&_svg]:hover:text-zinc-900 [&_svg]:dark:hover:text-zinc-100" aria-label="Douban" onclick="window.open('https://douban.com/people/141874159/', '_blank')" data-umami-event="Button-Douban" type="button"> <span class="sr-only">Douban</span> <svg class="size-4" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" fill="currentColor"> <path d="M.51 3.06h22.98V.755H.51V3.06Zm20.976 2.537v9.608h-2.137l-1.669 5.76H24v2.28H0v-2.28h6.32l-1.67-5.76H2.515V5.597h18.972Zm-5.066 9.608H7.58l1.67 5.76h5.501l1.67-5.76ZM18.367 7.9H5.634v5.025h12.733V7.9Z"></path> </svg> </button> <button id="github" class="inline-flex items-center rounded-md border p-1 transition-colors hover:bg-zinc-50 dark:border-zinc-700 dark:hover:bg-zinc-800 [&_svg]:text-zinc-500 [&_svg]:hover:text-zinc-900 [&_svg]:dark:hover:text-zinc-100" aria-label="GitHub" onclick="window.open('https://github.com/ZindexYG/z-index.me', '_blank')" data-umami-event="Button-GitHub" type="button"> <span class="sr-only">GitHub</span> <svg class="size-4" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" fill="currentColor"> <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"></path> </svg> </button> <button id="theme-toggle" class="inline-flex items-center rounded-md border p-1 transition-colors hover:bg-zinc-50 dark:border-zinc-700 dark:hover:bg-zinc-800 [&_svg]:text-zinc-500 [&_svg]:hover:text-zinc-900 [&_svg]:dark:hover:text-zinc-100" aria-label="Toggle theme" data-umami-event="Button-Theme" type="button"> <span class="sr-only">Toggle theme</span> <svg id="sun" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor" class="hidden size-4 dark:block"> <path d="M8 1a.75.75 0 0 1 .75.75v1.5a.75.75 0 0 1-1.5 0v-1.5A.75.75 0 0 1 8 1ZM10.5 8a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0ZM12.95 4.11a.75.75 0 1 0-1.06-1.06l-1.062 1.06a.75.75 0 0 0 1.061 1.062l1.06-1.061ZM15 8a.75.75 0 0 1-.75.75h-1.5a.75.75 0 0 1 0-1.5h1.5A.75.75 0 0 1 15 8ZM11.89 12.95a.75.75 0 0 0 1.06-1.06l-1.06-1.062a.75.75 0 0 0-1.062 1.061l1.061 1.06ZM8 12a.75.75 0 0 1 .75.75v1.5a.75.75 0 0 1-1.5 0v-1.5A.75.75 0 0 1 8 12ZM5.172 11.89a.75.75 0 0 0-1.061-1.062L3.05 11.89a.75.75 0 1 0 1.06 1.06l1.06-1.06ZM4 8a.75.75 0 0 1-.75.75h-1.5a.75.75 0 0 1 0-1.5h1.5A.75.75 0 0 1 4 8ZM4.11 5.172A.75.75 0 0 0 5.173 4.11L4.11 3.05a.75.75 0 1 0-1.06 1.06l1.06 1.06Z"></path> </svg> <svg id="moon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor" class="size-4 dark:hidden"> <path d="M14.438 10.148c.19-.425-.321-.787-.748-.601A5.5 5.5 0 0 1 6.453 2.31c.186-.427-.176-.938-.6-.748a6.501 6.501 0 1 0 8.585 8.586Z"></path> </svg> </button> </div> <script type="module">function t(){document.getElementById("theme-toggle")?.addEventListener("click",()=>{document.documentElement.classList.toggle("dark")})}t();document.addEventListener("astro:after-swap",t);</script> </div>  <div class="md:hidden flex items-center gap-2" data-astro-cid-3ef6ksr2> <details class="relative" data-astro-cid-3ef6ksr2> <summary class="list-none cursor-pointer p-2 rounded-md
+                 hover:bg-zinc-100 dark:hover:bg-zinc-800
+                 outline-none focus-visible:ring-2
+                 focus-visible:ring-zinc-400 dark:focus-visible:ring-zinc-600" aria-label="Open menu" data-astro-cid-3ef6ksr2> <!-- 汉堡图标 --> <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" data-astro-cid-3ef6ksr2> <path stroke-linecap="round" stroke-linejoin="round" d="M4 7h16M4 12h16M4 17h16" data-astro-cid-3ef6ksr2></path> </svg> </summary> <!-- 下拉菜单背景也跟随站点配色 --> <nav class="absolute top-0 left-[calc(100%+0.5rem)] z-50
+                  w-56 max-w-[80vw]
+                  rounded-lg border border-zinc-200 dark:border-zinc-800
+                  bg-fontdefault dark:bg-bgdefault shadow-lg" data-astro-cid-3ef6ksr2> <ul class="py-1" data-astro-cid-3ef6ksr2> <li data-astro-cid-3ef6ksr2> <a class="block px-3 py-2 rounded hover:bg-zinc-100 dark:hover:bg-zinc-800" href="/" data-astro-cid-3ef6ksr2>Home</a> </li> <li data-astro-cid-3ef6ksr2> <a class="block px-3 py-2 rounded hover:bg-zinc-100 dark:hover:bg-zinc-800" href="/posts" data-astro-cid-3ef6ksr2>Posts</a> </li> <!-- <li>
+              <a
+                class='block px-3 py-2 rounded hover:bg-zinc-100 dark:hover:bg-zinc-800'
+                href='/tags'>Tag</a
+              >
+            </li> --> <!-- <li>
+              <a
+                class='block px-3 py-2 rounded hover:bg-zinc-100 dark:hover:bg-zinc-800'
+                href='/bmmg'>Media</a
+              >
+            </li> --> <!-- <li>
+              <a
+                class='block px-3 py-2 rounded hover:bg-zinc-100 dark:hover:bg-zinc-800'
+                href='https://exercise.asyncx.top'
+                target='_blank'
+                rel='noopener noreferrer'>Steps</a
+              >
+            </li> --> <!-- <li>
+              <a
+                class='block px-3 py-2 rounded hover:bg-zinc-100 dark:hover:bg-zinc-800'
+                href='/about'>README.md</a
+              >
+            </li> --> </ul> </nav> </details> <div class="flex justify-end space-x-2"> <button id="search" class="inline-flex items-center rounded-md border p-1 transition-colors hover:bg-zinc-50 dark:border-zinc-700 dark:hover:bg-zinc-800 [&_svg]:text-zinc-500 [&_svg]:hover:text-zinc-900 [&_svg]:dark:hover:text-zinc-100" aria-label="Search" onclick="window.location.href='/search'" data-umami-event="Button-Search" type="button"> <span class="sr-only">Search</span> <svg class="size-4" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"> <g transform="scale(0.015625)"> <path d="M975.474921 917.123519l-152.442347-152.502577c150.575215-165.512276 146.419339-421.550372-13.431309-581.40102a421.610602 421.610602 0 0 0-596.217622 596.277851c138.890578 138.890578 350.47887 160.151799 512.136422 64.626882l161.47686 161.537091a62.518829 62.518829 0 1 0 88.477996-88.538227z m-251.038998-222.851318a301.15043 301.15043 0 0 1-425.886938 0 301.15043 301.15043 0 0 1 0-425.886938 301.15043 301.15043 0 1 1 425.886938 425.886938z" fill="currentColor"></path> </g> </svg> </button> <button id="rss" class="inline-flex items-center rounded-md border p-1 transition-colors hover:bg-zinc-50 dark:border-zinc-700 dark:hover:bg-zinc-800 [&_svg]:text-zinc-500 [&_svg]:hover:text-zinc-900 [&_svg]:dark:hover:text-zinc-100" aria-label="RSS Feed" onclick="window.location.href='/rss.xml'" data-umami-event="Button-RSS" type="button"> <span class="sr-only">RSS Feed</span> <svg class="size-4" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"> <g transform="scale(0.015625)"> <path d="M42.666667 853.333333a128 128 0 1 1 256 0 128 128 0 0 1-256 0z m938.666666 128h-178.773333c0-418.986667-340.906667-759.893333-759.893333-759.893333V42.666667c517.546667 0 938.666667 421.12 938.666666 938.666666z m-298.666666 0h-182.826667c0-252.074667-205.098667-457.130667-457.173333-457.130666V341.333333c352.896 0 640 287.104 640 640z" fill="currentColor"></path> </g> </svg> </button> <button id="douban" class="inline-flex items-center rounded-md border p-1 transition-colors hover:bg-zinc-50 dark:border-zinc-700 dark:hover:bg-zinc-800 [&_svg]:text-zinc-500 [&_svg]:hover:text-zinc-900 [&_svg]:dark:hover:text-zinc-100" aria-label="Douban" onclick="window.open('https://douban.com/people/141874159/', '_blank')" data-umami-event="Button-Douban" type="button"> <span class="sr-only">Douban</span> <svg class="size-4" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" fill="currentColor"> <path d="M.51 3.06h22.98V.755H.51V3.06Zm20.976 2.537v9.608h-2.137l-1.669 5.76H24v2.28H0v-2.28h6.32l-1.67-5.76H2.515V5.597h18.972Zm-5.066 9.608H7.58l1.67 5.76h5.501l1.67-5.76ZM18.367 7.9H5.634v5.025h12.733V7.9Z"></path> </svg> </button> <button id="github" class="inline-flex items-center rounded-md border p-1 transition-colors hover:bg-zinc-50 dark:border-zinc-700 dark:hover:bg-zinc-800 [&_svg]:text-zinc-500 [&_svg]:hover:text-zinc-900 [&_svg]:dark:hover:text-zinc-100" aria-label="GitHub" onclick="window.open('https://github.com/ZindexYG/z-index.me', '_blank')" data-umami-event="Button-GitHub" type="button"> <span class="sr-only">GitHub</span> <svg class="size-4" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" fill="currentColor"> <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"></path> </svg> </button> <button id="theme-toggle" class="inline-flex items-center rounded-md border p-1 transition-colors hover:bg-zinc-50 dark:border-zinc-700 dark:hover:bg-zinc-800 [&_svg]:text-zinc-500 [&_svg]:hover:text-zinc-900 [&_svg]:dark:hover:text-zinc-100" aria-label="Toggle theme" data-umami-event="Button-Theme" type="button"> <span class="sr-only">Toggle theme</span> <svg id="sun" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor" class="hidden size-4 dark:block"> <path d="M8 1a.75.75 0 0 1 .75.75v1.5a.75.75 0 0 1-1.5 0v-1.5A.75.75 0 0 1 8 1ZM10.5 8a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0ZM12.95 4.11a.75.75 0 1 0-1.06-1.06l-1.062 1.06a.75.75 0 0 0 1.061 1.062l1.06-1.061ZM15 8a.75.75 0 0 1-.75.75h-1.5a.75.75 0 0 1 0-1.5h1.5A.75.75 0 0 1 15 8ZM11.89 12.95a.75.75 0 0 0 1.06-1.06l-1.06-1.062a.75.75 0 0 0-1.062 1.061l1.061 1.06ZM8 12a.75.75 0 0 1 .75.75v1.5a.75.75 0 0 1-1.5 0v-1.5A.75.75 0 0 1 8 12ZM5.172 11.89a.75.75 0 0 0-1.061-1.062L3.05 11.89a.75.75 0 1 0 1.06 1.06l1.06-1.06ZM4 8a.75.75 0 0 1-.75.75h-1.5a.75.75 0 0 1 0-1.5h1.5A.75.75 0 0 1 4 8ZM4.11 5.172A.75.75 0 0 0 5.173 4.11L4.11 3.05a.75.75 0 1 0-1.06 1.06l1.06 1.06Z"></path> </svg> <svg id="moon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor" class="size-4 dark:hidden"> <path d="M14.438 10.148c.19-.425-.321-.787-.748-.601A5.5 5.5 0 0 1 6.453 2.31c.186-.427-.176-.938-.6-.748a6.501 6.501 0 1 0 8.585 8.586Z"></path> </svg> </button> </div>  </div> </div> </header>   <main> <div class="mb-5 flex items-center justify-between"> <h1 class="text-xl font-heading font-bold text-zinc-900 dark:text-zinc-100"> jQuery的使用心得 </h1> <p class="ml-4 text-sm font-medium text-zinc-500"> 2017-12-18 </p> </div>  <div class="mb-5" data-pagefind-ignore="all"> <ul class="flex flex-wrap gap-2"> <li> <a href="/tags/jquery/" class="group flex justify-between gap-3 rounded px-2 py-1 text-sm bg-bgdefault text-fontdefault dark:bg-fontdefault dark:text-bgdefault">
+# jquery </a> </li><li> <a href="/tags/读书笔记/" class="group flex justify-between gap-3 rounded px-2 py-1 text-sm bg-bgdefault text-fontdefault dark:bg-fontdefault dark:text-bgdefault">
+# 读书笔记 </a> </li> </ul> </div>  <div class="toc-root" data-astro-cid-6t6zfk7k><nav class="toc toc-inline" aria-label="Table Of Contents" data-astro-cid-6t6zfk7k><details open data-astro-cid-6t6zfk7k><summary class="text-sm font-semibold" data-astro-cid-6t6zfk7k>Table of Contents</summary><div class="mt-4 ml-4" data-astro-cid-6t6zfk7k>
+    <ul class="space-y-1 pl-4">
+      
+        <li class="text-sm leading-tight">
+          <a href="#规则--格式" class="toc-link toc-h3" data-depth="3">
+            规则 && 格式
+          </a>
+          
+        </li>
+      
+        <li class="text-sm leading-tight">
+          <a href="#jq-如何解决事件冒泡" class="toc-link toc-h3" data-depth="3">
+            jQ 如何解决事件冒泡
+          </a>
+          
+    <ul class="space-y-1 pl-4">
+      
+        <li class="text-sm leading-tight">
+          <a href="#on-与-bind-的区别" class="toc-link toc-h4" data-depth="4">
+            on() 与 bind() 的区别
+          </a>
+          
+        </li>
+      
+        <li class="text-sm leading-tight">
+          <a href="#阻止冒泡行为" class="toc-link toc-h4" data-depth="4">
+            阻止冒泡行为
+          </a>
+          
+        </li>
+      
+    </ul>
+  
+        </li>
+      
+        <li class="text-sm leading-tight">
+          <a href="#jquey-的-ajax" class="toc-link toc-h3" data-depth="3">
+            jQuey 的 Ajax()
+          </a>
+          
+    <ul class="space-y-1 pl-4">
+      
+        <li class="text-sm leading-tight">
+          <a href="#解析" class="toc-link toc-h4" data-depth="4">
+            解析
+          </a>
+          
+        </li>
+      
+        <li class="text-sm leading-tight">
+          <a href="#ajaxsetup-设置默认值" class="toc-link toc-h4" data-depth="4">
+            $.ajaxSetup() 设置默认值
+          </a>
+          
+        </li>
+      
+    </ul>
+  
+        </li>
+      
+        <li class="text-sm leading-tight">
+          <a href="#常用的-jq-代码段" class="toc-link toc-h3" data-depth="3">
+            常用的 JQ 代码段
+          </a>
+          
+    <ul class="space-y-1 pl-4">
+      
+        <li class="text-sm leading-tight">
+          <a href="#1-禁用页面的右键菜单" class="toc-link toc-h4" data-depth="4">
+            1. 禁用页面的右键菜单
+          </a>
+          
+        </li>
+      
+        <li class="text-sm leading-tight">
+          <a href="#2-新窗口的开页面" class="toc-link toc-h4" data-depth="4">
+            2. 新窗口的开页面
+          </a>
+          
+        </li>
+      
+        <li class="text-sm leading-tight">
+          <a href="#3-判断浏览器类型" class="toc-link toc-h4" data-depth="4">
+            3. 判断浏览器类型
+          </a>
+          
+        </li>
+      
+        <li class="text-sm leading-tight">
+          <a href="#4-输入框文字获取焦点" class="toc-link toc-h4" data-depth="4">
+            4. 输入框文字获取焦点
+          </a>
+          
+        </li>
+      
+        <li class="text-sm leading-tight">
+          <a href="#5-返回头部滑动动画" class="toc-link toc-h4" data-depth="4">
+            5. 返回头部滑动动画
+          </a>
+          
+        </li>
+      
+        <li class="text-sm leading-tight">
+          <a href="#6-获取鼠标位置" class="toc-link toc-h4" data-depth="4">
+            6. 获取鼠标位置
+          </a>
+          
+        </li>
+      
+        <li class="text-sm leading-tight">
+          <a href="#7-判断元素是否存在" class="toc-link toc-h4" data-depth="4">
+            7. 判断元素是否存在
+          </a>
+          
+        </li>
+      
+        <li class="text-sm leading-tight">
+          <a href="#8-点击-div-也可以跳转" class="toc-link toc-h4" data-depth="4">
+            8. 点击 div 也可以跳转
+          </a>
+          
+        </li>
+      
+        <li class="text-sm leading-tight">
+          <a href="#9-根据浏览器大小添加样式" class="toc-link toc-h4" data-depth="4">
+            9. 根据浏览器大小添加样式
+          </a>
+          
+        </li>
+      
+        <li class="text-sm leading-tight">
+          <a href="#10-设置-div-在屏幕中央" class="toc-link toc-h4" data-depth="4">
+            10. 设置 div 在屏幕中央
+          </a>
+          
+        </li>
+      
+        <li class="text-sm leading-tight">
+          <a href="#11-创建自己的选择器" class="toc-link toc-h4" data-depth="4">
+            11. 创建自己的选择器
+          </a>
+          
+        </li>
+      
+        <li class="text-sm leading-tight">
+          <a href="#12-关闭所有动画效果" class="toc-link toc-h4" data-depth="4">
+            12. 关闭所有动画效果
+          </a>
+          
+        </li>
+      
+        <li class="text-sm leading-tight">
+          <a href="#13-检测鼠标的左右键" class="toc-link toc-h4" data-depth="4">
+            13. 检测鼠标的左右键
+          </a>
+          
+        </li>
+      
+        <li class="text-sm leading-tight">
+          <a href="#14-回车提交表单" class="toc-link toc-h4" data-depth="4">
+            14. 回车提交表单
+          </a>
+          
+        </li>
+      
+        <li class="text-sm leading-tight">
+          <a href="#15-设置全局-ajax-参数" class="toc-link toc-h4" data-depth="4">
+            15. 设置全局 ajax 参数
+          </a>
+          
+        </li>
+      
+        <li class="text-sm leading-tight">
+          <a href="#16-获取选中的下拉框" class="toc-link toc-h4" data-depth="4">
+            16. 获取选中的下拉框
+          </a>
+          
+        </li>
+      
+        <li class="text-sm leading-tight">
+          <a href="#17-切换复选框" class="toc-link toc-h4" data-depth="4">
+            17. 切换复选框
+          </a>
+          
+        </li>
+      
+        <li class="text-sm leading-tight">
+          <a href="#18-使用-siblings-来选择同辈元素" class="toc-link toc-h4" data-depth="4">
+            18. 使用 siblings() 来选择同辈元素
+          </a>
+          
+        </li>
+      
+        <li class="text-sm leading-tight">
+          <a href="#19-个性化链接" class="toc-link toc-h4" data-depth="4">
+            19. 个性化链接
+          </a>
+          
+        </li>
+      
+        <li class="text-sm leading-tight">
+          <a href="#20-一段时间后自动关闭或者隐藏元素" class="toc-link toc-h4" data-depth="4">
+            20. 一段时间后自动关闭或者隐藏元素
+          </a>
+          
+        </li>
+      
+    </ul>
+  
+        </li>
+      
+    </ul>
+  </div></details></nav><aside class="toc-float" data-astro-cid-6t6zfk7k><nav class="toc" aria-label="Table Of Contents" data-astro-cid-6t6zfk7k><details open data-astro-cid-6t6zfk7k><summary class="text-sm font-semibold" data-astro-cid-6t6zfk7k>Table of Contents</summary><div class="mt-2" data-astro-cid-6t6zfk7k>
+    <ul class="space-y-1 pl-4">
+      
+        <li class="text-sm leading-tight">
+          <a href="#规则--格式" class="toc-link toc-h3" data-depth="3">
+            规则 && 格式
+          </a>
+          
+        </li>
+      
+        <li class="text-sm leading-tight">
+          <a href="#jq-如何解决事件冒泡" class="toc-link toc-h3" data-depth="3">
+            jQ 如何解决事件冒泡
+          </a>
+          
+    <ul class="space-y-1 pl-4">
+      
+        <li class="text-sm leading-tight">
+          <a href="#on-与-bind-的区别" class="toc-link toc-h4" data-depth="4">
+            on() 与 bind() 的区别
+          </a>
+          
+        </li>
+      
+        <li class="text-sm leading-tight">
+          <a href="#阻止冒泡行为" class="toc-link toc-h4" data-depth="4">
+            阻止冒泡行为
+          </a>
+          
+        </li>
+      
+    </ul>
+  
+        </li>
+      
+        <li class="text-sm leading-tight">
+          <a href="#jquey-的-ajax" class="toc-link toc-h3" data-depth="3">
+            jQuey 的 Ajax()
+          </a>
+          
+    <ul class="space-y-1 pl-4">
+      
+        <li class="text-sm leading-tight">
+          <a href="#解析" class="toc-link toc-h4" data-depth="4">
+            解析
+          </a>
+          
+        </li>
+      
+        <li class="text-sm leading-tight">
+          <a href="#ajaxsetup-设置默认值" class="toc-link toc-h4" data-depth="4">
+            $.ajaxSetup() 设置默认值
+          </a>
+          
+        </li>
+      
+    </ul>
+  
+        </li>
+      
+        <li class="text-sm leading-tight">
+          <a href="#常用的-jq-代码段" class="toc-link toc-h3" data-depth="3">
+            常用的 JQ 代码段
+          </a>
+          
+    <ul class="space-y-1 pl-4">
+      
+        <li class="text-sm leading-tight">
+          <a href="#1-禁用页面的右键菜单" class="toc-link toc-h4" data-depth="4">
+            1. 禁用页面的右键菜单
+          </a>
+          
+        </li>
+      
+        <li class="text-sm leading-tight">
+          <a href="#2-新窗口的开页面" class="toc-link toc-h4" data-depth="4">
+            2. 新窗口的开页面
+          </a>
+          
+        </li>
+      
+        <li class="text-sm leading-tight">
+          <a href="#3-判断浏览器类型" class="toc-link toc-h4" data-depth="4">
+            3. 判断浏览器类型
+          </a>
+          
+        </li>
+      
+        <li class="text-sm leading-tight">
+          <a href="#4-输入框文字获取焦点" class="toc-link toc-h4" data-depth="4">
+            4. 输入框文字获取焦点
+          </a>
+          
+        </li>
+      
+        <li class="text-sm leading-tight">
+          <a href="#5-返回头部滑动动画" class="toc-link toc-h4" data-depth="4">
+            5. 返回头部滑动动画
+          </a>
+          
+        </li>
+      
+        <li class="text-sm leading-tight">
+          <a href="#6-获取鼠标位置" class="toc-link toc-h4" data-depth="4">
+            6. 获取鼠标位置
+          </a>
+          
+        </li>
+      
+        <li class="text-sm leading-tight">
+          <a href="#7-判断元素是否存在" class="toc-link toc-h4" data-depth="4">
+            7. 判断元素是否存在
+          </a>
+          
+        </li>
+      
+        <li class="text-sm leading-tight">
+          <a href="#8-点击-div-也可以跳转" class="toc-link toc-h4" data-depth="4">
+            8. 点击 div 也可以跳转
+          </a>
+          
+        </li>
+      
+        <li class="text-sm leading-tight">
+          <a href="#9-根据浏览器大小添加样式" class="toc-link toc-h4" data-depth="4">
+            9. 根据浏览器大小添加样式
+          </a>
+          
+        </li>
+      
+        <li class="text-sm leading-tight">
+          <a href="#10-设置-div-在屏幕中央" class="toc-link toc-h4" data-depth="4">
+            10. 设置 div 在屏幕中央
+          </a>
+          
+        </li>
+      
+        <li class="text-sm leading-tight">
+          <a href="#11-创建自己的选择器" class="toc-link toc-h4" data-depth="4">
+            11. 创建自己的选择器
+          </a>
+          
+        </li>
+      
+        <li class="text-sm leading-tight">
+          <a href="#12-关闭所有动画效果" class="toc-link toc-h4" data-depth="4">
+            12. 关闭所有动画效果
+          </a>
+          
+        </li>
+      
+        <li class="text-sm leading-tight">
+          <a href="#13-检测鼠标的左右键" class="toc-link toc-h4" data-depth="4">
+            13. 检测鼠标的左右键
+          </a>
+          
+        </li>
+      
+        <li class="text-sm leading-tight">
+          <a href="#14-回车提交表单" class="toc-link toc-h4" data-depth="4">
+            14. 回车提交表单
+          </a>
+          
+        </li>
+      
+        <li class="text-sm leading-tight">
+          <a href="#15-设置全局-ajax-参数" class="toc-link toc-h4" data-depth="4">
+            15. 设置全局 ajax 参数
+          </a>
+          
+        </li>
+      
+        <li class="text-sm leading-tight">
+          <a href="#16-获取选中的下拉框" class="toc-link toc-h4" data-depth="4">
+            16. 获取选中的下拉框
+          </a>
+          
+        </li>
+      
+        <li class="text-sm leading-tight">
+          <a href="#17-切换复选框" class="toc-link toc-h4" data-depth="4">
+            17. 切换复选框
+          </a>
+          
+        </li>
+      
+        <li class="text-sm leading-tight">
+          <a href="#18-使用-siblings-来选择同辈元素" class="toc-link toc-h4" data-depth="4">
+            18. 使用 siblings() 来选择同辈元素
+          </a>
+          
+        </li>
+      
+        <li class="text-sm leading-tight">
+          <a href="#19-个性化链接" class="toc-link toc-h4" data-depth="4">
+            19. 个性化链接
+          </a>
+          
+        </li>
+      
+        <li class="text-sm leading-tight">
+          <a href="#20-一段时间后自动关闭或者隐藏元素" class="toc-link toc-h4" data-depth="4">
+            20. 一段时间后自动关闭或者隐藏元素
+          </a>
+          
+        </li>
+      
+    </ul>
+  
+        </li>
+      
+    </ul>
+  </div></details></nav></aside></div><script data-astro-rerun>
+  ;(() => {
+    const ready = fn => {
+      if (document.readyState === 'loading')
+        document.addEventListener('DOMContentLoaded', fn, { once: true })
+      else fn()
+    }
+
+    function boot() {
+      const root = document.querySelector('.toc-root')
+      if (!root) return
+
+      const float = root.querySelector('.toc-float')
+      const atTop = () => window.scrollY <= 2
+      const onScroll = () => {
+        float?.classList.toggle('at-top', atTop())
+      }
+      onScroll()
+      window.addEventListener('scroll', onScroll, { passive: true })
+
+      const article = document.querySelector('article[data-pagefind-body]')
+      if (!article) return
+
+      // 更新选择器：支持 h1 到 h5
+      const heads = [
+        ...article.querySelectorAll('h1[id], h2[id], h3[id], h4[id], h5[id]'),
+      ]
+      if (!heads.length) return
+
+      const allLinks = [...root.querySelectorAll('.toc a.toc-link')]
+      const map = new Map()
+      for (const a of allLinks) {
+        const href = a.getAttribute('href') || ''
+        if (!href.startsWith('#')) continue
+        const id = href.slice(1)
+        if (!map.has(id)) map.set(id, [])
+        map.get(id).push(a)
+      }
+
+      let activeId = null
+      const setActive = id => {
+        if (activeId === id) return
+        if (activeId && map.has(activeId))
+          map.get(activeId).forEach(el => el.classList.remove('is-active'))
+        activeId = id
+        if (activeId && map.has(activeId))
+          map.get(activeId).forEach(el => el.classList.add('is-active'))
+      }
+
+      const io = new IntersectionObserver(
+        entries => {
+          const visible = entries
+            .filter(e => e.isIntersecting)
+            .sort((a, b) => a.boundingClientRect.top - b.boundingClientRect.top)
+          if (visible.length) {
+            setActive(visible[0].target.id)
+          } else {
+            const nearest = heads
+              .map(h => ({
+                id: h.id,
+                top: Math.abs(h.getBoundingClientRect().top),
+              }))
+              .sort((a, b) => a.top - b.top)[0]
+            if (nearest) setActive(nearest.id)
+          }
+        },
+        { root: null, threshold: [0, 1], rootMargin: '-96px 0px -60% 0px' },
+      )
+
+      heads.forEach(h => io.observe(h))
+
+      const onClick = e => {
+        const a = e.target.closest('.toc a.toc-link')
+        if (!a) return
+        const href = a.getAttribute('href') || ''
+        if (!href.startsWith('#')) return
+        const id = href.slice(1)
+        const el = document.getElementById(id)
+        if (!el) return
+        e.preventDefault()
+        el.scrollIntoView({ behavior: 'smooth', block: 'start' })
+      }
+      root.addEventListener('click', onClick)
+
+      const cleanup = () => {
+        window.removeEventListener('scroll', onScroll)
+        io.disconnect()
+        root.removeEventListener('click', onClick)
+      }
+      document.addEventListener('astro:before-swap', cleanup, { once: true })
+    }
+
+    ready(boot)
+    document.addEventListener('astro:page-load', boot)
+  })()
+</script> <article data-pagefind-body> <img src="/posts/jquery-banner.jpg" alt="">
+<blockquote>
+<p>本文大部分都在参考 <a href="https://book.douban.com/subject/10792216/">《锋利的jQuery》</a> 一书，几乎可以说是读书笔记</p>
+</blockquote>
+<!-- more -->
+<h3 id="规则--格式">规则 &#x26;&#x26; 格式</h3>
+<ol>
+<li>对于同一个对象不超过三个操作直接一行显示；</li>
+<li>对于同一个对象的较多操作，每个操作一行；</li>
+</ol>
+<div class="expressive-code"><link rel="stylesheet" href="/_astro/ec.c86xd.css"><script type="module" src="/_astro/ec.0vx5m.js"></script><figure class="frame"><figcaption class="header"></figcaption><pre data-language="javascript"><code><div class="ec-line"><div class="code"><span style="--0:#A0A1A7F4;--1:#96A1C2">//例子</span></div></div><div class="ec-line"><div class="code"><span style="--0:#FFE66D;--1:#50FA7B">$</span><span style="--0:#D5CED9;--1:#F8F8F2">(</span><span style="--0:#FF5EC9;--1:#BD93F9;--1fs:italic">this</span><span style="--0:#D5CED9;--1:#F8F8F2">).</span><span style="--0:#FFE66D;--1:#50FA7B">removerClass</span><span style="--0:#D5CED9;--1:#F8F8F2">(</span><span style="--0:#96E072;--1:#E9F284">'</span><span style="--0:#96E072;--1:#F1FA8C">add</span><span style="--0:#96E072;--1:#E9F284">'</span><span style="--0:#D5CED9;--1:#F8F8F2">)</span></div></div><div class="ec-line"><div class="code"><span class="indent"><span style="--0:#D5CED9;--1:#F8F8F2">       </span></span><span style="--0:#D5CED9;--1:#F8F8F2">.</span><span style="--0:#FFE66D;--1:#50FA7B">addClass</span><span style="--0:#D5CED9;--1:#F8F8F2">(</span><span style="--0:#96E072;--1:#E9F284">'</span><span style="--0:#96E072;--1:#F1FA8C">remove</span><span style="--0:#96E072;--1:#E9F284">'</span><span style="--0:#D5CED9;--1:#F8F8F2">)</span></div></div></code></pre><div class="copy"><div aria-live="polite"></div><button title="Copy to clipboard" data-copied="Copied!" data-code="//例子$(this).removerClass(&#x27;add&#x27;)       .addClass(&#x27;remove&#x27;)"><div></div></button></div></figure></div>
+<ol start="3">
+<li>对于多个对象的少量操作，每个对象一行，其中涉及子元素的可做缩进处理；</li>
+</ol>
+<div class="expressive-code"><figure class="frame"><figcaption class="header"></figcaption><pre data-language="javascript"><code><div class="ec-line"><div class="code"><span style="--0:#A0A1A7F4;--1:#96A1C2">//例子</span></div></div><div class="ec-line"><div class="code"><span style="--0:#FFE66D;--1:#50FA7B">$</span><span style="--0:#D5CED9;--1:#F8F8F2">(</span><span style="--0:#FF5EC9;--1:#BD93F9;--1fs:italic">this</span><span style="--0:#D5CED9;--1:#F8F8F2">).</span><span style="--0:#FFE66D;--1:#50FA7B">addClass</span><span style="--0:#D5CED9;--1:#F8F8F2">(</span><span style="--0:#96E072;--1:#E9F284">'</span><span style="--0:#96E072;--1:#F1FA8C">add</span><span style="--0:#96E072;--1:#E9F284">'</span><span style="--0:#D5CED9;--1:#F8F8F2">)</span></div></div><div class="ec-line"><div class="code"><span class="indent"><span style="--0:#D5CED9;--1:#F8F8F2">       </span></span><span style="--0:#D5CED9;--1:#F8F8F2">.</span><span style="--0:#00E8C6;--1:#F8F8F2">childe</span><span style="--0:#D5CED9;--1:#F8F8F2">.</span><span style="--0:#FFE66D;--1:#50FA7B">show</span><span style="--0:#D5CED9;--1:#F8F8F2">().</span></div></div><div class="ec-line"><div class="code"><span style="--0:#FFE66D;--1:#50FA7B">siblings</span><span style="--0:#D5CED9;--1:#F8F8F2">().</span><span style="--0:#FFE66D;--1:#50FA7B">removerClass</span><span style="--0:#D5CED9;--1:#F8F8F2">(</span><span style="--0:#96E072;--1:#E9F284">'</span><span style="--0:#96E072;--1:#F1FA8C">remove</span><span style="--0:#96E072;--1:#E9F284">'</span><span style="--0:#D5CED9;--1:#F8F8F2">)</span></div></div></code></pre><div class="copy"><div aria-live="polite"></div><button title="Copy to clipboard" data-copied="Copied!" data-code="//例子$(this).addClass(&#x27;add&#x27;)       .childe.show().siblings().removerClass(&#x27;remove&#x27;)"><div></div></button></div></figure></div>
+<ol start="4">
+<li>如果获取 JQ 对象，在变量前面加上 <code>$</code> 符号</li>
+</ol>
+<div class="expressive-code"><figure class="frame"><figcaption class="header"></figcaption><pre data-language="javascript"><code><div class="ec-line"><div class="code"><span style="--0:#D477F1;--1:#FF79C6">var</span><span style="--1:#F8F8F2"><span style="--0:#D5CED9"> </span><span style="--0:#00E8C6">$var</span><span style="--0:#D5CED9"> </span></span><span style="--0:#F17963;--1:#FF79C6">=</span><span style="--0:#D5CED9;--1:#F8F8F2"> </span><span style="--0:#FFE66D;--1:#50FA7B">$</span><span style="--0:#D5CED9;--1:#F8F8F2">(</span><span style="--0:#FF5EC9;--1:#BD93F9;--1fs:italic">this</span><span style="--0:#D5CED9;--1:#F8F8F2">)</span></div></div></code></pre><div class="copy"><div aria-live="polite"></div><button title="Copy to clipboard" data-copied="Copied!" data-code="var $var = $(this)"><div></div></button></div></figure></div>
+<ol start="5">
+<li>如果获取的 DOM 对象，则不需要</li>
+</ol>
+<div class="expressive-code"><figure class="frame"><figcaption class="header"></figcaption><pre data-language="javascript"><code><div class="ec-line"><div class="code"><span style="--0:#D477F1;--1:#FF79C6">var</span><span style="--1:#F8F8F2"><span style="--0:#D5CED9"> </span><span style="--0:#00E8C6">v</span><span style="--0:#D5CED9"> </span></span><span style="--0:#F17963;--1:#FF79C6">=</span><span style="--0:#D5CED9;--1:#F8F8F2"> </span><span style="--0:#FFE66D;--1:#50FA7B">$</span><span style="--0:#D5CED9;--1:#F8F8F2">(</span><span style="--0:#FF5EC9;--1:#BD93F9;--1fs:italic">this</span><span style="--0:#D5CED9;--1:#F8F8F2">)[</span><span style="--0:#F39C12;--1:#BD93F9">0</span><span style="--0:#D5CED9;--1:#F8F8F2">]</span></div></div></code></pre><div class="copy"><div aria-live="polite"></div><button title="Copy to clipboard" data-copied="Copied!" data-code="var v = $(this)[0]"><div></div></button></div></figure></div>
+<ol start="6">
+<li>JQ 对象和 DOM 对象之间的转换</li>
+</ol>
+<div class="expressive-code"><figure class="frame"><figcaption class="header"></figcaption><pre data-language="javascript"><code><div class="ec-line"><div class="code"><span style="--0:#A0A1A7F4;--1:#96A1C2">//1.[index]方法</span></div></div><div class="ec-line"><div class="code"><span style="--0:#D477F1;--1:#FF79C6">var</span><span style="--1:#F8F8F2"><span style="--0:#D5CED9"> </span><span style="--0:#00E8C6">$cr</span><span style="--0:#D5CED9"> </span></span><span style="--0:#F17963;--1:#FF79C6">=</span><span style="--0:#D5CED9;--1:#F8F8F2"> </span><span style="--0:#FFE66D;--1:#50FA7B">$</span><span style="--0:#D5CED9;--1:#F8F8F2">(</span><span style="--0:#96E072;--1:#E9F284">'</span><span style="--0:#96E072;--1:#F1FA8C">#cr</span><span style="--0:#96E072;--1:#E9F284">'</span><span style="--0:#D5CED9;--1:#F8F8F2">)</span></div></div><div class="ec-line"><div class="code"><span style="--0:#D477F1;--1:#FF79C6">var</span><span style="--1:#F8F8F2"><span style="--0:#D5CED9"> </span><span style="--0:#00E8C6">cr</span><span style="--0:#D5CED9"> </span></span><span style="--0:#F17963;--1:#FF79C6">=</span><span style="--1:#F8F8F2"><span style="--0:#D5CED9"> </span><span style="--0:#00E8C6">$cr</span><span style="--0:#D5CED9">[</span></span><span style="--0:#F39C12;--1:#BD93F9">0</span><span style="--0:#D5CED9;--1:#F8F8F2">]</span></div></div><div class="ec-line"><div class="code">
+</div></div><div class="ec-line"><div class="code"><span style="--0:#A0A1A7F4;--1:#96A1C2">//2.get(index)方法</span></div></div><div class="ec-line"><div class="code"><span style="--0:#D477F1;--1:#FF79C6">var</span><span style="--1:#F8F8F2"><span style="--0:#D5CED9"> </span><span style="--0:#00E8C6">$cr</span><span style="--0:#D5CED9"> </span></span><span style="--0:#F17963;--1:#FF79C6">=</span><span style="--0:#D5CED9;--1:#F8F8F2"> </span><span style="--0:#FFE66D;--1:#50FA7B">$</span><span style="--0:#D5CED9;--1:#F8F8F2">(</span><span style="--0:#96E072;--1:#E9F284">'</span><span style="--0:#96E072;--1:#F1FA8C">#cr</span><span style="--0:#96E072;--1:#E9F284">'</span><span style="--0:#D5CED9;--1:#F8F8F2">)</span></div></div><div class="ec-line"><div class="code"><span style="--0:#D477F1;--1:#FF79C6">var</span><span style="--1:#F8F8F2"><span style="--0:#D5CED9"> </span><span style="--0:#00E8C6">cr</span><span style="--0:#D5CED9"> </span></span><span style="--0:#F17963;--1:#FF79C6">=</span><span style="--1:#F8F8F2"><span style="--0:#D5CED9"> </span><span style="--0:#F39C12">$cr</span><span style="--0:#D5CED9">.</span></span><span style="--0:#FFE66D;--1:#50FA7B">get</span><span style="--0:#D5CED9;--1:#F8F8F2">(</span><span style="--0:#F39C12;--1:#BD93F9">0</span><span style="--0:#D5CED9;--1:#F8F8F2">)</span></div></div></code></pre><div class="copy"><div aria-live="polite"></div><button title="Copy to clipboard" data-copied="Copied!" data-code="//1.[index]方法var $cr = $(&#x27;#cr&#x27;)var cr = $cr[0]//2.get(index)方法var $cr = $(&#x27;#cr&#x27;)var cr = $cr.get(0)"><div></div></button></div></figure></div>
+<ol start="7">
+<li>$(‘className Or ID’) 获取的永远是对象，即便网页上没有，即当 jQ 检索某个元素是否存在时候，需根据长度或转化为 dom 对象来判断对象是否存在</li>
+</ol>
+<div class="expressive-code"><figure class="frame"><figcaption class="header"></figcaption><pre data-language="javascript"><code><div class="ec-line"><div class="code"><span style="--0:#D477F1;--1:#FF79C6">if</span><span style="--0:#D5CED9;--1:#F8F8F2">(</span><span style="--0:#FFE66D;--1:#50FA7B">$</span><span style="--0:#D5CED9;--1:#F8F8F2">(</span><span style="--0:#96E072;--1:#E9F284">'</span><span style="--0:#96E072;--1:#F1FA8C">#tt</span><span style="--0:#96E072;--1:#E9F284">'</span><span style="--0:#D5CED9;--1:#F8F8F2">)){</span><span style="--0:#A0A1A7F4;--1:#96A1C2">//do something} X</span></div></div><div class="ec-line"><div class="code">
+</div></div><div class="ec-line"><div class="code"><span style="--0:#D477F1;--1:#FF79C6">if</span><span style="--0:#D5CED9;--1:#F8F8F2">(</span><span style="--0:#FFE66D;--1:#50FA7B">$</span><span style="--0:#D5CED9;--1:#F8F8F2">(</span><span style="--0:#96E072;--1:#E9F284">'</span><span style="--0:#96E072;--1:#F1FA8C">#tt</span><span style="--0:#96E072;--1:#E9F284">'</span><span style="--1:#F8F8F2"><span style="--0:#D5CED9">).</span><span style="--0:#00E8C6">length</span><span style="--0:#D5CED9"> </span></span><span style="--0:#F17963;--1:#FF79C6">></span><span style="--0:#D5CED9;--1:#F8F8F2"> </span><span style="--0:#F39C12;--1:#BD93F9">0</span><span style="--0:#D5CED9;--1:#F8F8F2">){</span><span style="--0:#A0A1A7F4;--1:#96A1C2">//do somthing}  ✓</span></div></div></code></pre><div class="copy"><div aria-live="polite"></div><button title="Copy to clipboard" data-copied="Copied!" data-code="if($(&#x27;#tt&#x27;)){//do something} Xif($(&#x27;#tt&#x27;).length > 0){//do somthing}  ✓"><div></div></button></div></figure></div>
+<h3 id="jq-如何解决事件冒泡">jQ 如何解决事件冒泡</h3>
+<p>在 jQ.1.7 中，<code>on()</code> 是首选绑定事件，</p>
+<div class="expressive-code"><figure class="frame"><figcaption class="header"></figcaption><pre data-language="javascript"><code><div class="ec-line"><div class="code"><span style="--0:#FFE66D;--1:#50FA7B">$</span><span style="--1:#F8F8F2"><span style="--0:#D5CED9">(</span><span style="--0:#00E8C6">document</span><span style="--0:#D5CED9">).</span></span><span style="--0:#FFE66D;--1:#50FA7B">on</span><span style="--0:#D5CED9;--1:#F8F8F2">(</span><span style="--0:#96E072;--1:#E9F284">'</span><span style="--0:#96E072;--1:#F1FA8C">click</span><span style="--0:#96E072;--1:#E9F284">'</span><span style="--0:#D5CED9;--1:#F8F8F2">,</span><span style="--0:#96E072;--1:#E9F284">'</span><span style="--0:#96E072;--1:#F1FA8C">.btn</span><span style="--0:#96E072;--1:#E9F284">'</span><span style="--0:#D5CED9;--1:#F8F8F2">,</span><span style="--0:#D477F1;--1:#FF79C6">function</span><span style="--0:#D5CED9;--1:#F8F8F2">(){</span></div></div><div class="ec-line"><div class="code"><span class="indent"><span style="--1:#F8F8F2">  </span></span><span style="--0:#F39C12;--1:#F8F8F2">event</span><span style="--0:#D5CED9;--1:#F8F8F2">.</span><span style="--0:#FFE66D;--1:#50FA7B">preventDefault</span><span style="--0:#D5CED9;--1:#F8F8F2">();</span></div></div><div class="ec-line"><div class="code"><span class="indent">  </span><span style="--0:#A0A1A7F4;--1:#96A1C2">//do somthing</span></div></div><div class="ec-line"><div class="code"><span style="--0:#D5CED9;--1:#F8F8F2">})</span></div></div></code></pre><div class="copy"><div aria-live="polite"></div><button title="Copy to clipboard" data-copied="Copied!" data-code="$(document).on(&#x27;click&#x27;,&#x27;.btn&#x27;,function(){  event.preventDefault();  //do somthing})"><div></div></button></div></figure></div>
+<h4 id="on-与-bind-的区别"><code>on()</code> 与 <code>bind()</code> 的区别</h4>
+<p><code>on()</code> 绑定的对象可以是动态生成的，而 <code>bind()</code> 绑定的对象必须是事先存在的</p>
+<h4 id="阻止冒泡行为">阻止冒泡行为</h4>
+<div class="expressive-code"><figure class="frame"><figcaption class="header"></figcaption><pre data-language="javascript"><code><div class="ec-line"><div class="code"><span style="--0:#A0A1A7F4;--1:#96A1C2">// 如果事件可取消，则取消该事件，而不停止事件的进一步传播</span></div></div><div class="ec-line"><div class="code"><span style="--1:#F8F8F2"><span style="--0:#F39C12">event</span><span style="--0:#D5CED9">.</span></span><span style="--0:#FFE66D;--1:#50FA7B">preventDefault</span><span style="--0:#D5CED9;--1:#F8F8F2">();</span></div></div><div class="ec-line"><div class="code">
+</div></div><div class="ec-line"><div class="code"><span style="--0:#A0A1A7F4;--1:#96A1C2">// 直接阻止默认行为</span></div></div><div class="ec-line"><div class="code"><span style="--1:#F8F8F2"><span style="--0:#F39C12">event</span><span style="--0:#D5CED9">.</span></span><span style="--0:#FFE66D;--1:#50FA7B">stopPropagation</span><span style="--0:#D5CED9;--1:#F8F8F2">();</span></div></div><div class="ec-line"><div class="code">
+</div></div><div class="ec-line"><div class="code"><span style="--0:#A0A1A7F4;--1:#96A1C2">//同时对时间对象停止冒泡和默认行为，在事件处理函数中返回 false</span></div></div><div class="ec-line"><div class="code"><span style="--0:#FFE66D;--1:#50FA7B">$</span><span style="--0:#D5CED9;--1:#F8F8F2">(</span><span style="--0:#96E072;--1:#E9F284">'</span><span style="--0:#96E072;--1:#F1FA8C">element</span><span style="--0:#96E072;--1:#E9F284">'</span><span style="--0:#D5CED9;--1:#F8F8F2">).</span><span style="--0:#FFE66D;--1:#50FA7B">click</span><span style="--0:#D5CED9;--1:#F8F8F2">(</span><span style="--0:#D477F1;--1:#FF79C6">function</span><span style="--0:#D5CED9;--1:#F8F8F2"> () {</span></div></div><div class="ec-line"><div class="code"><span class="indent">    </span><span style="--0:#A0A1A7F4;--1:#96A1C2">//do somthing</span></div></div><div class="ec-line"><div class="code"><span class="indent">    </span><span style="--0:#D477F1;--1:#FF79C6">return</span><span style="--0:#D5CED9;--1:#F8F8F2"> </span><span style="--0:#F17963;--1:#BD93F9">false</span></div></div><div class="ec-line"><div class="code"><span style="--0:#D5CED9;--1:#F8F8F2">})</span></div></div></code></pre><div class="copy"><div aria-live="polite"></div><button title="Copy to clipboard" data-copied="Copied!" data-code="// 如果事件可取消，则取消该事件，而不停止事件的进一步传播event.preventDefault();// 直接阻止默认行为event.stopPropagation();//同时对时间对象停止冒泡和默认行为，在事件处理函数中返回 false$(&#x27;element&#x27;).click(function () {    //do somthing    return false})"><div></div></button></div></figure></div>
+<h3 id="jquey-的-ajax">jQuey 的 Ajax()</h3>
+<h4 id="解析">解析</h4>
+<div class="expressive-code"><figure class="frame"><figcaption class="header"></figcaption><pre data-language="js"><code><div class="ec-line"><div class="code"><span class="indent"><span style="--1:#F8F8F2">  </span></span><span style="--0:#F39C12;--1:#F8F8F2">$</span><span style="--0:#D5CED9;--1:#F8F8F2">.</span><span style="--0:#FFE66D;--1:#50FA7B">ajax</span><span style="--0:#D5CED9;--1:#F8F8F2">({</span></div></div><div class="ec-line"><div class="code"><span class="indent"><span style="--0:#D5CED9;--1:#F8F8F2">    </span></span><span style="--0:#D5CED9;--1:#F8F8F2">url</span><span style="--0:#D5CED9;--1:#FF79C6">:</span><span style="--0:#D5CED9;--1:#F8F8F2"> </span><span style="--0:#96E072;--1:#E9F284">''</span><span style="--0:#D5CED9;--1:#F8F8F2">, </span><span style="--0:#A0A1A7F4;--1:#96A1C2">// 接口地址</span></div></div><div class="ec-line"><div class="code"><span class="indent"><span style="--0:#D5CED9;--1:#F8F8F2">    </span></span><span style="--0:#D5CED9;--1:#F8F8F2">type</span><span style="--0:#D5CED9;--1:#FF79C6">:</span><span style="--0:#D5CED9;--1:#F8F8F2"> </span><span style="--0:#96E072;--1:#E9F284">''</span><span style="--0:#D5CED9;--1:#F8F8F2">,</span><span style="--0:#A0A1A7F4;--1:#96A1C2">//请求方式</span></div></div><div class="ec-line"><div class="code"><span class="indent"><span style="--0:#D5CED9;--1:#F8F8F2">    </span></span><span style="--0:#D5CED9;--1:#F8F8F2">dataType</span><span style="--0:#D5CED9;--1:#FF79C6">:</span><span style="--0:#D5CED9;--1:#F8F8F2"> </span><span style="--0:#96E072;--1:#E9F284">''</span><span style="--0:#D5CED9;--1:#F8F8F2">,</span><span style="--0:#A0A1A7F4;--1:#96A1C2">//获取格式</span></div></div><div class="ec-line"><div class="code"><span class="indent"><span style="--0:#D5CED9;--1:#F8F8F2">    </span></span><span style="--0:#D5CED9;--1:#F8F8F2">data</span><span style="--0:#D5CED9;--1:#FF79C6">:</span><span style="--0:#D5CED9;--1:#F8F8F2"> {param</span><span style="--0:#D5CED9;--1:#FF79C6">:</span><span style="--0:#D5CED9;--1:#F8F8F2"> </span><span style="--0:#96E072;--1:#E9F284">'</span><span style="--0:#96E072;--1:#F1FA8C">value</span><span style="--0:#96E072;--1:#E9F284">'</span><span style="--0:#D5CED9;--1:#F8F8F2">},</span><span style="--0:#A0A1A7F4;--1:#96A1C2">//请求参数</span></div></div><div class="ec-line"><div class="code"><span class="indent"><span style="--0:#D5CED9;--1:#F8F8F2">  </span></span><span style="--0:#D5CED9;--1:#F8F8F2">})</span></div></div><div class="ec-line"><div class="code"><span class="indent"><span style="--0:#D5CED9;--1:#F8F8F2">  </span></span><span style="--0:#D5CED9;--1:#F8F8F2">.</span><span style="--0:#FFE66D;--1:#50FA7B">done</span><span style="--0:#D5CED9;--1:#F8F8F2">(</span><span style="--0:#D477F1;--1:#FF79C6">function</span><span style="--0:#D5CED9;--1:#F8F8F2">() {</span></div></div><div class="ec-line"><div class="code"><span class="indent">    </span><span style="--0:#A0A1A7F4;--1:#96A1C2">//链接获取成功</span></div></div><div class="ec-line"><div class="code"><span class="indent"><span style="--1:#F8F8F2">    </span></span><span style="--0:#F39C12;--1:#F8F8F2">console</span><span style="--0:#D5CED9;--1:#F8F8F2">.</span><span style="--0:#FFE66D;--1:#50FA7B">log</span><span style="--0:#D5CED9;--1:#F8F8F2">(</span><span style="--0:#96E072;--1:#E9F284">"</span><span style="--0:#96E072;--1:#F1FA8C">success</span><span style="--0:#96E072;--1:#E9F284">"</span><span style="--0:#D5CED9;--1:#F8F8F2">);</span></div></div><div class="ec-line"><div class="code"><span class="indent"><span style="--0:#D5CED9;--1:#F8F8F2">  </span></span><span style="--0:#D5CED9;--1:#F8F8F2">})</span></div></div><div class="ec-line"><div class="code"><span class="indent"><span style="--0:#D5CED9;--1:#F8F8F2">  </span></span><span style="--0:#D5CED9;--1:#F8F8F2">.</span><span style="--0:#FFE66D;--1:#50FA7B">fail</span><span style="--0:#D5CED9;--1:#F8F8F2">(</span><span style="--0:#D477F1;--1:#FF79C6">function</span><span style="--0:#D5CED9;--1:#F8F8F2">() {</span></div></div><div class="ec-line"><div class="code"><span class="indent">    </span><span style="--0:#A0A1A7F4;--1:#96A1C2">//链接获取失败</span></div></div><div class="ec-line"><div class="code"><span class="indent"><span style="--1:#F8F8F2">    </span></span><span style="--0:#F39C12;--1:#F8F8F2">console</span><span style="--0:#D5CED9;--1:#F8F8F2">.</span><span style="--0:#FFE66D;--1:#50FA7B">log</span><span style="--0:#D5CED9;--1:#F8F8F2">(</span><span style="--0:#96E072;--1:#E9F284">"</span><span style="--0:#96E072;--1:#F1FA8C">error</span><span style="--0:#96E072;--1:#E9F284">"</span><span style="--0:#D5CED9;--1:#F8F8F2">);</span></div></div><div class="ec-line"><div class="code"><span class="indent"><span style="--0:#D5CED9;--1:#F8F8F2">  </span></span><span style="--0:#D5CED9;--1:#F8F8F2">})</span></div></div><div class="ec-line"><div class="code"><span class="indent"><span style="--0:#D5CED9;--1:#F8F8F2">  </span></span><span style="--0:#D5CED9;--1:#F8F8F2">.</span><span style="--0:#FFE66D;--1:#50FA7B">always</span><span style="--0:#D5CED9;--1:#F8F8F2">(</span><span style="--0:#D477F1;--1:#FF79C6">function</span><span style="--0:#D5CED9;--1:#F8F8F2">() {</span></div></div><div class="ec-line"><div class="code"><span class="indent">    </span><span style="--0:#A0A1A7F4;--1:#96A1C2">//无论失败或者成功</span></div></div><div class="ec-line"><div class="code"><span class="indent"><span style="--1:#F8F8F2">    </span></span><span style="--0:#F39C12;--1:#F8F8F2">console</span><span style="--0:#D5CED9;--1:#F8F8F2">.</span><span style="--0:#FFE66D;--1:#50FA7B">log</span><span style="--0:#D5CED9;--1:#F8F8F2">(</span><span style="--0:#96E072;--1:#E9F284">"</span><span style="--0:#96E072;--1:#F1FA8C">complete</span><span style="--0:#96E072;--1:#E9F284">"</span><span style="--0:#D5CED9;--1:#F8F8F2">);</span></div></div><div class="ec-line"><div class="code"><span class="indent"><span style="--0:#D5CED9;--1:#F8F8F2">  </span></span><span style="--0:#D5CED9;--1:#F8F8F2">});</span></div></div><div class="ec-line"><div class="code">
+</div></div><div class="ec-line"><div class="code"><span class="indent">  </span><span style="--0:#A0A1A7F4;--1:#96A1C2">//post 快速请求</span></div></div><div class="ec-line"><div class="code"><span class="indent"><span style="--1:#F8F8F2">  </span></span><span style="--0:#F39C12;--1:#F8F8F2">$</span><span style="--0:#D5CED9;--1:#F8F8F2">.</span><span style="--0:#FFE66D;--1:#50FA7B">post</span><span style="--1:#F8F8F2"><span style="--0:#D5CED9">(</span><span style="--0:#00E8C6">url</span><span style="--0:#D5CED9">, {param</span></span><span style="--0:#D5CED9;--1:#FF79C6">:</span><span style="--0:#D5CED9;--1:#F8F8F2"> </span><span style="--0:#96E072;--1:#E9F284">'</span><span style="--0:#96E072;--1:#F1FA8C">value</span><span style="--0:#96E072;--1:#E9F284">'</span><span style="--0:#D5CED9;--1:#F8F8F2">}, </span><span style="--0:#D477F1;--1:#FF79C6">function</span><span style="--0:#D5CED9;--1:#F8F8F2">(</span><span style="--0:#00E8C6;--1:#FFB86C;--1fs:italic">data</span><span style="--0:#D5CED9;--1:#F8F8F2">, </span><span style="--0:#00E8C6;--1:#FFB86C;--1fs:italic">textStatus</span><span style="--0:#D5CED9;--1:#F8F8F2">, </span><span style="--0:#00E8C6;--1:#FFB86C;--1fs:italic">xhr</span><span style="--0:#D5CED9;--1:#F8F8F2">) {},</span><span style="--0:#96E072;--1:#E9F284">'</span><span style="--0:#96E072;--1:#F1FA8C">type</span><span style="--0:#96E072;--1:#E9F284">'</span><span style="--0:#D5CED9;--1:#F8F8F2">);</span></div></div><div class="ec-line"><div class="code">
+</div></div><div class="ec-line"><div class="code"><span class="indent">  </span><span style="--0:#A0A1A7F4;--1:#96A1C2">//get 快速请求</span></div></div><div class="ec-line"><div class="code"><span class="indent"><span style="--1:#F8F8F2">  </span></span><span style="--0:#F39C12;--1:#F8F8F2">$</span><span style="--0:#D5CED9;--1:#F8F8F2">.</span><span style="--0:#FFE66D;--1:#50FA7B">get</span><span style="--1:#F8F8F2"><span style="--0:#D5CED9">(</span><span style="--0:#00E8C6">url</span><span style="--0:#D5CED9">, </span></span><span style="--0:#D477F1;--1:#FF79C6">function</span><span style="--0:#D5CED9;--1:#F8F8F2">(</span><span style="--0:#00E8C6;--1:#FFB86C;--1fs:italic">data</span><span style="--0:#D5CED9;--1:#F8F8F2">) {},</span><span style="--0:#96E072;--1:#E9F284">'</span><span style="--0:#96E072;--1:#F1FA8C">type</span><span style="--0:#96E072;--1:#E9F284">'</span><span style="--0:#D5CED9;--1:#F8F8F2">);</span></div></div></code></pre><div class="copy"><div aria-live="polite"></div><button title="Copy to clipboard" data-copied="Copied!" data-code="  $.ajax({    url: &#x27;&#x27;, // 接口地址    type: &#x27;&#x27;,//请求方式    dataType: &#x27;&#x27;,//获取格式    data: {param: &#x27;value&#x27;},//请求参数  })  .done(function() {    //链接获取成功    console.log(&#x22;success&#x22;);  })  .fail(function() {    //链接获取失败    console.log(&#x22;error&#x22;);  })  .always(function() {    //无论失败或者成功    console.log(&#x22;complete&#x22;);  });  //post 快速请求  $.post(url, {param: &#x27;value&#x27;}, function(data, textStatus, xhr) {},&#x27;type&#x27;);  //get 快速请求  $.get(url, function(data) {},&#x27;type&#x27;);"><div></div></button></div></figure></div>
+<p><code>$.ajax()</code>，<code>$.post()</code>，<code>$.get()</code> 都是 jQuery 中的全局函数</p>
+<h4 id="ajaxsetup-设置默认值">$.ajaxSetup() 设置默认值</h4>
+<p>为以后要用到的Ajax请求设置默认的值,使用 <code>名称/值</code> 对来规定 AJAX 请求的设置。</p>
+<div class="expressive-code"><figure class="frame"><figcaption class="header"></figcaption><pre data-language="javascript"><code><div class="ec-line"><div class="code"><span style="--1:#F8F8F2"><span style="--0:#F39C12">$</span><span style="--0:#D5CED9">.</span></span><span style="--0:#FFE66D;--1:#50FA7B">ajaxSetup</span><span style="--0:#D5CED9;--1:#F8F8F2">({</span></div></div><div class="ec-line"><div class="code"><span class="indent"><span style="--0:#D5CED9;--1:#F8F8F2">  </span></span><span style="--0:#D5CED9;--1:#F8F8F2">url</span><span style="--0:#D5CED9;--1:#FF79C6">:</span><span style="--0:#96E072;--1:#E9F284">'</span><span style="--0:#96E072;--1:#F1FA8C">url</span><span style="--0:#96E072;--1:#E9F284">'</span><span style="--0:#D5CED9;--1:#F8F8F2">,</span></div></div><div class="ec-line"><div class="code"><span class="indent"><span style="--0:#D5CED9;--1:#F8F8F2">  </span></span><span style="--0:#D5CED9;--1:#F8F8F2">dataType</span><span style="--0:#D5CED9;--1:#FF79C6">:</span><span style="--1:#F8F8F2"><span style="--0:#00E8C6">post</span><span style="--0:#D5CED9">,</span></span></div></div><div class="ec-line"><div class="code"><span style="--0:#D5CED9;--1:#F8F8F2">})</span></div></div></code></pre><div class="copy"><div aria-live="polite"></div><button title="Copy to clipboard" data-copied="Copied!" data-code="$.ajaxSetup({  url:&#x27;url&#x27;,  dataType:post,})"><div></div></button></div></figure></div>
+<h3 id="常用的-jq-代码段">常用的 JQ 代码段</h3>
+<h4 id="1-禁用页面的右键菜单">1. 禁用页面的右键菜单</h4>
+<div class="expressive-code"><figure class="frame"><figcaption class="header"></figcaption><pre data-language="javascript"><code><div class="ec-line"><div class="code"><span style="--0:#FFE66D;--1:#50FA7B">$</span><span style="--1:#F8F8F2"><span style="--0:#D5CED9">(</span><span style="--0:#00E8C6">document</span><span style="--0:#D5CED9">).</span></span><span style="--0:#FFE66D;--1:#50FA7B">ready</span><span style="--0:#D5CED9;--1:#F8F8F2">(</span><span style="--0:#D477F1;--1:#FF79C6">function</span><span style="--0:#D5CED9;--1:#F8F8F2">(){</span></div></div><div class="ec-line"><div class="code"><span class="indent">    </span><span style="--0:#FFE66D;--1:#50FA7B">$</span><span style="--1:#F8F8F2"><span style="--0:#D5CED9">(</span><span style="--0:#00E8C6">document</span><span style="--0:#D5CED9">).</span></span><span style="--0:#FFE66D;--1:#50FA7B">bind</span><span style="--0:#D5CED9;--1:#F8F8F2">(</span><span style="--0:#96E072;--1:#E9F284">"</span><span style="--0:#96E072;--1:#F1FA8C">contextmenu</span><span style="--0:#96E072;--1:#E9F284">"</span><span style="--0:#D5CED9;--1:#F8F8F2">, </span><span style="--0:#D477F1;--1:#FF79C6">function</span><span style="--0:#D5CED9;--1:#F8F8F2">(){</span></div></div><div class="ec-line"><div class="code"><span class="indent">        </span><span style="--0:#D477F1;--1:#FF79C6">return</span><span style="--0:#D5CED9;--1:#F8F8F2"> </span><span style="--0:#F17963;--1:#BD93F9">false</span></div></div><div class="ec-line"><div class="code"><span class="indent"><span style="--0:#D5CED9;--1:#F8F8F2">    </span></span><span style="--0:#D5CED9;--1:#F8F8F2">})</span></div></div><div class="ec-line"><div class="code"><span style="--0:#D5CED9;--1:#F8F8F2">})</span></div></div></code></pre><div class="copy"><div aria-live="polite"></div><button title="Copy to clipboard" data-copied="Copied!" data-code="$(document).ready(function(){    $(document).bind(&#x22;contextmenu&#x22;, function(){        return false    })})"><div></div></button></div></figure></div>
+<h4 id="2-新窗口的开页面">2. 新窗口的开页面</h4>
+<div class="expressive-code"><figure class="frame"><figcaption class="header"></figcaption><pre data-language="javascript"><code><div class="ec-line"><div class="code"><span style="--0:#FFE66D;--1:#50FA7B">$</span><span style="--1:#F8F8F2"><span style="--0:#D5CED9">(</span><span style="--0:#00E8C6">document</span><span style="--0:#D5CED9">).</span></span><span style="--0:#FFE66D;--1:#50FA7B">ready</span><span style="--0:#D5CED9;--1:#F8F8F2">(</span><span style="--0:#D477F1;--1:#FF79C6">function</span><span style="--0:#D5CED9;--1:#F8F8F2">() {</span></div></div><div class="ec-line"><div class="code"><span class="indent">    </span><span style="--0:#A0A1A7F4;--1:#96A1C2">//1.</span></div></div><div class="ec-line"><div class="code"><span class="indent">    </span><span style="--0:#FFE66D;--1:#50FA7B">$</span><span style="--0:#D5CED9;--1:#F8F8F2">(</span><span style="--0:#96E072;--1:#E9F284">'</span><span style="--0:#96E072;--1:#F1FA8C">a[href^="http://"]</span><span style="--0:#96E072;--1:#E9F284">'</span><span style="--0:#D5CED9;--1:#F8F8F2">).</span><span style="--0:#FFE66D;--1:#50FA7B">attr</span><span style="--0:#D5CED9;--1:#F8F8F2">(</span><span style="--0:#96E072;--1:#E9F284">"</span><span style="--0:#96E072;--1:#F1FA8C">target</span><span style="--0:#96E072;--1:#E9F284">"</span><span style="--0:#D5CED9;--1:#F8F8F2">, </span><span style="--0:#96E072;--1:#E9F284">"</span><span style="--0:#96E072;--1:#F1FA8C">_blank</span><span style="--0:#96E072;--1:#E9F284">"</span><span style="--0:#D5CED9;--1:#F8F8F2">)</span></div></div><div class="ec-line"><div class="code">
+</div></div><div class="ec-line"><div class="code"><span class="indent">    </span><span style="--0:#A0A1A7F4;--1:#96A1C2">//2.</span></div></div><div class="ec-line"><div class="code"><span class="indent">    </span><span style="--0:#FFE66D;--1:#50FA7B">$</span><span style="--0:#D5CED9;--1:#F8F8F2">(</span><span style="--0:#96E072;--1:#E9F284">'</span><span style="--0:#96E072;--1:#F1FA8C">a[re]$="external"</span><span style="--0:#96E072;--1:#E9F284">'</span><span style="--0:#D5CED9;--1:#F8F8F2">).</span><span style="--0:#FFE66D;--1:#50FA7B">click</span><span style="--0:#D5CED9;--1:#F8F8F2">(</span><span style="--0:#D477F1;--1:#FF79C6">function</span><span style="--0:#D5CED9;--1:#F8F8F2">(){</span></div></div><div class="ec-line"><div class="code"><span class="indent">        </span><span style="--0:#FF5EC9;--1:#BD93F9;--1fs:italic">this</span><span style="--1:#F8F8F2"><span style="--0:#D5CED9">.</span><span style="--0:#00E8C6">target</span><span style="--0:#D5CED9"> </span></span><span style="--0:#F17963;--1:#FF79C6">=</span><span style="--0:#D5CED9;--1:#F8F8F2"> </span><span style="--0:#96E072;--1:#E9F284">"</span><span style="--0:#96E072;--1:#F1FA8C">_blank</span><span style="--0:#96E072;--1:#E9F284">"</span></div></div><div class="ec-line"><div class="code"><span class="indent"><span style="--0:#D5CED9;--1:#F8F8F2">    </span></span><span style="--0:#D5CED9;--1:#F8F8F2">})</span></div></div><div class="ec-line"><div class="code"><span style="--0:#D5CED9;--1:#F8F8F2">})</span></div></div></code></pre><div class="copy"><div aria-live="polite"></div><button title="Copy to clipboard" data-copied="Copied!" data-code="$(document).ready(function() {    //1.    $(&#x27;a[href^=&#x22;http://&#x22;]&#x27;).attr(&#x22;target&#x22;, &#x22;_blank&#x22;)    //2.    $(&#x27;a[re]$=&#x22;external&#x22;&#x27;).click(function(){        this.target = &#x22;_blank&#x22;    })})"><div></div></button></div></figure></div>
+<h4 id="3-判断浏览器类型">3. 判断浏览器类型</h4>
+<p>PS:<strong>JQ1.3 后，官方贵贱使用$.supper 来代替 $.browser</strong></p>
+<div class="expressive-code"><figure class="frame"><figcaption class="header"></figcaption><pre data-language="javascript"><code><div class="ec-line"><div class="code"><span style="--0:#FFE66D;--1:#50FA7B">$</span><span style="--1:#F8F8F2"><span style="--0:#D5CED9">(</span><span style="--0:#00E8C6">document</span><span style="--0:#D5CED9">).</span></span><span style="--0:#FFE66D;--1:#50FA7B">ready</span><span style="--0:#D5CED9;--1:#F8F8F2">(</span><span style="--0:#D477F1;--1:#FF79C6">function</span><span style="--0:#D5CED9;--1:#F8F8F2">() {</span></div></div><div class="ec-line"><div class="code"><span class="indent">    </span><span style="--0:#A0A1A7F4;--1:#96A1C2">//firefox 2 and above</span></div></div><div class="ec-line"><div class="code"><span class="indent">    </span><span style="--0:#D477F1;--1:#FF79C6">if</span><span style="--1:#F8F8F2"><span style="--0:#D5CED9">(</span><span style="--0:#F39C12">$</span><span style="--0:#D5CED9">.</span><span style="--0:#00E8C6">browse</span><span style="--0:#D5CED9">.</span><span style="--0:#00E8C6">mozilla</span><span style="--0:#D5CED9"> </span></span><span style="--0:#F17963;--1:#FF79C6">&#x26;&#x26;</span><span style="--1:#F8F8F2"><span style="--0:#D5CED9"> </span><span style="--0:#F39C12">$</span><span style="--0:#D5CED9">.</span><span style="--0:#00E8C6">browser</span><span style="--0:#D5CED9">.</span><span style="--0:#00E8C6">version</span><span style="--0:#D5CED9"> </span></span><span style="--0:#F17963;--1:#FF79C6">>=</span><span style="--0:#96E072;--1:#E9F284">"</span><span style="--0:#96E072;--1:#F1FA8C">1.8</span><span style="--0:#96E072;--1:#E9F284">"</span><span style="--0:#D5CED9;--1:#F8F8F2">) {</span></div></div><div class="ec-line"><div class="code"><span class="indent">        </span><span style="--0:#A0A1A7F4;--1:#96A1C2">//do something</span></div></div><div class="ec-line"><div class="code"><span class="indent"><span style="--0:#D5CED9;--1:#F8F8F2">    </span></span><span style="--0:#D5CED9;--1:#F8F8F2">}</span></div></div><div class="ec-line"><div class="code"><span class="indent">    </span><span style="--0:#A0A1A7F4;--1:#96A1C2">//safari</span></div></div><div class="ec-line"><div class="code"><span class="indent">    </span><span style="--0:#D477F1;--1:#FF79C6">if</span><span style="--1:#F8F8F2"><span style="--0:#D5CED9">(</span><span style="--0:#F39C12">$</span><span style="--0:#D5CED9">.</span><span style="--0:#00E8C6">browse</span><span style="--0:#D5CED9">.</span><span style="--0:#00E8C6">safari</span><span style="--0:#D5CED9">) {</span></span></div></div><div class="ec-line"><div class="code"><span class="indent">        </span><span style="--0:#A0A1A7F4;--1:#96A1C2">//do something</span></div></div><div class="ec-line"><div class="code"><span class="indent"><span style="--0:#D5CED9;--1:#F8F8F2">    </span></span><span style="--0:#D5CED9;--1:#F8F8F2">}</span></div></div><div class="ec-line"><div class="code"><span class="indent">    </span><span style="--0:#A0A1A7F4;--1:#96A1C2">// chorme</span></div></div><div class="ec-line"><div class="code"><span class="indent">    </span><span style="--0:#D477F1;--1:#FF79C6">if</span><span style="--1:#F8F8F2"><span style="--0:#D5CED9">(</span><span style="--0:#F39C12">$</span><span style="--0:#D5CED9">.</span><span style="--0:#00E8C6">browse</span><span style="--0:#D5CED9">.</span><span style="--0:#00E8C6">chrome</span><span style="--0:#D5CED9">) {</span></span></div></div><div class="ec-line"><div class="code"><span class="indent">        </span><span style="--0:#A0A1A7F4;--1:#96A1C2">//do something</span></div></div><div class="ec-line"><div class="code"><span class="indent"><span style="--0:#D5CED9;--1:#F8F8F2">    </span></span><span style="--0:#D5CED9;--1:#F8F8F2">}</span></div></div><div class="ec-line"><div class="code"><span class="indent">    </span><span style="--0:#A0A1A7F4;--1:#96A1C2">// opera</span></div></div><div class="ec-line"><div class="code"><span class="indent">    </span><span style="--0:#D477F1;--1:#FF79C6">if</span><span style="--1:#F8F8F2"><span style="--0:#D5CED9">(</span><span style="--0:#F39C12">$</span><span style="--0:#D5CED9">.</span><span style="--0:#00E8C6">browse</span><span style="--0:#D5CED9">.</span><span style="--0:#00E8C6">opera</span><span style="--0:#D5CED9">) {</span></span></div></div><div class="ec-line"><div class="code"><span class="indent">        </span><span style="--0:#A0A1A7F4;--1:#96A1C2">//do something</span></div></div><div class="ec-line"><div class="code"><span class="indent"><span style="--0:#D5CED9;--1:#F8F8F2">    </span></span><span style="--0:#D5CED9;--1:#F8F8F2">}</span></div></div><div class="ec-line"><div class="code"><span class="indent">    </span><span style="--0:#A0A1A7F4;--1:#96A1C2">//ie7 and below</span></div></div><div class="ec-line"><div class="code"><span class="indent">    </span><span style="--0:#D477F1;--1:#FF79C6">if</span><span style="--1:#F8F8F2"><span style="--0:#D5CED9">(</span><span style="--0:#F39C12">$</span><span style="--0:#D5CED9">.</span><span style="--0:#00E8C6">browser</span><span style="--0:#D5CED9">.</span><span style="--0:#00E8C6">msie</span><span style="--0:#D5CED9"> </span></span><span style="--0:#F17963;--1:#FF79C6">&#x26;&#x26;</span><span style="--1:#F8F8F2"><span style="--0:#D5CED9"> </span><span style="--0:#F39C12">$</span><span style="--0:#D5CED9">.</span><span style="--0:#00E8C6">browser</span><span style="--0:#D5CED9">.</span><span style="--0:#00E8C6">version</span><span style="--0:#D5CED9"> </span></span><span style="--0:#F17963;--1:#FF79C6">&#x3C;=</span><span style="--0:#D5CED9;--1:#F8F8F2"> </span><span style="--0:#F39C12;--1:#BD93F9">6</span><span style="--0:#D5CED9;--1:#F8F8F2">){</span></div></div><div class="ec-line"><div class="code"><span class="indent">        </span><span style="--0:#A0A1A7F4;--1:#96A1C2">//do something</span></div></div><div class="ec-line"><div class="code"><span class="indent"><span style="--0:#D5CED9;--1:#F8F8F2">    </span></span><span style="--0:#D5CED9;--1:#F8F8F2">}</span></div></div><div class="ec-line"><div class="code"><span class="indent">    </span><span style="--0:#A0A1A7F4;--1:#96A1C2">//ie6 and anything</span></div></div><div class="ec-line"><div class="code"><span class="indent">    </span><span style="--0:#D477F1;--1:#FF79C6">if</span><span style="--1:#F8F8F2"><span style="--0:#D5CED9">(</span><span style="--0:#F39C12">$</span><span style="--0:#D5CED9">.</span><span style="--0:#00E8C6">browser</span><span style="--0:#D5CED9">.</span><span style="--0:#00E8C6">msie</span><span style="--0:#D5CED9"> </span></span><span style="--0:#F17963;--1:#FF79C6">&#x26;&#x26;</span><span style="--1:#F8F8F2"><span style="--0:#D5CED9"> </span><span style="--0:#F39C12">$</span><span style="--0:#D5CED9">.</span><span style="--0:#00E8C6">browser</span><span style="--0:#D5CED9">.</span><span style="--0:#00E8C6">version</span><span style="--0:#D5CED9"> </span></span><span style="--0:#F17963;--1:#FF79C6">></span><span style="--0:#F39C12;--1:#BD93F9">6</span><span style="--0:#D5CED9;--1:#F8F8F2">) {</span></div></div><div class="ec-line"><div class="code"><span class="indent">        </span><span style="--0:#A0A1A7F4;--1:#96A1C2">//do something</span></div></div><div class="ec-line"><div class="code"><span class="indent"><span style="--0:#D5CED9;--1:#F8F8F2">    </span></span><span style="--0:#D5CED9;--1:#F8F8F2">}</span></div></div><div class="ec-line"><div class="code"><span style="--0:#D5CED9;--1:#F8F8F2">})</span></div></div></code></pre><div class="copy"><div aria-live="polite"></div><button title="Copy to clipboard" data-copied="Copied!" data-code="$(document).ready(function() {    //firefox 2 and above    if($.browse.mozilla &#x26;&#x26; $.browser.version >=&#x22;1.8&#x22;) {        //do something    }    //safari    if($.browse.safari) {        //do something    }    // chorme    if($.browse.chrome) {        //do something    }    // opera    if($.browse.opera) {        //do something    }    //ie7 and below    if($.browser.msie &#x26;&#x26; $.browser.version <= 6){        //do something    }    //ie6 and anything    if($.browser.msie &#x26;&#x26; $.browser.version >6) {        //do something    }})"><div></div></button></div></figure></div>
+<h4 id="4-输入框文字获取焦点">4. 输入框文字获取焦点</h4>
+<div class="expressive-code"><figure class="frame"><figcaption class="header"></figcaption><pre data-language="javascript"><code><div class="ec-line"><div class="code"><span style="--0:#FFE66D;--1:#50FA7B">$</span><span style="--1:#F8F8F2"><span style="--0:#D5CED9">(</span><span style="--0:#00E8C6">document</span><span style="--0:#D5CED9">).</span></span><span style="--0:#FFE66D;--1:#50FA7B">ready</span><span style="--0:#D5CED9;--1:#F8F8F2">(</span><span style="--0:#D477F1;--1:#FF79C6">function</span><span style="--0:#D5CED9;--1:#F8F8F2">() {</span></div></div><div class="ec-line"><div class="code"><span class="indent">    </span><span style="--0:#FFE66D;--1:#50FA7B">$</span><span style="--0:#D5CED9;--1:#F8F8F2">(</span><span style="--0:#96E072;--1:#E9F284">'</span><span style="--0:#96E072;--1:#F1FA8C">input.text</span><span style="--0:#96E072;--1:#E9F284">'</span><span style="--0:#D5CED9;--1:#F8F8F2">).</span><span style="--0:#FFE66D;--1:#50FA7B">val</span><span style="--0:#D5CED9;--1:#F8F8F2">(</span><span style="--0:#96E072;--1:#E9F284">'</span><span style="--0:#96E072;--1:#F1FA8C">点击回车即可搜索</span><span style="--0:#96E072;--1:#E9F284">'</span><span style="--0:#D5CED9;--1:#F8F8F2">)</span></div></div><div class="ec-line"><div class="code"><span class="indent">    </span><span style="--0:#FFE66D;--1:#50FA7B">textFill</span><span style="--0:#D5CED9;--1:#F8F8F2">(</span><span style="--0:#FFE66D;--1:#50FA7B">$</span><span style="--0:#D5CED9;--1:#F8F8F2">(</span><span style="--0:#96E072;--1:#E9F284">'</span><span style="--0:#96E072;--1:#F1FA8C">input.text</span><span style="--0:#96E072;--1:#E9F284">'</span><span style="--0:#D5CED9;--1:#F8F8F2">))</span></div></div><div class="ec-line"><div class="code"><span style="--0:#D5CED9;--1:#F8F8F2">})</span></div></div><div class="ec-line"><div class="code">
+</div></div><div class="ec-line"><div class="code"><span style="--0:#D477F1;--1:#FF79C6">function</span><span style="--0:#D5CED9;--1:#F8F8F2"> </span><span style="--0:#FFE66D;--1:#50FA7B">textFill</span><span style="--0:#D5CED9;--1:#F8F8F2">(</span><span style="--0:#00E8C6;--1:#FFB86C;--1fs:italic">input</span><span style="--0:#D5CED9;--1:#F8F8F2">) {</span></div></div><div class="ec-line"><div class="code"><span class="indent">    </span><span style="--0:#A0A1A7F4;--1:#96A1C2">//input focus text function</span></div></div><div class="ec-line"><div class="code"><span class="indent">    </span><span style="--0:#D477F1;--1:#FF79C6">var</span><span style="--1:#F8F8F2"><span style="--0:#D5CED9"> </span><span style="--0:#00E8C6">originalvalue</span><span style="--0:#D5CED9"> </span></span><span style="--0:#F17963;--1:#FF79C6">=</span><span style="--1:#F8F8F2"><span style="--0:#D5CED9"> </span><span style="--0:#F39C12">input</span><span style="--0:#D5CED9">.</span></span><span style="--0:#FFE66D;--1:#50FA7B">val</span><span style="--0:#D5CED9;--1:#F8F8F2">()</span></div></div><div class="ec-line"><div class="code"><span class="indent"><span style="--1:#F8F8F2">    </span></span><span style="--0:#F39C12;--1:#F8F8F2">input</span><span style="--0:#D5CED9;--1:#F8F8F2">.</span><span style="--0:#FFE66D;--1:#50FA7B">focus</span><span style="--0:#D5CED9;--1:#F8F8F2">(</span><span style="--0:#D477F1;--1:#FF79C6">function</span><span style="--0:#D5CED9;--1:#F8F8F2"> () {</span></div></div><div class="ec-line"><div class="code"><span class="indent">        </span><span style="--0:#D477F1;--1:#FF79C6">if</span><span style="--1:#F8F8F2"><span style="--0:#D5CED9">(</span><span style="--0:#F39C12">$</span><span style="--0:#D5CED9">.</span></span><span style="--0:#FFE66D;--1:#50FA7B">trim</span><span style="--1:#F8F8F2"><span style="--0:#D5CED9">(</span><span style="--0:#F39C12">input</span><span style="--0:#D5CED9">.</span></span><span style="--0:#FFE66D;--1:#50FA7B">val</span><span style="--0:#D5CED9;--1:#F8F8F2">())</span><span style="--0:#F17963;--1:#FF79C6">==</span><span style="--1:#F8F8F2"><span style="--0:#D5CED9"> </span><span style="--0:#00E8C6">originalvalue</span><span style="--0:#D5CED9">){</span></span></div></div><div class="ec-line"><div class="code"><span class="indent"><span style="--1:#F8F8F2">            </span></span><span style="--0:#F39C12;--1:#F8F8F2">input</span><span style="--0:#D5CED9;--1:#F8F8F2">.</span><span style="--0:#FFE66D;--1:#50FA7B">val</span><span style="--0:#D5CED9;--1:#F8F8F2">(</span><span style="--0:#96E072;--1:#E9F284">''</span><span style="--0:#D5CED9;--1:#F8F8F2">)</span></div></div><div class="ec-line"><div class="code"><span class="indent"><span style="--0:#D5CED9;--1:#F8F8F2">        </span></span><span style="--0:#D5CED9;--1:#F8F8F2">}</span></div></div><div class="ec-line"><div class="code"><span class="indent"><span style="--0:#D5CED9;--1:#F8F8F2">    </span></span><span style="--0:#D5CED9;--1:#F8F8F2">}).</span><span style="--0:#FFE66D;--1:#50FA7B">blur</span><span style="--0:#D5CED9;--1:#F8F8F2">(</span><span style="--0:#D477F1;--1:#FF79C6">function</span><span style="--0:#D5CED9;--1:#F8F8F2"> () {</span></div></div><div class="ec-line"><div class="code"><span class="indent">        </span><span style="--0:#D477F1;--1:#FF79C6">if</span><span style="--1:#F8F8F2"><span style="--0:#D5CED9">(</span><span style="--0:#F39C12">$</span><span style="--0:#D5CED9">.</span></span><span style="--0:#FFE66D;--1:#50FA7B">trim</span><span style="--1:#F8F8F2"><span style="--0:#D5CED9">(</span><span style="--0:#F39C12">input</span><span style="--0:#D5CED9">.</span></span><span style="--0:#FFE66D;--1:#50FA7B">val</span><span style="--0:#D5CED9;--1:#F8F8F2">()) </span><span style="--0:#F17963;--1:#FF79C6">==</span><span style="--0:#D5CED9;--1:#F8F8F2"> </span><span style="--0:#96E072;--1:#E9F284">''</span><span style="--0:#D5CED9;--1:#F8F8F2">) {</span></div></div><div class="ec-line"><div class="code"><span class="indent"><span style="--1:#F8F8F2">            </span></span><span style="--0:#F39C12;--1:#F8F8F2">input</span><span style="--0:#D5CED9;--1:#F8F8F2">.</span><span style="--0:#FFE66D;--1:#50FA7B">val</span><span style="--1:#F8F8F2"><span style="--0:#D5CED9">(</span><span style="--0:#00E8C6">originalvalue</span><span style="--0:#D5CED9">)</span></span></div></div><div class="ec-line"><div class="code"><span class="indent"><span style="--0:#D5CED9;--1:#F8F8F2">        </span></span><span style="--0:#D5CED9;--1:#F8F8F2">}</span></div></div><div class="ec-line"><div class="code"><span class="indent"><span style="--0:#D5CED9;--1:#F8F8F2">    </span></span><span style="--0:#D5CED9;--1:#F8F8F2">})</span></div></div><div class="ec-line"><div class="code"><span style="--0:#D5CED9;--1:#F8F8F2">}</span></div></div></code></pre><div class="copy"><div aria-live="polite"></div><button title="Copy to clipboard" data-copied="Copied!" data-code="$(document).ready(function() {    $(&#x27;input.text&#x27;).val(&#x27;点击回车即可搜索&#x27;)    textFill($(&#x27;input.text&#x27;))})function textFill(input) {    //input focus text function    var originalvalue = input.val()    input.focus(function () {        if($.trim(input.val())== originalvalue){            input.val(&#x27;&#x27;)        }    }).blur(function () {        if($.trim(input.val()) == &#x27;&#x27;) {            input.val(originalvalue)        }    })}"><div></div></button></div></figure></div>
+<h4 id="5-返回头部滑动动画">5. 返回头部滑动动画</h4>
+<div class="expressive-code"><figure class="frame"><figcaption class="header"></figcaption><pre data-language="javascript"><code><div class="ec-line"><div class="code"><span style="--1:#F8F8F2"><span style="--0:#F39C12">jQuery</span><span style="--0:#D5CED9">.</span><span style="--0:#00E8C6">fn</span><span style="--0:#D5CED9">.</span></span><span style="--0:#FFE66D;--1:#50FA7B">scrollTo</span><span style="--0:#D5CED9;--1:#F8F8F2"> </span><span style="--1:#FF79C6"><span style="--0:#F17963">=</span><span style="--0:#D477F1">function</span></span><span style="--0:#D5CED9;--1:#F8F8F2"> (</span><span style="--0:#00E8C6;--1:#FFB86C;--1fs:italic">speed</span><span style="--0:#D5CED9;--1:#F8F8F2">) {</span></div></div><div class="ec-line"><div class="code"><span class="indent">    </span><span style="--0:#D477F1;--1:#FF79C6">var</span><span style="--1:#F8F8F2"><span style="--0:#D5CED9"> </span><span style="--0:#00E8C6">targetOffset</span><span style="--0:#D5CED9"> </span></span><span style="--0:#F17963;--1:#FF79C6">=</span><span style="--0:#D5CED9;--1:#F8F8F2"> </span><span style="--0:#FFE66D;--1:#50FA7B">$</span><span style="--0:#D5CED9;--1:#F8F8F2">(</span><span style="--0:#FF5EC9;--1:#BD93F9;--1fs:italic">this</span><span style="--0:#D5CED9;--1:#F8F8F2">).</span><span style="--0:#FFE66D;--1:#50FA7B">offset</span><span style="--1:#F8F8F2"><span style="--0:#D5CED9">().</span><span style="--0:#00E8C6">top</span></span></div></div><div class="ec-line"><div class="code"><span class="indent">    </span><span style="--0:#FFE66D;--1:#50FA7B">$</span><span style="--0:#D5CED9;--1:#F8F8F2">(</span><span style="--0:#96E072;--1:#E9F284">'</span><span style="--0:#96E072;--1:#F1FA8C">html, body</span><span style="--0:#96E072;--1:#E9F284">'</span><span style="--0:#D5CED9;--1:#F8F8F2">).</span><span style="--0:#FFE66D;--1:#50FA7B">stop</span><span style="--0:#D5CED9;--1:#F8F8F2">().</span><span style="--0:#FFE66D;--1:#50FA7B">animate</span><span style="--0:#D5CED9;--1:#F8F8F2">({scrollTop</span><span style="--0:#D5CED9;--1:#FF79C6">:</span><span style="--1:#F8F8F2"><span style="--0:#D5CED9"> </span><span style="--0:#00E8C6">targetOffset</span><span style="--0:#D5CED9">}, </span><span style="--0:#00E8C6">speed</span><span style="--0:#D5CED9">)</span></span></div></div><div class="ec-line"><div class="code"><span class="indent">    </span><span style="--0:#D477F1;--1:#FF79C6">return</span><span style="--0:#D5CED9;--1:#F8F8F2"> </span><span style="--0:#FF5EC9;--1:#BD93F9;--1fs:italic">this</span></div></div><div class="ec-line"><div class="code"><span style="--0:#D5CED9;--1:#F8F8F2">}</span></div></div><div class="ec-line"><div class="code">
+</div></div><div class="ec-line"><div class="code"><span style="--0:#FFE66D;--1:#50FA7B">$</span><span style="--0:#D5CED9;--1:#F8F8F2">(</span><span style="--0:#96E072;--1:#E9F284">'</span><span style="--0:#96E072;--1:#F1FA8C">#button</span><span style="--0:#96E072;--1:#E9F284">'</span><span style="--0:#D5CED9;--1:#F8F8F2">).</span><span style="--0:#FFE66D;--1:#50FA7B">click</span><span style="--0:#D5CED9;--1:#F8F8F2">(</span><span style="--0:#D477F1;--1:#FF79C6">function</span><span style="--0:#D5CED9;--1:#F8F8F2">(){</span></div></div><div class="ec-line"><div class="code"><span class="indent">    </span><span style="--0:#FFE66D;--1:#50FA7B">$</span><span style="--0:#D5CED9;--1:#F8F8F2">(</span><span style="--0:#96E072;--1:#E9F284">'</span><span style="--0:#96E072;--1:#F1FA8C">body</span><span style="--0:#96E072;--1:#E9F284">'</span><span style="--0:#D5CED9;--1:#F8F8F2">).</span><span style="--0:#FFE66D;--1:#50FA7B">scrollTo</span><span style="--0:#D5CED9;--1:#F8F8F2">(</span><span style="--0:#F39C12;--1:#BD93F9">500</span><span style="--0:#D5CED9;--1:#F8F8F2">)</span></div></div><div class="ec-line"><div class="code"><span class="indent">    </span><span style="--0:#D477F1;--1:#FF79C6">return</span><span style="--0:#D5CED9;--1:#F8F8F2"> </span><span style="--0:#F17963;--1:#BD93F9">false</span></div></div><div class="ec-line"><div class="code"><span style="--0:#D5CED9;--1:#F8F8F2">})</span></div></div></code></pre><div class="copy"><div aria-live="polite"></div><button title="Copy to clipboard" data-copied="Copied!" data-code="jQuery.fn.scrollTo =function (speed) {    var targetOffset = $(this).offset().top    $(&#x27;html, body&#x27;).stop().animate({scrollTop: targetOffset}, speed)    return this}$(&#x27;#button&#x27;).click(function(){    $(&#x27;body&#x27;).scrollTo(500)    return false})"><div></div></button></div></figure></div>
+<h4 id="6-获取鼠标位置">6. 获取鼠标位置</h4>
+<div class="expressive-code"><figure class="frame"><figcaption class="header"></figcaption><pre data-language="javascript"><code><div class="ec-line"><div class="code"><span style="--0:#FFE66D;--1:#50FA7B">$</span><span style="--1:#F8F8F2"><span style="--0:#D5CED9">(</span><span style="--0:#00E8C6">document</span><span style="--0:#D5CED9">).</span></span><span style="--0:#FFE66D;--1:#50FA7B">ready</span><span style="--0:#D5CED9;--1:#F8F8F2">(</span><span style="--0:#D477F1;--1:#FF79C6">function</span><span style="--0:#D5CED9;--1:#F8F8F2">() {</span></div></div><div class="ec-line"><div class="code"><span class="indent">    </span><span style="--0:#FFE66D;--1:#50FA7B">$</span><span style="--1:#F8F8F2"><span style="--0:#D5CED9">(</span><span style="--0:#00E8C6">document</span><span style="--0:#D5CED9">).</span></span><span style="--0:#FFE66D;--1:#50FA7B">mousemove</span><span style="--0:#D5CED9;--1:#F8F8F2">(</span><span style="--0:#D477F1;--1:#FF79C6">function</span><span style="--0:#D5CED9;--1:#F8F8F2">(</span><span style="--0:#00E8C6;--1:#FFB86C;--1fs:italic">e</span><span style="--0:#D5CED9;--1:#F8F8F2">){</span></div></div><div class="ec-line"><div class="code"><span class="indent">        </span><span style="--0:#FFE66D;--1:#50FA7B">$</span><span style="--0:#D5CED9;--1:#F8F8F2">(</span><span style="--0:#96E072;--1:#E9F284">'</span><span style="--0:#96E072;--1:#F1FA8C">#XY</span><span style="--0:#96E072;--1:#E9F284">'</span><span style="--0:#D5CED9;--1:#F8F8F2">).</span><span style="--0:#FFE66D;--1:#50FA7B">html</span><span style="--0:#D5CED9;--1:#F8F8F2">(</span><span style="--0:#96E072;--1:#E9F284">"</span><span style="--0:#96E072;--1:#F1FA8C">X:</span><span style="--0:#96E072;--1:#E9F284">"</span><span style="--0:#F17963;--1:#FF79C6">+</span><span style="--1:#F8F8F2"><span style="--0:#F39C12">e</span><span style="--0:#D5CED9">.</span><span style="--0:#00E8C6">pageX</span><span style="--0:#D5CED9"> </span></span><span style="--0:#F17963;--1:#FF79C6">+</span><span style="--0:#D5CED9;--1:#F8F8F2"> </span><span style="--0:#96E072;--1:#E9F284">"</span><span style="--0:#96E072;--1:#F1FA8C">| Y:</span><span style="--0:#96E072;--1:#E9F284">"</span><span style="--0:#D5CED9;--1:#F8F8F2"> </span><span style="--0:#F17963;--1:#FF79C6">+</span><span style="--1:#F8F8F2"><span style="--0:#D5CED9"> </span><span style="--0:#F39C12">e</span><span style="--0:#D5CED9">.</span><span style="--0:#00E8C6">pageY</span><span style="--0:#D5CED9">)</span></span></div></div><div class="ec-line"><div class="code"><span class="indent"><span style="--0:#D5CED9;--1:#F8F8F2">    </span></span><span style="--0:#D5CED9;--1:#F8F8F2">})</span></div></div><div class="ec-line"><div class="code">
+</div></div><div class="ec-line"><div class="code"><span style="--0:#D5CED9;--1:#F8F8F2">})</span></div></div></code></pre><div class="copy"><div aria-live="polite"></div><button title="Copy to clipboard" data-copied="Copied!" data-code="$(document).ready(function() {    $(document).mousemove(function(e){        $(&#x27;#XY&#x27;).html(&#x22;X:&#x22;+e.pageX + &#x22;| Y:&#x22; + e.pageY)    })})"><div></div></button></div></figure></div>
+<h4 id="7-判断元素是否存在">7. 判断元素是否存在</h4>
+<div class="expressive-code"><figure class="frame"><figcaption class="header"></figcaption><pre data-language="javascript"><code><div class="ec-line"><div class="code"><span style="--0:#FFE66D;--1:#50FA7B">$</span><span style="--1:#F8F8F2"><span style="--0:#D5CED9">(</span><span style="--0:#00E8C6">document</span><span style="--0:#D5CED9">).</span></span><span style="--0:#FFE66D;--1:#50FA7B">ready</span><span style="--0:#D5CED9;--1:#F8F8F2">(</span><span style="--0:#D477F1;--1:#FF79C6">function</span><span style="--0:#D5CED9;--1:#F8F8F2">(){</span></div></div><div class="ec-line"><div class="code"><span class="indent">    </span><span style="--0:#D477F1;--1:#FF79C6">if</span><span style="--0:#D5CED9;--1:#F8F8F2">(</span><span style="--0:#FFE66D;--1:#50FA7B">$</span><span style="--0:#D5CED9;--1:#F8F8F2">(</span><span style="--0:#96E072;--1:#E9F284">'</span><span style="--0:#96E072;--1:#F1FA8C">#id</span><span style="--0:#96E072;--1:#E9F284">'</span><span style="--1:#F8F8F2"><span style="--0:#D5CED9">).</span><span style="--0:#00E8C6">length</span><span style="--0:#D5CED9">){</span></span></div></div><div class="ec-line"><div class="code"><span class="indent">        </span><span style="--0:#A0A1A7F4;--1:#96A1C2">//do something</span></div></div><div class="ec-line"><div class="code"><span class="indent"><span style="--0:#D5CED9;--1:#F8F8F2">    </span></span><span style="--0:#D5CED9;--1:#F8F8F2">}</span></div></div><div class="ec-line"><div class="code"><span style="--0:#D5CED9;--1:#F8F8F2">})</span></div></div></code></pre><div class="copy"><div aria-live="polite"></div><button title="Copy to clipboard" data-copied="Copied!" data-code="$(document).ready(function(){    if($(&#x27;#id&#x27;).length){        //do something    }})"><div></div></button></div></figure></div>
+<h4 id="8-点击-div-也可以跳转">8. 点击 div 也可以跳转</h4>
+<div class="expressive-code"><figure class="frame"><figcaption class="header"></figcaption><pre data-language="javascript"><code><div class="ec-line"><div class="code"><span style="--0:#FFE66D;--1:#50FA7B">$</span><span style="--0:#D5CED9;--1:#F8F8F2">(</span><span style="--0:#96E072;--1:#E9F284">'</span><span style="--0:#96E072;--1:#F1FA8C">div</span><span style="--0:#96E072;--1:#E9F284">'</span><span style="--0:#D5CED9;--1:#F8F8F2">).</span><span style="--0:#FFE66D;--1:#50FA7B">click</span><span style="--0:#D5CED9;--1:#F8F8F2">(</span><span style="--0:#D477F1;--1:#FF79C6">function</span><span style="--0:#D5CED9;--1:#F8F8F2">(){</span></div></div><div class="ec-line"><div class="code"><span class="indent"><span style="--1:#F8F8F2">    </span></span><span style="--0:#F39C12;--1:#F8F8F2">window</span><span style="--0:#D5CED9;--1:#F8F8F2">.</span><span style="--0:#00E8C6;--1:#F8F8F2">location</span><span style="--0:#D5CED9;--1:#F8F8F2"> </span><span style="--0:#F17963;--1:#FF79C6">=</span><span style="--0:#D5CED9;--1:#F8F8F2"> </span><span style="--0:#FFE66D;--1:#50FA7B">$</span><span style="--0:#D5CED9;--1:#F8F8F2">(</span><span style="--0:#FF5EC9;--1:#BD93F9;--1fs:italic">this</span><span style="--0:#D5CED9;--1:#F8F8F2">).</span><span style="--0:#FFE66D;--1:#50FA7B">find</span><span style="--0:#D5CED9;--1:#F8F8F2">(</span><span style="--0:#96E072;--1:#E9F284">'</span><span style="--0:#96E072;--1:#F1FA8C">a</span><span style="--0:#96E072;--1:#E9F284">'</span><span style="--0:#D5CED9;--1:#F8F8F2">).</span><span style="--0:#FFE66D;--1:#50FA7B">attr</span><span style="--0:#D5CED9;--1:#F8F8F2">(</span><span style="--0:#96E072;--1:#E9F284">'</span><span style="--0:#96E072;--1:#F1FA8C">href</span><span style="--0:#96E072;--1:#E9F284">'</span><span style="--0:#D5CED9;--1:#F8F8F2">)</span></div></div><div class="ec-line"><div class="code"><span class="indent">    </span><span style="--0:#D477F1;--1:#FF79C6">return</span><span style="--0:#D5CED9;--1:#F8F8F2"> </span><span style="--0:#F17963;--1:#BD93F9">false</span></div></div><div class="ec-line"><div class="code"><span style="--0:#D5CED9;--1:#F8F8F2">})</span></div></div></code></pre><div class="copy"><div aria-live="polite"></div><button title="Copy to clipboard" data-copied="Copied!" data-code="$(&#x27;div&#x27;).click(function(){    window.location = $(this).find(&#x27;a&#x27;).attr(&#x27;href&#x27;)    return false})"><div></div></button></div></figure></div>
+<h4 id="9-根据浏览器大小添加样式">9. 根据浏览器大小添加样式</h4>
+<div class="expressive-code"><figure class="frame"><figcaption class="header"></figcaption><pre data-language="javascript"><code><div class="ec-line"><div class="code"><span style="--0:#FFE66D;--1:#50FA7B">$</span><span style="--1:#F8F8F2"><span style="--0:#D5CED9">(</span><span style="--0:#00E8C6">document</span><span style="--0:#D5CED9">).</span></span><span style="--0:#FFE66D;--1:#50FA7B">ready</span><span style="--0:#D5CED9;--1:#F8F8F2">(</span><span style="--0:#D477F1;--1:#FF79C6">function</span><span style="--0:#D5CED9;--1:#F8F8F2">() {</span></div></div><div class="ec-line"><div class="code"><span class="indent">    </span><span style="--0:#D477F1;--1:#FF79C6">function</span><span style="--0:#D5CED9;--1:#F8F8F2"> </span><span style="--0:#FFE66D;--1:#50FA7B">checkWindowSize</span><span style="--0:#D5CED9;--1:#F8F8F2">() {</span></div></div><div class="ec-line"><div class="code"><span class="indent">        </span><span style="--0:#D477F1;--1:#FF79C6">if</span><span style="--0:#D5CED9;--1:#F8F8F2">(</span><span style="--0:#FFE66D;--1:#50FA7B">$</span><span style="--1:#F8F8F2"><span style="--0:#D5CED9">(</span><span style="--0:#00E8C6">window</span><span style="--0:#D5CED9">).</span><span style="--0:#00E8C6">width</span><span style="--0:#D5CED9"> </span></span><span style="--0:#F17963;--1:#FF79C6">></span><span style="--0:#D5CED9;--1:#F8F8F2"> </span><span style="--0:#F39C12;--1:#BD93F9">1200</span><span style="--0:#D5CED9;--1:#F8F8F2">){</span></div></div><div class="ec-line"><div class="code"><span class="indent">            </span><span style="--0:#FFE66D;--1:#50FA7B">$</span><span style="--0:#D5CED9;--1:#F8F8F2">(</span><span style="--0:#96E072;--1:#E9F284">'</span><span style="--0:#96E072;--1:#F1FA8C">body</span><span style="--0:#96E072;--1:#E9F284">'</span><span style="--0:#D5CED9;--1:#F8F8F2">).</span><span style="--0:#FFE66D;--1:#50FA7B">addClass</span><span style="--0:#D5CED9;--1:#F8F8F2">(</span><span style="--0:#96E072;--1:#E9F284">'</span><span style="--0:#96E072;--1:#F1FA8C">add</span><span style="--0:#96E072;--1:#E9F284">'</span><span style="--0:#D5CED9;--1:#F8F8F2">)</span></div></div><div class="ec-line"><div class="code"><span class="indent"><span style="--0:#D5CED9;--1:#F8F8F2">        </span></span><span style="--0:#D5CED9;--1:#F8F8F2">} </span><span style="--0:#D477F1;--1:#FF79C6">else</span><span style="--0:#D5CED9;--1:#F8F8F2"> {</span></div></div><div class="ec-line"><div class="code"><span class="indent">            </span><span style="--0:#FFE66D;--1:#50FA7B">$</span><span style="--0:#D5CED9;--1:#F8F8F2">(</span><span style="--0:#96E072;--1:#E9F284">'</span><span style="--0:#96E072;--1:#F1FA8C">body</span><span style="--0:#96E072;--1:#E9F284">'</span><span style="--0:#D5CED9;--1:#F8F8F2">).</span><span style="--0:#FFE66D;--1:#50FA7B">removeClass</span><span style="--0:#D5CED9;--1:#F8F8F2">(</span><span style="--0:#96E072;--1:#E9F284">'</span><span style="--0:#96E072;--1:#F1FA8C">add</span><span style="--0:#96E072;--1:#E9F284">'</span><span style="--0:#D5CED9;--1:#F8F8F2">)</span></div></div><div class="ec-line"><div class="code"><span class="indent"><span style="--0:#D5CED9;--1:#F8F8F2">        </span></span><span style="--0:#D5CED9;--1:#F8F8F2">}</span></div></div><div class="ec-line"><div class="code"><span class="indent"><span style="--0:#D5CED9;--1:#F8F8F2">    </span></span><span style="--0:#D5CED9;--1:#F8F8F2">}</span></div></div><div class="ec-line"><div class="code"><span style="--0:#D5CED9;--1:#F8F8F2">})</span></div></div><div class="ec-line"><div class="code"><span style="--0:#FFE66D;--1:#50FA7B">$</span><span style="--1:#F8F8F2"><span style="--0:#D5CED9">(</span><span style="--0:#00E8C6">window</span><span style="--0:#D5CED9">).</span></span><span style="--0:#FFE66D;--1:#50FA7B">resize</span><span style="--1:#F8F8F2"><span style="--0:#D5CED9">(</span><span style="--0:#00E8C6">checkWindowSize</span><span style="--0:#D5CED9">)</span></span></div></div></code></pre><div class="copy"><div aria-live="polite"></div><button title="Copy to clipboard" data-copied="Copied!" data-code="$(document).ready(function() {    function checkWindowSize() {        if($(window).width > 1200){            $(&#x27;body&#x27;).addClass(&#x27;add&#x27;)        } else {            $(&#x27;body&#x27;).removeClass(&#x27;add&#x27;)        }    }})$(window).resize(checkWindowSize)"><div></div></button></div></figure></div>
+<h4 id="10-设置-div-在屏幕中央">10. 设置 div 在屏幕中央</h4>
+<div class="expressive-code"><figure class="frame"><figcaption class="header"></figcaption><pre data-language="javascript"><code><div class="ec-line"><div class="code"><span style="--0:#FFE66D;--1:#50FA7B">$</span><span style="--1:#F8F8F2"><span style="--0:#D5CED9">(</span><span style="--0:#00E8C6">document</span><span style="--0:#D5CED9">).</span></span><span style="--0:#FFE66D;--1:#50FA7B">ready</span><span style="--0:#D5CED9;--1:#F8F8F2">(</span><span style="--0:#D477F1;--1:#FF79C6">function</span><span style="--0:#D5CED9;--1:#F8F8F2">(){</span></div></div><div class="ec-line"><div class="code"><span class="indent"><span style="--1:#F8F8F2">    </span></span><span style="--0:#F39C12;--1:#F8F8F2">jQuery</span><span style="--0:#D5CED9;--1:#F8F8F2">.</span><span style="--0:#00E8C6;--1:#F8F8F2">fn</span><span style="--0:#D5CED9;--1:#F8F8F2">.</span><span style="--0:#FFE66D;--1:#50FA7B">center</span><span style="--0:#D5CED9;--1:#F8F8F2"> </span><span style="--0:#F17963;--1:#FF79C6">=</span><span style="--0:#D5CED9;--1:#F8F8F2"> </span><span style="--0:#D477F1;--1:#FF79C6">function</span><span style="--0:#D5CED9;--1:#F8F8F2"> (){</span></div></div><div class="ec-line"><div class="code"><span class="indent">        </span><span style="--0:#FF5EC9;--1:#BD93F9;--1fs:italic">this</span><span style="--0:#D5CED9;--1:#F8F8F2">.</span><span style="--0:#FFE66D;--1:#50FA7B">css</span><span style="--0:#D5CED9;--1:#F8F8F2">(</span><span style="--0:#96E072;--1:#E9F284">'</span><span style="--0:#96E072;--1:#F1FA8C">position</span><span style="--0:#96E072;--1:#E9F284">'</span><span style="--0:#D5CED9;--1:#F8F8F2">,</span><span style="--0:#96E072;--1:#E9F284">'</span><span style="--0:#96E072;--1:#F1FA8C">absolute</span><span style="--0:#96E072;--1:#E9F284">'</span><span style="--0:#D5CED9;--1:#F8F8F2">)</span></div></div><div class="ec-line"><div class="code"><span class="indent">        </span><span style="--0:#FF5EC9;--1:#BD93F9;--1fs:italic">this</span><span style="--0:#D5CED9;--1:#F8F8F2">.</span><span style="--0:#FFE66D;--1:#50FA7B">css</span><span style="--0:#D5CED9;--1:#F8F8F2">(</span><span style="--0:#96E072;--1:#E9F284">'</span><span style="--0:#96E072;--1:#F1FA8C">top</span><span style="--0:#96E072;--1:#E9F284">'</span><span style="--0:#D5CED9;--1:#F8F8F2">, (</span><span style="--0:#FFE66D;--1:#50FA7B">$</span><span style="--1:#F8F8F2"><span style="--0:#D5CED9">(</span><span style="--0:#00E8C6">window</span><span style="--0:#D5CED9">).</span></span><span style="--0:#FFE66D;--1:#50FA7B">height</span><span style="--0:#D5CED9;--1:#F8F8F2">() </span><span style="--0:#F17963;--1:#FF79C6">-</span><span style="--0:#D5CED9;--1:#F8F8F2"> </span><span style="--0:#FF5EC9;--1:#BD93F9;--1fs:italic">this</span><span style="--0:#D5CED9;--1:#F8F8F2">.</span><span style="--0:#FFE66D;--1:#50FA7B">height</span><span style="--0:#D5CED9;--1:#F8F8F2">()) </span><span style="--0:#F17963;--1:#FF79C6">/</span><span style="--0:#D5CED9;--1:#F8F8F2"> </span><span style="--0:#F39C12;--1:#BD93F9">2</span><span style="--0:#D5CED9;--1:#F8F8F2"> </span><span style="--0:#F17963;--1:#FF79C6">+</span><span style="--0:#D5CED9;--1:#F8F8F2"> </span><span style="--0:#FFE66D;--1:#50FA7B">$</span><span style="--1:#F8F8F2"><span style="--0:#D5CED9">(</span><span style="--0:#00E8C6">window</span><span style="--0:#D5CED9">).</span></span><span style="--0:#FFE66D;--1:#50FA7B">scrollTop</span><span style="--0:#D5CED9;--1:#F8F8F2">() </span><span style="--0:#F17963;--1:#FF79C6">+</span><span style="--0:#D5CED9;--1:#F8F8F2"> </span><span style="--0:#96E072;--1:#E9F284">'</span><span style="--0:#96E072;--1:#F1FA8C">px</span><span style="--0:#96E072;--1:#E9F284">'</span><span style="--0:#D5CED9;--1:#F8F8F2">)</span></div></div><div class="ec-line"><div class="code"><span class="indent">        </span><span style="--0:#FF5EC9;--1:#BD93F9;--1fs:italic">this</span><span style="--0:#D5CED9;--1:#F8F8F2">.</span><span style="--0:#FFE66D;--1:#50FA7B">css</span><span style="--0:#D5CED9;--1:#F8F8F2">(</span><span style="--0:#96E072;--1:#E9F284">'</span><span style="--0:#96E072;--1:#F1FA8C">left</span><span style="--0:#96E072;--1:#E9F284">'</span><span style="--0:#D5CED9;--1:#F8F8F2">, (</span><span style="--0:#FFE66D;--1:#50FA7B">$</span><span style="--1:#F8F8F2"><span style="--0:#D5CED9">(</span><span style="--0:#00E8C6">window</span><span style="--0:#D5CED9">).</span></span><span style="--0:#FFE66D;--1:#50FA7B">width</span><span style="--0:#D5CED9;--1:#F8F8F2">() </span><span style="--0:#F17963;--1:#FF79C6">-</span><span style="--0:#D5CED9;--1:#F8F8F2"> </span><span style="--0:#FF5EC9;--1:#BD93F9;--1fs:italic">this</span><span style="--0:#D5CED9;--1:#F8F8F2">.</span><span style="--0:#FFE66D;--1:#50FA7B">width</span><span style="--0:#D5CED9;--1:#F8F8F2">()) </span><span style="--0:#F17963;--1:#FF79C6">/</span><span style="--0:#D5CED9;--1:#F8F8F2"> </span><span style="--0:#F39C12;--1:#BD93F9">2</span><span style="--0:#D5CED9;--1:#F8F8F2"> </span><span style="--0:#F17963;--1:#FF79C6">+</span><span style="--0:#D5CED9;--1:#F8F8F2"> </span><span style="--0:#FFE66D;--1:#50FA7B">$</span><span style="--1:#F8F8F2"><span style="--0:#D5CED9">(</span><span style="--0:#00E8C6">window</span><span style="--0:#D5CED9">).</span></span><span style="--0:#FFE66D;--1:#50FA7B">scrollLeft</span><span style="--0:#D5CED9;--1:#F8F8F2">() </span><span style="--0:#F17963;--1:#FF79C6">+</span><span style="--0:#D5CED9;--1:#F8F8F2"> </span><span style="--0:#96E072;--1:#E9F284">'</span><span style="--0:#96E072;--1:#F1FA8C">px</span><span style="--0:#96E072;--1:#E9F284">'</span><span style="--0:#D5CED9;--1:#F8F8F2">)</span></div></div><div class="ec-line"><div class="code"><span class="indent"><span style="--0:#D5CED9;--1:#F8F8F2">    </span></span><span style="--0:#D5CED9;--1:#F8F8F2">}</span></div></div><div class="ec-line"><div class="code"><span class="indent">    </span><span style="--0:#FFE66D;--1:#50FA7B">$</span><span style="--0:#D5CED9;--1:#F8F8F2">(</span><span style="--0:#96E072;--1:#E9F284">'</span><span style="--0:#96E072;--1:#F1FA8C">#xy</span><span style="--0:#96E072;--1:#E9F284">'</span><span style="--0:#D5CED9;--1:#F8F8F2">).</span><span style="--0:#FFE66D;--1:#50FA7B">center</span><span style="--0:#D5CED9;--1:#F8F8F2">()</span></div></div><div class="ec-line"><div class="code"><span style="--0:#D5CED9;--1:#F8F8F2">})</span></div></div></code></pre><div class="copy"><div aria-live="polite"></div><button title="Copy to clipboard" data-copied="Copied!" data-code="$(document).ready(function(){    jQuery.fn.center = function (){        this.css(&#x27;position&#x27;,&#x27;absolute&#x27;)        this.css(&#x27;top&#x27;, ($(window).height() - this.height()) / 2 + $(window).scrollTop() + &#x27;px&#x27;)        this.css(&#x27;left&#x27;, ($(window).width() - this.width()) / 2 + $(window).scrollLeft() + &#x27;px&#x27;)    }    $(&#x27;#xy&#x27;).center()})"><div></div></button></div></figure></div>
+<h4 id="11-创建自己的选择器">11. 创建自己的选择器</h4>
+<div class="expressive-code"><figure class="frame"><figcaption class="header"></figcaption><pre data-language="javascript"><code><div class="ec-line"><div class="code"><span style="--0:#FFE66D;--1:#50FA7B">$</span><span style="--1:#F8F8F2"><span style="--0:#D5CED9">(</span><span style="--0:#00E8C6">document</span><span style="--0:#D5CED9">).</span></span><span style="--0:#FFE66D;--1:#50FA7B">ready</span><span style="--0:#D5CED9;--1:#F8F8F2">(</span><span style="--0:#D477F1;--1:#FF79C6">function</span><span style="--0:#D5CED9;--1:#F8F8F2"> () {</span></div></div><div class="ec-line"><div class="code"><span class="indent"><span style="--1:#F8F8F2">    </span></span><span style="--0:#F39C12;--1:#F8F8F2">$</span><span style="--0:#D5CED9;--1:#F8F8F2">.</span><span style="--0:#FFE66D;--1:#50FA7B">extend</span><span style="--1:#F8F8F2"><span style="--0:#D5CED9">(</span><span style="--0:#F39C12">$</span><span style="--0:#D5CED9">.</span><span style="--0:#00E8C6">expr</span><span style="--0:#D5CED9">[</span></span><span style="--0:#96E072;--1:#E9F284">'</span><span style="--0:#96E072;--1:#F1FA8C">:</span><span style="--0:#96E072;--1:#E9F284">'</span><span style="--0:#D5CED9;--1:#F8F8F2">], {</span></div></div><div class="ec-line"><div class="code"><span class="indent">        </span><span style="--0:#FFE66D;--1:#50FA7B">moreThen500px</span><span style="--0:#D5CED9;--1:#FF79C6">:</span><span style="--0:#D5CED9;--1:#F8F8F2"> </span><span style="--0:#D477F1;--1:#FF79C6">function</span><span style="--0:#D5CED9;--1:#F8F8F2">(</span><span style="--0:#00E8C6;--1:#FFB86C;--1fs:italic">a</span><span style="--0:#D5CED9;--1:#F8F8F2">) {</span></div></div><div class="ec-line"><div class="code"><span class="indent">            </span><span style="--0:#D477F1;--1:#FF79C6">return</span><span style="--0:#D5CED9;--1:#F8F8F2"> </span><span style="--0:#FFE66D;--1:#50FA7B">$</span><span style="--1:#F8F8F2"><span style="--0:#D5CED9">(</span><span style="--0:#00E8C6">a</span><span style="--0:#D5CED9">).</span></span><span style="--0:#FFE66D;--1:#50FA7B">width</span><span style="--0:#D5CED9;--1:#F8F8F2">() </span><span style="--0:#F17963;--1:#FF79C6">></span><span style="--0:#D5CED9;--1:#F8F8F2"> </span><span style="--0:#F39C12;--1:#BD93F9">500</span><span style="--0:#D5CED9;--1:#F8F8F2">;</span></div></div><div class="ec-line"><div class="code"><span class="indent"><span style="--0:#D5CED9;--1:#F8F8F2">        </span></span><span style="--0:#D5CED9;--1:#F8F8F2">}</span></div></div><div class="ec-line"><div class="code"><span class="indent"><span style="--0:#D5CED9;--1:#F8F8F2">    </span></span><span style="--0:#D5CED9;--1:#F8F8F2">});</span></div></div><div class="ec-line"><div class="code"><span class="indent">    </span><span style="--0:#FFE66D;--1:#50FA7B">$</span><span style="--0:#D5CED9;--1:#F8F8F2">(</span><span style="--0:#96E072;--1:#E9F284">'</span><span style="--0:#96E072;--1:#F1FA8C">.box:moreThen500px</span><span style="--0:#96E072;--1:#E9F284">'</span><span style="--0:#D5CED9;--1:#F8F8F2">).</span><span style="--0:#FFE66D;--1:#50FA7B">click</span><span style="--0:#D5CED9;--1:#F8F8F2">(</span><span style="--0:#D477F1;--1:#FF79C6">function</span><span style="--0:#D5CED9;--1:#F8F8F2"> () {</span></div></div><div class="ec-line"><div class="code"><span class="indent">        </span><span style="--0:#A0A1A7F4;--1:#96A1C2">//do</span></div></div><div class="ec-line"><div class="code"><span class="indent"><span style="--0:#D5CED9;--1:#F8F8F2">    </span></span><span style="--0:#D5CED9;--1:#F8F8F2">})</span></div></div><div class="ec-line"><div class="code"><span style="--0:#D5CED9;--1:#F8F8F2">})</span></div></div></code></pre><div class="copy"><div aria-live="polite"></div><button title="Copy to clipboard" data-copied="Copied!" data-code="$(document).ready(function () {    $.extend($.expr[&#x27;:&#x27;], {        moreThen500px: function(a) {            return $(a).width() > 500;        }    });    $(&#x27;.box:moreThen500px&#x27;).click(function () {        //do    })})"><div></div></button></div></figure></div>
+<h4 id="12-关闭所有动画效果">12. 关闭所有动画效果</h4>
+<div class="expressive-code"><figure class="frame"><figcaption class="header"></figcaption><pre data-language="javascript"><code><div class="ec-line"><div class="code"><span style="--0:#FFE66D;--1:#50FA7B">$</span><span style="--1:#F8F8F2"><span style="--0:#D5CED9">(</span><span style="--0:#00E8C6">document</span><span style="--0:#D5CED9">).</span></span><span style="--0:#FFE66D;--1:#50FA7B">ready</span><span style="--0:#D5CED9;--1:#F8F8F2">(</span><span style="--0:#D477F1;--1:#FF79C6">function</span><span style="--0:#D5CED9;--1:#F8F8F2">() {</span></div></div><div class="ec-line"><div class="code"><span class="indent"><span style="--1:#F8F8F2">    </span></span><span style="--0:#F39C12;--1:#F8F8F2">jQuery</span><span style="--0:#D5CED9;--1:#F8F8F2">.</span><span style="--0:#00E8C6;--1:#F8F8F2">fx</span><span style="--0:#D5CED9;--1:#F8F8F2">.</span><span style="--0:#00E8C6;--1:#F8F8F2">off</span><span style="--0:#D5CED9;--1:#F8F8F2"> </span><span style="--0:#F17963;--1:#FF79C6">=</span><span style="--0:#D5CED9;--1:#F8F8F2"> </span><span style="--0:#F17963;--1:#BD93F9">true</span></div></div><div class="ec-line"><div class="code"><span style="--0:#D5CED9;--1:#F8F8F2">})</span></div></div></code></pre><div class="copy"><div aria-live="polite"></div><button title="Copy to clipboard" data-copied="Copied!" data-code="$(document).ready(function() {    jQuery.fx.off = true})"><div></div></button></div></figure></div>
+<h4 id="13-检测鼠标的左右键">13. 检测鼠标的左右键</h4>
+<div class="expressive-code"><figure class="frame"><figcaption class="header"></figcaption><pre data-language="javascript"><code><div class="ec-line"><div class="code"><span style="--0:#FFE66D;--1:#50FA7B">$</span><span style="--1:#F8F8F2"><span style="--0:#D5CED9">(</span><span style="--0:#00E8C6">document</span><span style="--0:#D5CED9">).</span></span><span style="--0:#FFE66D;--1:#50FA7B">ready</span><span style="--0:#D5CED9;--1:#F8F8F2">(</span><span style="--0:#D477F1;--1:#FF79C6">function</span><span style="--0:#D5CED9;--1:#F8F8F2">() {</span></div></div><div class="ec-line"><div class="code"><span class="indent">    </span><span style="--0:#FFE66D;--1:#50FA7B">$</span><span style="--0:#D5CED9;--1:#F8F8F2">(</span><span style="--0:#96E072;--1:#E9F284">'</span><span style="--0:#96E072;--1:#F1FA8C">#xy</span><span style="--0:#96E072;--1:#E9F284">'</span><span style="--0:#D5CED9;--1:#F8F8F2">).</span><span style="--0:#FFE66D;--1:#50FA7B">mousedown</span><span style="--0:#D5CED9;--1:#F8F8F2">(</span><span style="--0:#D477F1;--1:#FF79C6">function</span><span style="--0:#D5CED9;--1:#F8F8F2">(</span><span style="--0:#00E8C6;--1:#FFB86C;--1fs:italic">e</span><span style="--0:#D5CED9;--1:#F8F8F2">){</span></div></div><div class="ec-line"><div class="code"><span class="indent">        </span><span style="--0:#FFE66D;--1:#50FA7B">alert</span><span style="--1:#F8F8F2"><span style="--0:#D5CED9">(</span><span style="--0:#F39C12">e</span><span style="--0:#D5CED9">.</span><span style="--0:#00E8C6">which</span><span style="--0:#D5CED9">)</span></span></div></div><div class="ec-line"><div class="code"><span class="indent">        </span><span style="--0:#A0A1A7F4;--1:#96A1C2">//1 = 鼠标左键，2 = 鼠标中键，3 = 鼠标右键</span></div></div><div class="ec-line"><div class="code"><span class="indent"><span style="--0:#D5CED9;--1:#F8F8F2">    </span></span><span style="--0:#D5CED9;--1:#F8F8F2">})</span></div></div><div class="ec-line"><div class="code"><span style="--0:#D5CED9;--1:#F8F8F2">})</span></div></div></code></pre><div class="copy"><div aria-live="polite"></div><button title="Copy to clipboard" data-copied="Copied!" data-code="$(document).ready(function() {    $(&#x27;#xy&#x27;).mousedown(function(e){        alert(e.which)        //1 = 鼠标左键，2 = 鼠标中键，3 = 鼠标右键    })})"><div></div></button></div></figure></div>
+<h4 id="14-回车提交表单">14. 回车提交表单</h4>
+<div class="expressive-code"><figure class="frame"><figcaption class="header"></figcaption><pre data-language="javascript"><code><div class="ec-line"><div class="code"><span style="--0:#FFE66D;--1:#50FA7B">$</span><span style="--1:#F8F8F2"><span style="--0:#D5CED9">(</span><span style="--0:#00E8C6">document</span><span style="--0:#D5CED9">).</span></span><span style="--0:#FFE66D;--1:#50FA7B">ready</span><span style="--0:#D5CED9;--1:#F8F8F2">(</span><span style="--0:#D477F1;--1:#FF79C6">function</span><span style="--0:#D5CED9;--1:#F8F8F2">() {</span></div></div><div class="ec-line"><div class="code"><span class="indent">    </span><span style="--0:#FFE66D;--1:#50FA7B">$</span><span style="--0:#D5CED9;--1:#F8F8F2">(</span><span style="--0:#96E072;--1:#E9F284">'</span><span style="--0:#96E072;--1:#F1FA8C">input</span><span style="--0:#96E072;--1:#E9F284">'</span><span style="--0:#D5CED9;--1:#F8F8F2">).</span><span style="--0:#FFE66D;--1:#50FA7B">keyup</span><span style="--0:#D5CED9;--1:#F8F8F2">(</span><span style="--0:#D477F1;--1:#FF79C6">function</span><span style="--0:#D5CED9;--1:#F8F8F2">(</span><span style="--0:#00E8C6;--1:#FFB86C;--1fs:italic">e</span><span style="--0:#D5CED9;--1:#F8F8F2">){</span></div></div><div class="ec-line"><div class="code"><span class="indent">        </span><span style="--0:#D477F1;--1:#FF79C6">if</span><span style="--1:#F8F8F2"><span style="--0:#D5CED9">(</span><span style="--0:#F39C12">e</span><span style="--0:#D5CED9">.</span><span style="--0:#00E8C6">which</span><span style="--0:#D5CED9"> </span></span><span style="--0:#F17963;--1:#FF79C6">===</span><span style="--0:#D5CED9;--1:#F8F8F2"> </span><span style="--0:#96E072;--1:#E9F284">'</span><span style="--0:#96E072;--1:#F1FA8C">13</span><span style="--0:#96E072;--1:#E9F284">'</span><span style="--0:#D5CED9;--1:#F8F8F2">){</span></div></div><div class="ec-line"><div class="code"><span class="indent">            </span><span style="--0:#FFE66D;--1:#50FA7B">alert</span><span style="--0:#D5CED9;--1:#F8F8F2">(</span><span style="--0:#96E072;--1:#E9F284">'</span><span style="--0:#96E072;--1:#F1FA8C">ok</span><span style="--0:#96E072;--1:#E9F284">'</span><span style="--0:#D5CED9;--1:#F8F8F2">)</span></div></div><div class="ec-line"><div class="code"><span class="indent"><span style="--0:#D5CED9;--1:#F8F8F2">        </span></span><span style="--0:#D5CED9;--1:#F8F8F2">}</span></div></div><div class="ec-line"><div class="code"><span class="indent"><span style="--0:#D5CED9;--1:#F8F8F2">    </span></span><span style="--0:#D5CED9;--1:#F8F8F2">})</span></div></div><div class="ec-line"><div class="code"><span style="--0:#D5CED9;--1:#F8F8F2">})</span></div></div></code></pre><div class="copy"><div aria-live="polite"></div><button title="Copy to clipboard" data-copied="Copied!" data-code="$(document).ready(function() {    $(&#x27;input&#x27;).keyup(function(e){        if(e.which === &#x27;13&#x27;){            alert(&#x27;ok&#x27;)        }    })})"><div></div></button></div></figure></div>
+<h4 id="15-设置全局-ajax-参数">15. 设置全局 ajax 参数</h4>
+<div class="expressive-code"><figure class="frame"><figcaption class="header"></figcaption><pre data-language="javascript"><code><div class="ec-line"><div class="code"><span style="--0:#FFE66D;--1:#50FA7B">$</span><span style="--0:#D5CED9;--1:#F8F8F2">(</span><span style="--0:#96E072;--1:#E9F284">'</span><span style="--0:#96E072;--1:#F1FA8C">#load</span><span style="--0:#96E072;--1:#E9F284">'</span><span style="--0:#D5CED9;--1:#F8F8F2">).</span><span style="--0:#FFE66D;--1:#50FA7B">ajaxStart</span><span style="--0:#D5CED9;--1:#F8F8F2">(</span><span style="--0:#D477F1;--1:#FF79C6">function</span><span style="--0:#D5CED9;--1:#F8F8F2">(){</span></div></div><div class="ec-line"><div class="code"><span class="indent">    </span><span style="--0:#FFE66D;--1:#50FA7B">showLoading</span><span style="--0:#D5CED9;--1:#F8F8F2">();</span></div></div><div class="ec-line"><div class="code"><span class="indent">    </span><span style="--0:#FFE66D;--1:#50FA7B">disableButtons</span><span style="--0:#D5CED9;--1:#F8F8F2">();</span></div></div><div class="ec-line"><div class="code"><span style="--0:#D5CED9;--1:#F8F8F2">});</span></div></div><div class="ec-line"><div class="code"><span style="--0:#FFE66D;--1:#50FA7B">$</span><span style="--0:#D5CED9;--1:#F8F8F2">(</span><span style="--0:#96E072;--1:#E9F284">'</span><span style="--0:#96E072;--1:#F1FA8C">#load</span><span style="--0:#96E072;--1:#E9F284">'</span><span style="--0:#D5CED9;--1:#F8F8F2">).</span><span style="--0:#FFE66D;--1:#50FA7B">ajaxCompleta</span><span style="--0:#D5CED9;--1:#F8F8F2">(</span><span style="--0:#D477F1;--1:#FF79C6">function</span><span style="--0:#D5CED9;--1:#F8F8F2">(){</span></div></div><div class="ec-line"><div class="code"><span class="indent">    </span><span style="--0:#FFE66D;--1:#50FA7B">hideLoading</span><span style="--0:#D5CED9;--1:#F8F8F2">();</span></div></div><div class="ec-line"><div class="code"><span class="indent">    </span><span style="--0:#FFE66D;--1:#50FA7B">enableButtons</span><span style="--0:#D5CED9;--1:#F8F8F2">();</span></div></div><div class="ec-line"><div class="code"><span style="--0:#D5CED9;--1:#F8F8F2">})</span></div></div></code></pre><div class="copy"><div aria-live="polite"></div><button title="Copy to clipboard" data-copied="Copied!" data-code="$(&#x27;#load&#x27;).ajaxStart(function(){    showLoading();    disableButtons();});$(&#x27;#load&#x27;).ajaxCompleta(function(){    hideLoading();    enableButtons();})"><div></div></button></div></figure></div>
+<h4 id="16-获取选中的下拉框">16. 获取选中的下拉框</h4>
+<div class="expressive-code"><figure class="frame"><figcaption class="header"></figcaption><pre data-language="javascript"><code><div class="ec-line"><div class="code"><span style="--0:#FFE66D;--1:#50FA7B">$</span><span style="--0:#D5CED9;--1:#F8F8F2">(</span><span style="--0:#96E072;--1:#E9F284">'</span><span style="--0:#96E072;--1:#F1FA8C">#someElement</span><span style="--0:#96E072;--1:#E9F284">'</span><span style="--0:#D5CED9;--1:#F8F8F2">).</span><span style="--0:#FFE66D;--1:#50FA7B">find</span><span style="--0:#D5CED9;--1:#F8F8F2">(</span><span style="--0:#96E072;--1:#E9F284">'</span><span style="--0:#96E072;--1:#F1FA8C">option:selected</span><span style="--0:#96E072;--1:#E9F284">'</span><span style="--0:#D5CED9;--1:#F8F8F2">)</span></div></div><div class="ec-line"><div class="code"><span style="--0:#FFE66D;--1:#50FA7B">$</span><span style="--0:#D5CED9;--1:#F8F8F2">(</span><span style="--0:#96E072;--1:#E9F284">'</span><span style="--0:#96E072;--1:#F1FA8C">#someElement option:selected</span><span style="--0:#96E072;--1:#E9F284">'</span><span style="--0:#D5CED9;--1:#F8F8F2">)</span></div></div></code></pre><div class="copy"><div aria-live="polite"></div><button title="Copy to clipboard" data-copied="Copied!" data-code="$(&#x27;#someElement&#x27;).find(&#x27;option:selected&#x27;)$(&#x27;#someElement option:selected&#x27;)"><div></div></button></div></figure></div>
+<h4 id="17-切换复选框">17. 切换复选框</h4>
+<div class="expressive-code"><figure class="frame"><figcaption class="header"></figcaption><pre data-language="javascript"><code><div class="ec-line"><div class="code"><span style="--0:#D477F1;--1:#FF79C6">var</span><span style="--1:#F8F8F2"><span style="--0:#D5CED9"> </span><span style="--0:#00E8C6">tog</span><span style="--0:#D5CED9"> </span></span><span style="--0:#F17963;--1:#FF79C6">=</span><span style="--0:#F17963;--1:#BD93F9">false</span></div></div><div class="ec-line"><div class="code"><span style="--0:#FFE66D;--1:#50FA7B">$</span><span style="--0:#D5CED9;--1:#F8F8F2">(</span><span style="--0:#96E072;--1:#E9F284">'</span><span style="--0:#96E072;--1:#F1FA8C">button</span><span style="--0:#96E072;--1:#E9F284">'</span><span style="--0:#D5CED9;--1:#F8F8F2">).</span><span style="--0:#FFE66D;--1:#50FA7B">click</span><span style="--0:#D5CED9;--1:#F8F8F2">(</span><span style="--0:#D477F1;--1:#FF79C6">function</span><span style="--0:#D5CED9;--1:#F8F8F2">(){</span></div></div><div class="ec-line"><div class="code"><span class="indent">    </span><span style="--0:#FFE66D;--1:#50FA7B">$</span><span style="--0:#D5CED9;--1:#F8F8F2">(</span><span style="--0:#96E072;--1:#E9F284">'</span><span style="--0:#96E072;--1:#F1FA8C">input[type=checkbox]</span><span style="--0:#96E072;--1:#E9F284">'</span><span style="--0:#D5CED9;--1:#F8F8F2">).</span><span style="--0:#FFE66D;--1:#50FA7B">attr</span><span style="--0:#D5CED9;--1:#F8F8F2">(</span><span style="--0:#96E072;--1:#E9F284">'</span><span style="--0:#96E072;--1:#F1FA8C">checked</span><span style="--0:#96E072;--1:#E9F284">'</span><span style="--0:#D5CED9;--1:#F8F8F2">,</span><span style="--0:#F17963;--1:#FF79C6">!</span><span style="--1:#F8F8F2"><span style="--0:#00E8C6">tog</span><span style="--0:#D5CED9">)</span></span></div></div><div class="ec-line"><div class="code"><span class="indent"><span style="--1:#F8F8F2">    </span></span><span style="--0:#00E8C6;--1:#F8F8F2">tog</span><span style="--0:#D5CED9;--1:#F8F8F2"> </span><span style="--0:#F17963;--1:#FF79C6">=</span><span style="--0:#D5CED9;--1:#F8F8F2"> </span><span style="--0:#F17963;--1:#FF79C6">!</span><span style="--0:#00E8C6;--1:#F8F8F2">tog</span></div></div><div class="ec-line"><div class="code"><span style="--0:#D5CED9;--1:#F8F8F2">})</span></div></div></code></pre><div class="copy"><div aria-live="polite"></div><button title="Copy to clipboard" data-copied="Copied!" data-code="var tog =false$(&#x27;button&#x27;).click(function(){    $(&#x27;input[type=checkbox]&#x27;).attr(&#x27;checked&#x27;,!tog)    tog = !tog})"><div></div></button></div></figure></div>
+<h4 id="18-使用-siblings-来选择同辈元素">18. 使用 siblings() 来选择同辈元素</h4>
+<div class="expressive-code"><figure class="frame"><figcaption class="header"></figcaption><pre data-language="javascript"><code><div class="ec-line"><div class="code"><span style="--0:#FFE66D;--1:#50FA7B">$</span><span style="--0:#D5CED9;--1:#F8F8F2">(</span><span style="--0:#96E072;--1:#E9F284">'</span><span style="--0:#96E072;--1:#F1FA8C">#nav li</span><span style="--0:#96E072;--1:#E9F284">'</span><span style="--0:#D5CED9;--1:#F8F8F2">).</span><span style="--0:#FFE66D;--1:#50FA7B">click</span><span style="--0:#D5CED9;--1:#F8F8F2">(</span><span style="--0:#D477F1;--1:#FF79C6">function</span><span style="--0:#D5CED9;--1:#F8F8F2">(){</span></div></div><div class="ec-line"><div class="code"><span class="indent">    </span><span style="--0:#FFE66D;--1:#50FA7B">$</span><span style="--0:#D5CED9;--1:#F8F8F2">(</span><span style="--0:#FF5EC9;--1:#BD93F9;--1fs:italic">this</span><span style="--0:#D5CED9;--1:#F8F8F2">).</span><span style="--0:#FFE66D;--1:#50FA7B">addClass</span><span style="--0:#D5CED9;--1:#F8F8F2">(</span><span style="--0:#96E072;--1:#E9F284">'</span><span style="--0:#96E072;--1:#F1FA8C">active</span><span style="--0:#96E072;--1:#E9F284">'</span><span style="--0:#D5CED9;--1:#F8F8F2">)</span></div></div><div class="ec-line"><div class="code"><span class="indent"><span style="--0:#D5CED9;--1:#F8F8F2">            </span></span><span style="--0:#D5CED9;--1:#F8F8F2">.</span><span style="--0:#FFE66D;--1:#50FA7B">siblings</span><span style="--0:#D5CED9;--1:#F8F8F2">().</span><span style="--0:#FFE66D;--1:#50FA7B">removeClass</span><span style="--0:#D5CED9;--1:#F8F8F2">(</span><span style="--0:#96E072;--1:#E9F284">'</span><span style="--0:#96E072;--1:#F1FA8C">active</span><span style="--0:#96E072;--1:#E9F284">'</span><span style="--0:#D5CED9;--1:#F8F8F2">)</span></div></div><div class="ec-line"><div class="code"><span style="--0:#D5CED9;--1:#F8F8F2">})</span></div></div></code></pre><div class="copy"><div aria-live="polite"></div><button title="Copy to clipboard" data-copied="Copied!" data-code="$(&#x27;#nav li&#x27;).click(function(){    $(this).addClass(&#x27;active&#x27;)            .siblings().removeClass(&#x27;active&#x27;)})"><div></div></button></div></figure></div>
+<h4 id="19-个性化链接">19. 个性化链接</h4>
+<div class="expressive-code"><figure class="frame"><figcaption class="header"></figcaption><pre data-language="javascript"><code><div class="ec-line"><div class="code"><span style="--0:#FFE66D;--1:#50FA7B">$</span><span style="--1:#F8F8F2"><span style="--0:#D5CED9">(</span><span style="--0:#00E8C6">document</span><span style="--0:#D5CED9">).</span></span><span style="--0:#FFE66D;--1:#50FA7B">ready</span><span style="--0:#D5CED9;--1:#F8F8F2">(</span><span style="--0:#D477F1;--1:#FF79C6">function</span><span style="--0:#D5CED9;--1:#F8F8F2">(){</span></div></div><div class="ec-line"><div class="code"><span class="indent">    </span><span style="--0:#FFE66D;--1:#50FA7B">$</span><span style="--0:#D5CED9;--1:#F8F8F2">(</span><span style="--0:#96E072;--1:#E9F284">'</span><span style="--0:#96E072;--1:#F1FA8C">a[href$=pdf]</span><span style="--0:#96E072;--1:#E9F284">'</span><span style="--0:#D5CED9;--1:#F8F8F2">).</span><span style="--0:#FFE66D;--1:#50FA7B">addClass</span><span style="--0:#D5CED9;--1:#F8F8F2">(</span><span style="--0:#96E072;--1:#E9F284">'</span><span style="--0:#96E072;--1:#F1FA8C">pdf</span><span style="--0:#96E072;--1:#E9F284">'</span><span style="--0:#D5CED9;--1:#F8F8F2">)</span></div></div><div class="ec-line"><div class="code"><span style="--0:#D5CED9;--1:#F8F8F2">})</span></div></div></code></pre><div class="copy"><div aria-live="polite"></div><button title="Copy to clipboard" data-copied="Copied!" data-code="$(document).ready(function(){    $(&#x27;a[href$=pdf]&#x27;).addClass(&#x27;pdf&#x27;)})"><div></div></button></div></figure></div>
+<h4 id="20-一段时间后自动关闭或者隐藏元素">20. 一段时间后自动关闭或者隐藏元素</h4>
+<div class="expressive-code"><figure class="frame"><figcaption class="header"></figcaption><pre data-language="javascript"><code><div class="ec-line"><div class="code"><span style="--0:#FFE66D;--1:#50FA7B">setTimeout</span><span style="--0:#D5CED9;--1:#F8F8F2">(</span><span style="--0:#D477F1;--1:#FF79C6">function</span><span style="--0:#D5CED9;--1:#F8F8F2">() {</span></div></div><div class="ec-line"><div class="code"><span class="indent">    </span><span style="--0:#FFE66D;--1:#50FA7B">$</span><span style="--0:#D5CED9;--1:#F8F8F2">(</span><span style="--0:#96E072;--1:#E9F284">'</span><span style="--0:#96E072;--1:#F1FA8C">div</span><span style="--0:#96E072;--1:#E9F284">'</span><span style="--0:#D5CED9;--1:#F8F8F2">).</span><span style="--0:#FFE66D;--1:#50FA7B">fadeIn</span><span style="--0:#D5CED9;--1:#F8F8F2">(</span><span style="--0:#F39C12;--1:#BD93F9">400</span><span style="--0:#D5CED9;--1:#F8F8F2">)</span></div></div><div class="ec-line"><div class="code"><span style="--0:#D5CED9;--1:#F8F8F2">}, </span><span style="--0:#F39C12;--1:#BD93F9">3000</span><span style="--0:#D5CED9;--1:#F8F8F2">)</span></div></div></code></pre><div class="copy"><div aria-live="polite"></div><button title="Copy to clipboard" data-copied="Copied!" data-code="setTimeout(function() {    $(&#x27;div&#x27;).fadeIn(400)}, 3000)"><div></div></button></div></figure></div> </article> </main> <div class="random"> <div class="w-full h-1 bg-gray-600 mb-4 dark:bg-gray-300"></div> <h1 class="mb-4 text-xl font-heading font-bold text-zinc-900 dark:text-zinc-100">
+Random Read
+</h1> <ul class="flex flex-col gap-1.5"> <li> <a href="/posts/hexo-config-notes" class="group flex justify-between gap-3 text-sm" data-umami-event="Random-article"> <span class="group-hover:underline">Hexo配置随记</span> <span class="text-nowrap text-zinc-500 font-mono"> 2018-04-01 </span> </a> </li><li> <a href="/posts/async-await" class="group flex justify-between gap-3 text-sm" data-umami-event="Random-article"> <span class="group-hover:underline">Async/Await 代替 Promise.all()</span> <span class="text-nowrap text-zinc-500 font-mono"> 2019-08-17 </span> </a> </li><li> <a href="/posts/github-weekly-wakatime" class="group flex justify-between gap-3 text-sm" data-umami-event="Random-article"> <span class="group-hover:underline">Github-Weekly-WakaTime</span> <span class="text-nowrap text-zinc-500 font-mono"> 2020-05-14 </span> </a> </li> </ul> </div>  <script data-astro-rerun>
+    (() => {
+      if (window.__lightboxInstalled) return;
+      window.__lightboxInstalled = true;
+
+      const prefersReduced = window.matchMedia?.("(prefers-reduced-motion: reduce)")?.matches;
+      const D = prefersReduced ? 0 : 180;
+      const state = { overlay: null };
+
+      const close = () => {
+        const overlay = state.overlay;
+        if (!overlay) return;
+        const img = overlay.querySelector(".lightbox-img");
+
+        const fade = overlay.animate([{ opacity: 1 }, { opacity: 0 }], { duration: D, easing: "ease-in", fill: "forwards" });
+        const shrink = img?.animate([{ transform: "scale(1)" }, { transform: "scale(0.96)" }], { duration: D, easing: "ease-in", fill: "forwards" });
+
+        Promise.allSettled([fade?.finished ?? Promise.resolve(), shrink?.finished ?? Promise.resolve()]).finally(() => {
+          overlay.remove();
+          state.overlay = null;
+          document.body.style.overflow = "";
+          document.body.style.paddingRight = "";
+          document.removeEventListener("keydown", onKeydown);
+        });
+      };
+
+      const onKeydown = (e) => { if (e.key === "Escape") close(); };
+
+      const openFrom = (thumb) => {
+        if (state.overlay) return;
+
+        const overlay = document.createElement("div");
+        overlay.className = "lightbox-overlay";
+        overlay.dataset.armed = "0";
+        setTimeout(() => { if (overlay.isConnected) overlay.dataset.armed = "1"; }, D || 120);
+
+        const big = thumb.cloneNode(true);
+        big.classList.add("lightbox-img");
+        big.removeAttribute("width");
+        big.removeAttribute("height");
+        big.style.maxWidth = "";
+        big.style.maxHeight = "";
+        big.draggable = false;
+
+        overlay.appendChild(big);
+        document.body.appendChild(overlay);
+        state.overlay = overlay;
+
+        const pad = window.innerWidth - document.documentElement.clientWidth;
+        if (pad > 0) document.body.style.paddingRight = pad + "px";
+        document.body.style.overflow = "hidden";
+
+        overlay.animate([{ opacity: 0 }, { opacity: 1 }], { duration: D, easing: "ease-out", fill: "forwards" });
+        big.animate([{ transform: "scale(0.96)" }, { transform: "scale(1)" }], { duration: D, easing: "ease-out", fill: "forwards" });
+
+        overlay.addEventListener("click", () => { if (overlay?.dataset.armed === "1") close(); });
+        document.addEventListener("keydown", onKeydown);
+      };
+
+      const onDocClick = (e) => {
+        const target = e.target;
+        if (!(target instanceof Element)) return;
+        const article = target.closest("article[data-pagefind-body]");
+        if (!article) return;
+        const img = target.closest("img");
+        if (!img) return;
+        if (e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
+
+        e.preventDefault();
+        e.stopPropagation();
+        openFrom(img);
+      };
+
+      document.addEventListener("click", onDocClick, { passive: false });
+      document.addEventListener("astro:before-swap", close);
+    })();
+  </script>   </div> <script>
+  function setTheme() {
+    let theme
+
+    if (typeof localStorage !== 'undefined' && localStorage.getItem('theme')) {
+      theme = localStorage.getItem('theme')
+    } else {
+      theme = window.matchMedia('(prefers-color-scheme: dark)').matches
+        ? 'dark'
+        : 'light'
+    }
+
+    document.documentElement.classList[theme ? 'add' : 'remove'](theme)
+
+    if (typeof localStorage !== 'undefined') {
+      const observer = new MutationObserver(() => {
+        const isDark = document.documentElement.classList.contains('dark')
+        localStorage.setItem('theme', isDark ? 'dark' : 'light')
+      })
+      observer.observe(document.documentElement, {
+        attributes: true,
+        attributeFilter: ['class'],
+      })
+    }
+  }
+
+  setTheme()
+
+  document.addEventListener('astro:after-swap', setTheme)
+</script></body></html>

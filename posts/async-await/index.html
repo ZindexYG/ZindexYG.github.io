@@ -1,0 +1,406 @@
+<!DOCTYPE html><html lang="en" class="relative bg-fontdefault dark:bg-bgdefault"> <head><meta name="generator" content="Astro"><!-- Global Metadata --><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><link rel="icon" type="image/svg+xml" href="/favicon.svg"><meta name="generator" content="Astro v5.16.6"><!-- Font preloads --><link rel="preload" href="/fonts/geist-variable.woff2" as="font" type="font/woff2" crossorigin><link rel="preload" href="/fonts/geist-mono-variable.woff2" as="font" type="font/woff2" crossorigin><!-- Canonical URL --><link rel="canonical" href="https://z-index.me/posts/async-await/"><!-- Primary Meta Tags --><title>Async/Await 代替 Promise.all()</title><meta name="title" content="Async/Await 代替 Promise.all()"><meta name="description" content="新调料，新味道"><!-- Open Graph / Facebook --><meta property="og:type" content="website"><meta property="og:url" content="https://z-index.me/posts/async-await/"><meta property="og:title" content="Async/Await 代替 Promise.all()"><meta property="og:description" content="新调料，新味道"><meta property="og:image" content="https://z-index.me/static/ogimage.png"><!-- Twitter --><meta property="twitter:card" content="summary_large_image"><meta property="twitter:url" content="https://z-index.me/posts/async-await/"><meta property="twitter:title" content="Async/Await 代替 Promise.all()"><meta property="twitter:description" content="新调料，新味道"><meta property="twitter:image" content="https://z-index.me/static/ogimage.png"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/twikoo@1.6.44/dist/twikoo.css" crossorigin="anonymous"><link rel="stylesheet" href="/_astro/index.wYwjb_5q.css">
+<style>.toc-root[data-astro-cid-6t6zfk7k] .toc-inline[data-astro-cid-6t6zfk7k]{display:block}.toc-root[data-astro-cid-6t6zfk7k] .toc-float[data-astro-cid-6t6zfk7k]{display:none}@media(min-width:1200px){.toc-root[data-astro-cid-6t6zfk7k] .toc-inline[data-astro-cid-6t6zfk7k]{display:none}.toc-root[data-astro-cid-6t6zfk7k] .toc-float[data-astro-cid-6t6zfk7k]{display:block}}.toc-root[data-astro-cid-6t6zfk7k] .toc[data-astro-cid-6t6zfk7k] details[data-astro-cid-6t6zfk7k]{padding:1rem;border-radius:10px;border:1px solid #83838330;margin-bottom:1rem}.toc-root[data-astro-cid-6t6zfk7k] .toc-float[data-astro-cid-6t6zfk7k]{position:fixed;top:84px;right:max(12px,env(safe-area-inset-right));width:260px;max-height:78vh;overflow:auto;z-index:40;transition:opacity .25s ease,transform .25s ease}.toc-root[data-astro-cid-6t6zfk7k] .toc-float[data-astro-cid-6t6zfk7k].at-top{opacity:0;pointer-events:none;transform:translateY(-4px)}.toc-root[data-astro-cid-6t6zfk7k] .toc[data-astro-cid-6t6zfk7k] a[data-astro-cid-6t6zfk7k].toc-link{position:relative;display:block;padding:.125rem 0;color:#6b7280;text-decoration:none;transition:color .15s ease}.dark[data-astro-cid-6t6zfk7k] .toc-root[data-astro-cid-6t6zfk7k] .toc[data-astro-cid-6t6zfk7k] a[data-astro-cid-6t6zfk7k].toc-link{color:#a1a1aa}.toc-root[data-astro-cid-6t6zfk7k] .toc[data-astro-cid-6t6zfk7k] a[data-astro-cid-6t6zfk7k].toc-link:hover{color:#3f3f46}.dark[data-astro-cid-6t6zfk7k] .toc-root[data-astro-cid-6t6zfk7k] .toc[data-astro-cid-6t6zfk7k] a[data-astro-cid-6t6zfk7k].toc-link:hover{color:#e4e4e7}.toc-root[data-astro-cid-6t6zfk7k] .toc[data-astro-cid-6t6zfk7k] a[data-astro-cid-6t6zfk7k].toc-link.is-active:before{content:"";position:absolute;left:-12px;top:.6em;width:5px;height:5px;border-radius:50%;background:currentColor}.toc-root[data-astro-cid-6t6zfk7k] .toc[data-astro-cid-6t6zfk7k] a[data-astro-cid-6t6zfk7k][data-depth="1"]{font-weight:600}.toc-root[data-astro-cid-6t6zfk7k] .toc[data-astro-cid-6t6zfk7k] a[data-astro-cid-6t6zfk7k][data-depth="3"],.toc-root[data-astro-cid-6t6zfk7k] .toc[data-astro-cid-6t6zfk7k] a[data-astro-cid-6t6zfk7k][data-depth="4"],.toc-root[data-astro-cid-6t6zfk7k] .toc[data-astro-cid-6t6zfk7k] a[data-astro-cid-6t6zfk7k][data-depth="5"]{opacity:.8;font-size:.9em}.toc-root[data-astro-cid-6t6zfk7k] .toc-float[data-astro-cid-6t6zfk7k] .toc[data-astro-cid-6t6zfk7k] details[data-astro-cid-6t6zfk7k]{padding:.75rem;border:1px solid rgba(0,0,0,.08);background-color:#00000008}.dark[data-astro-cid-6t6zfk7k] .toc-root[data-astro-cid-6t6zfk7k] .toc-float[data-astro-cid-6t6zfk7k] .toc[data-astro-cid-6t6zfk7k] details[data-astro-cid-6t6zfk7k]{border-color:#ffffff14;background-color:#ffffff0a}article[data-pagefind-body] :is(h1[id],h2[id],h3[id],h4[id],h5[id]){scroll-margin-top:96px}article[data-pagefind-body] img{cursor:pointer}article[data-pagefind-body] img{transition:transform .18s ease,filter .18s ease;transform-origin:center center;will-change:transform;backface-visibility:hidden}article[data-pagefind-body] img:hover{transform:scale(1.01)}.lightbox-img:hover{transform:none!important}@media(prefers-reduced-motion:reduce){article[data-pagefind-body] img{transition:none}}.lightbox-overlay{position:fixed;inset:0;display:flex;align-items:center;justify-content:center;background:#0009;cursor:zoom-out;z-index:1000;opacity:0;touch-action:none;-webkit-tap-highlight-color:transparent}.dark .lightbox-overlay{background:#000000b3}.lightbox-img{max-width:92vw;max-height:92vh;border-radius:12px;box-shadow:0 10px 40px #0006;will-change:transform}.dark .lightbox-img{box-shadow:0 10px 40px #000000b3}@media(prefers-reduced-motion:reduce){.lightbox-overlay,.lightbox-img{animation:none !重要;transition:none !重要}}.expressive-code .frame{all:unset;position:relative;display:block;--header-border-radius: calc(var(--ec-brdRad) + var(--ec-brdWd));--tab-border-radius: calc(var(--ec-frm-edTabBrdRad) + var(--ec-brdWd));--button-spacing: .4rem;--code-background: var(--ec-frm-edBg);border-radius:var(--header-border-radius);box-shadow:0 0 0 var(--ec-brdWd) var(--ec-frm-edBrdClr)!important}
+</style></head> <body class="font-sans min-h-svh text-zinc-900 bg-fontdefault antialiased transition-colors dark:bg-bgdefault dark:text-fontdefault"> <div class="mx-auto p-4 pb-16 max-w-3xl"> <header class="sticky top-0 z-50 w-full mb-6
+         bg-fontdefault dark:bg-bgdefault transition-colors" data-astro-cid-3ef6ksr2> <!-- 仅内容限宽；背景全屏铺开 --> <div class="mx-auto w-full max-w-screen-md
+              flex h-12 items-center justify-between" data-astro-cid-3ef6ksr2>  <nav class="hidden md:flex items-center gap-4" data-astro-cid-3ef6ksr2> <a href="/" data-astro-cid-3ef6ksr2>Home</a> <a href="/posts" data-astro-cid-3ef6ksr2>Posts</a> <a href="/library" data-astro-cid-3ef6ksr2>Library</a> <!-- <a href="/bmmg">Media</a> --> <!-- <a href="https://exercise.asyncx.top" target="_blank" rel="noopener noreferrer">Steps</a> --> </nav>  <div class="hidden md:block" data-astro-cid-3ef6ksr2> <div class="flex justify-end space-x-2"> <button id="search" class="inline-flex items-center rounded-md border p-1 transition-colors hover:bg-zinc-50 dark:border-zinc-700 dark:hover:bg-zinc-800 [&_svg]:text-zinc-500 [&_svg]:hover:text-zinc-900 [&_svg]:dark:hover:text-zinc-100" aria-label="Search" onclick="window.location.href='/search'" data-umami-event="Button-Search" type="button"> <span class="sr-only">Search</span> <svg class="size-4" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"> <g transform="scale(0.015625)"> <path d="M975.474921 917.123519l-152.442347-152.502577c150.575215-165.512276 146.419339-421.550372-13.431309-581.40102a421.610602 421.610602 0 0 0-596.217622 596.277851c138.890578 138.890578 350.47887 160.151799 512.136422 64.626882l161.47686 161.537091a62.518829 62.518829 0 1 0 88.477996-88.538227z m-251.038998-222.851318a301.15043 301.15043 0 0 1-425.886938 0 301.15043 301.15043 0 0 1 0-425.886938 301.15043 301.15043 0 1 1 425.886938 425.886938z" fill="currentColor"></path> </g> </svg> </button> <button id="rss" class="inline-flex items-center rounded-md border p-1 transition-colors hover:bg-zinc-50 dark:border-zinc-700 dark:hover:bg-zinc-800 [&_svg]:text-zinc-500 [&_svg]:hover:text-zinc-900 [&_svg]:dark:hover:text-zinc-100" aria-label="RSS Feed" onclick="window.location.href='/rss.xml'" data-umami-event="Button-RSS" type="button"> <span class="sr-only">RSS Feed</span> <svg class="size-4" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"> <g transform="scale(0.015625)"> <path d="M42.666667 853.333333a128 128 0 1 1 256 0 128 128 0 0 1-256 0z m938.666666 128h-178.773333c0-418.986667-340.906667-759.893333-759.893333-759.893333V42.666667c517.546667 0 938.666667 421.12 938.666666 938.666666z m-298.666666 0h-182.826667c0-252.074667-205.098667-457.130667-457.173333-457.130666V341.333333c352.896 0 640 287.104 640 640z" fill="currentColor"></path> </g> </svg> </button> <button id="douban" class="inline-flex items-center rounded-md border p-1 transition-colors hover:bg-zinc-50 dark:border-zinc-700 dark:hover:bg-zinc-800 [&_svg]:text-zinc-500 [&_svg]:hover:text-zinc-900 [&_svg]:dark:hover:text-zinc-100" aria-label="Douban" onclick="window.open('https://douban.com/people/141874159/', '_blank')" data-umami-event="Button-Douban" type="button"> <span class="sr-only">Douban</span> <svg class="size-4" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" fill="currentColor"> <path d="M.51 3.06h22.98V.755H.51V3.06Zm20.976 2.537v9.608h-2.137l-1.669 5.76H24v2.28H0v-2.28h6.32l-1.67-5.76H2.515V5.597h18.972Zm-5.066 9.608H7.58l1.67 5.76h5.501l1.67-5.76ZM18.367 7.9H5.634v5.025h12.733V7.9Z"></path> </svg> </button> <button id="github" class="inline-flex items-center rounded-md border p-1 transition-colors hover:bg-zinc-50 dark:border-zinc-700 dark:hover:bg-zinc-800 [&_svg]:text-zinc-500 [&_svg]:hover:text-zinc-900 [&_svg]:dark:hover:text-zinc-100" aria-label="GitHub" onclick="window.open('https://github.com/ZindexYG/z-index.me', '_blank')" data-umami-event="Button-GitHub" type="button"> <span class="sr-only">GitHub</span> <svg class="size-4" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" fill="currentColor"> <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"></path> </svg> </button> <button id="theme-toggle" class="inline-flex items-center rounded-md border p-1 transition-colors hover:bg-zinc-50 dark:border-zinc-700 dark:hover:bg-zinc-800 [&_svg]:text-zinc-500 [&_svg]:hover:text-zinc-900 [&_svg]:dark:hover:text-zinc-100" aria-label="Toggle theme" data-umami-event="Button-Theme" type="button"> <span class="sr-only">Toggle theme</span> <svg id="sun" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor" class="hidden size-4 dark:block"> <path d="M8 1a.75.75 0 0 1 .75.75v1.5a.75.75 0 0 1-1.5 0v-1.5A.75.75 0 0 1 8 1ZM10.5 8a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0ZM12.95 4.11a.75.75 0 1 0-1.06-1.06l-1.062 1.06a.75.75 0 0 0 1.061 1.062l1.06-1.061ZM15 8a.75.75 0 0 1-.75.75h-1.5a.75.75 0 0 1 0-1.5h1.5A.75.75 0 0 1 15 8ZM11.89 12.95a.75.75 0 0 0 1.06-1.06l-1.06-1.062a.75.75 0 0 0-1.062 1.061l1.061 1.06ZM8 12a.75.75 0 0 1 .75.75v1.5a.75.75 0 0 1-1.5 0v-1.5A.75.75 0 0 1 8 12ZM5.172 11.89a.75.75 0 0 0-1.061-1.062L3.05 11.89a.75.75 0 1 0 1.06 1.06l1.06-1.06ZM4 8a.75.75 0 0 1-.75.75h-1.5a.75.75 0 0 1 0-1.5h1.5A.75.75 0 0 1 4 8ZM4.11 5.172A.75.75 0 0 0 5.173 4.11L4.11 3.05a.75.75 0 1 0-1.06 1.06l1.06 1.06Z"></path> </svg> <svg id="moon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor" class="size-4 dark:hidden"> <path d="M14.438 10.148c.19-.425-.321-.787-.748-.601A5.5 5.5 0 0 1 6.453 2.31c.186-.427-.176-.938-.6-.748a6.501 6.501 0 1 0 8.585 8.586Z"></path> </svg> </button> </div> <script type="module">function t(){document.getElementById("theme-toggle")?.addEventListener("click",()=>{document.documentElement.classList.toggle("dark")})}t();document.addEventListener("astro:after-swap",t);</script> </div>  <div class="md:hidden flex items-center gap-2" data-astro-cid-3ef6ksr2> <details class="relative" data-astro-cid-3ef6ksr2> <summary class="list-none cursor-pointer p-2 rounded-md
+                 hover:bg-zinc-100 dark:hover:bg-zinc-800
+                 outline-none focus-visible:ring-2
+                 focus-visible:ring-zinc-400 dark:focus-visible:ring-zinc-600" aria-label="Open menu" data-astro-cid-3ef6ksr2> <!-- 汉堡图标 --> <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" data-astro-cid-3ef6ksr2> <path stroke-linecap="round" stroke-linejoin="round" d="M4 7h16M4 12h16M4 17h16" data-astro-cid-3ef6ksr2></path> </svg> </summary> <!-- 下拉菜单背景也跟随站点配色 --> <nav class="absolute top-0 left-[calc(100%+0.5rem)] z-50
+                  w-56 max-w-[80vw]
+                  rounded-lg border border-zinc-200 dark:border-zinc-800
+                  bg-fontdefault dark:bg-bgdefault shadow-lg" data-astro-cid-3ef6ksr2> <ul class="py-1" data-astro-cid-3ef6ksr2> <li data-astro-cid-3ef6ksr2> <a class="block px-3 py-2 rounded hover:bg-zinc-100 dark:hover:bg-zinc-800" href="/" data-astro-cid-3ef6ksr2>Home</a> </li> <li data-astro-cid-3ef6ksr2> <a class="block px-3 py-2 rounded hover:bg-zinc-100 dark:hover:bg-zinc-800" href="/posts" data-astro-cid-3ef6ksr2>Posts</a> </li> <!-- <li>
+              <a
+                class='block px-3 py-2 rounded hover:bg-zinc-100 dark:hover:bg-zinc-800'
+                href='/tags'>Tag</a
+              >
+            </li> --> <!-- <li>
+              <a
+                class='block px-3 py-2 rounded hover:bg-zinc-100 dark:hover:bg-zinc-800'
+                href='/bmmg'>Media</a
+              >
+            </li> --> <!-- <li>
+              <a
+                class='block px-3 py-2 rounded hover:bg-zinc-100 dark:hover:bg-zinc-800'
+                href='https://exercise.asyncx.top'
+                target='_blank'
+                rel='noopener noreferrer'>Steps</a
+              >
+            </li> --> <!-- <li>
+              <a
+                class='block px-3 py-2 rounded hover:bg-zinc-100 dark:hover:bg-zinc-800'
+                href='/about'>README.md</a
+              >
+            </li> --> </ul> </nav> </details> <div class="flex justify-end space-x-2"> <button id="search" class="inline-flex items-center rounded-md border p-1 transition-colors hover:bg-zinc-50 dark:border-zinc-700 dark:hover:bg-zinc-800 [&_svg]:text-zinc-500 [&_svg]:hover:text-zinc-900 [&_svg]:dark:hover:text-zinc-100" aria-label="Search" onclick="window.location.href='/search'" data-umami-event="Button-Search" type="button"> <span class="sr-only">Search</span> <svg class="size-4" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"> <g transform="scale(0.015625)"> <path d="M975.474921 917.123519l-152.442347-152.502577c150.575215-165.512276 146.419339-421.550372-13.431309-581.40102a421.610602 421.610602 0 0 0-596.217622 596.277851c138.890578 138.890578 350.47887 160.151799 512.136422 64.626882l161.47686 161.537091a62.518829 62.518829 0 1 0 88.477996-88.538227z m-251.038998-222.851318a301.15043 301.15043 0 0 1-425.886938 0 301.15043 301.15043 0 0 1 0-425.886938 301.15043 301.15043 0 1 1 425.886938 425.886938z" fill="currentColor"></path> </g> </svg> </button> <button id="rss" class="inline-flex items-center rounded-md border p-1 transition-colors hover:bg-zinc-50 dark:border-zinc-700 dark:hover:bg-zinc-800 [&_svg]:text-zinc-500 [&_svg]:hover:text-zinc-900 [&_svg]:dark:hover:text-zinc-100" aria-label="RSS Feed" onclick="window.location.href='/rss.xml'" data-umami-event="Button-RSS" type="button"> <span class="sr-only">RSS Feed</span> <svg class="size-4" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"> <g transform="scale(0.015625)"> <path d="M42.666667 853.333333a128 128 0 1 1 256 0 128 128 0 0 1-256 0z m938.666666 128h-178.773333c0-418.986667-340.906667-759.893333-759.893333-759.893333V42.666667c517.546667 0 938.666667 421.12 938.666666 938.666666z m-298.666666 0h-182.826667c0-252.074667-205.098667-457.130667-457.173333-457.130666V341.333333c352.896 0 640 287.104 640 640z" fill="currentColor"></path> </g> </svg> </button> <button id="douban" class="inline-flex items-center rounded-md border p-1 transition-colors hover:bg-zinc-50 dark:border-zinc-700 dark:hover:bg-zinc-800 [&_svg]:text-zinc-500 [&_svg]:hover:text-zinc-900 [&_svg]:dark:hover:text-zinc-100" aria-label="Douban" onclick="window.open('https://douban.com/people/141874159/', '_blank')" data-umami-event="Button-Douban" type="button"> <span class="sr-only">Douban</span> <svg class="size-4" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" fill="currentColor"> <path d="M.51 3.06h22.98V.755H.51V3.06Zm20.976 2.537v9.608h-2.137l-1.669 5.76H24v2.28H0v-2.28h6.32l-1.67-5.76H2.515V5.597h18.972Zm-5.066 9.608H7.58l1.67 5.76h5.501l1.67-5.76ZM18.367 7.9H5.634v5.025h12.733V7.9Z"></path> </svg> </button> <button id="github" class="inline-flex items-center rounded-md border p-1 transition-colors hover:bg-zinc-50 dark:border-zinc-700 dark:hover:bg-zinc-800 [&_svg]:text-zinc-500 [&_svg]:hover:text-zinc-900 [&_svg]:dark:hover:text-zinc-100" aria-label="GitHub" onclick="window.open('https://github.com/ZindexYG/z-index.me', '_blank')" data-umami-event="Button-GitHub" type="button"> <span class="sr-only">GitHub</span> <svg class="size-4" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" fill="currentColor"> <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"></path> </svg> </button> <button id="theme-toggle" class="inline-flex items-center rounded-md border p-1 transition-colors hover:bg-zinc-50 dark:border-zinc-700 dark:hover:bg-zinc-800 [&_svg]:text-zinc-500 [&_svg]:hover:text-zinc-900 [&_svg]:dark:hover:text-zinc-100" aria-label="Toggle theme" data-umami-event="Button-Theme" type="button"> <span class="sr-only">Toggle theme</span> <svg id="sun" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor" class="hidden size-4 dark:block"> <path d="M8 1a.75.75 0 0 1 .75.75v1.5a.75.75 0 0 1-1.5 0v-1.5A.75.75 0 0 1 8 1ZM10.5 8a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0ZM12.95 4.11a.75.75 0 1 0-1.06-1.06l-1.062 1.06a.75.75 0 0 0 1.061 1.062l1.06-1.061ZM15 8a.75.75 0 0 1-.75.75h-1.5a.75.75 0 0 1 0-1.5h1.5A.75.75 0 0 1 15 8ZM11.89 12.95a.75.75 0 0 0 1.06-1.06l-1.06-1.062a.75.75 0 0 0-1.062 1.061l1.061 1.06ZM8 12a.75.75 0 0 1 .75.75v1.5a.75.75 0 0 1-1.5 0v-1.5A.75.75 0 0 1 8 12ZM5.172 11.89a.75.75 0 0 0-1.061-1.062L3.05 11.89a.75.75 0 1 0 1.06 1.06l1.06-1.06ZM4 8a.75.75 0 0 1-.75.75h-1.5a.75.75 0 0 1 0-1.5h1.5A.75.75 0 0 1 4 8ZM4.11 5.172A.75.75 0 0 0 5.173 4.11L4.11 3.05a.75.75 0 1 0-1.06 1.06l1.06 1.06Z"></path> </svg> <svg id="moon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor" class="size-4 dark:hidden"> <path d="M14.438 10.148c.19-.425-.321-.787-.748-.601A5.5 5.5 0 0 1 6.453 2.31c.186-.427-.176-.938-.6-.748a6.501 6.501 0 1 0 8.585 8.586Z"></path> </svg> </button> </div>  </div> </div> </header>   <main> <div class="mb-5 flex items-center justify-between"> <h1 class="text-xl font-heading font-bold text-zinc-900 dark:text-zinc-100"> Async/Await 代替 Promise.all() </h1> <p class="ml-4 text-sm font-medium text-zinc-500"> 2019-08-17 </p> </div>  <div class="mb-5" data-pagefind-ignore="all"> <ul class="flex flex-wrap gap-2"> <li> <a href="/tags/面试/" class="group flex justify-between gap-3 rounded px-2 py-1 text-sm bg-bgdefault text-fontdefault dark:bg-fontdefault dark:text-bgdefault">
+# 面试 </a> </li><li> <a href="/tags/es6/" class="group flex justify-between gap-3 rounded px-2 py-1 text-sm bg-bgdefault text-fontdefault dark:bg-fontdefault dark:text-bgdefault">
+# es6 </a> </li><li> <a href="/tags/es7/" class="group flex justify-between gap-3 rounded px-2 py-1 text-sm bg-bgdefault text-fontdefault dark:bg-fontdefault dark:text-bgdefault">
+# es7 </a> </li> </ul> </div>  <div class="toc-root" data-astro-cid-6t6zfk7k><nav class="toc toc-inline" aria-label="Table Of Contents" data-astro-cid-6t6zfk7k><details open data-astro-cid-6t6zfk7k><summary class="text-sm font-semibold" data-astro-cid-6t6zfk7k>Table of Contents</summary><div class="mt-4 ml-4" data-astro-cid-6t6zfk7k>
+    <ul class="space-y-1 pl-4">
+      
+        <li class="text-sm leading-tight">
+          <a href="#基本概念" class="toc-link toc-h2" data-depth="2">
+            基本概念
+          </a>
+          
+    <ul class="space-y-1 pl-4">
+      
+        <li class="text-sm leading-tight">
+          <a href="#promise" class="toc-link toc-h3" data-depth="3">
+            Promise
+          </a>
+          
+        </li>
+      
+        <li class="text-sm leading-tight">
+          <a href="#asyncawait" class="toc-link toc-h3" data-depth="3">
+            Async/Await
+          </a>
+          
+        </li>
+      
+    </ul>
+  
+        </li>
+      
+        <li class="text-sm leading-tight">
+          <a href="#实现" class="toc-link toc-h2" data-depth="2">
+            实现
+          </a>
+          
+    <ul class="space-y-1 pl-4">
+      
+        <li class="text-sm leading-tight">
+          <a href="#功能分析" class="toc-link toc-h3" data-depth="3">
+            功能分析
+          </a>
+          
+        </li>
+      
+        <li class="text-sm leading-tight">
+          <a href="#实例展示" class="toc-link toc-h3" data-depth="3">
+            实例展示
+          </a>
+          
+        </li>
+      
+    </ul>
+  
+        </li>
+      
+        <li class="text-sm leading-tight">
+          <a href="#总结" class="toc-link toc-h2" data-depth="2">
+            总结
+          </a>
+          
+        </li>
+      
+        <li class="text-sm leading-tight">
+          <a href="#参考" class="toc-link toc-h2" data-depth="2">
+            参考
+          </a>
+          
+        </li>
+      
+    </ul>
+  </div></details></nav><aside class="toc-float" data-astro-cid-6t6zfk7k><nav class="toc" aria-label="Table Of Contents" data-astro-cid-6t6zfk7k><details open data-astro-cid-6t6zfk7k><summary class="text-sm font-semibold" data-astro-cid-6t6zfk7k>Table of Contents</summary><div class="mt-2" data-astro-cid-6t6zfk7k>
+    <ul class="space-y-1 pl-4">
+      
+        <li class="text-sm leading-tight">
+          <a href="#基本概念" class="toc-link toc-h2" data-depth="2">
+            基本概念
+          </a>
+          
+    <ul class="space-y-1 pl-4">
+      
+        <li class="text-sm leading-tight">
+          <a href="#promise" class="toc-link toc-h3" data-depth="3">
+            Promise
+          </a>
+          
+        </li>
+      
+        <li class="text-sm leading-tight">
+          <a href="#asyncawait" class="toc-link toc-h3" data-depth="3">
+            Async/Await
+          </a>
+          
+        </li>
+      
+    </ul>
+  
+        </li>
+      
+        <li class="text-sm leading-tight">
+          <a href="#实现" class="toc-link toc-h2" data-depth="2">
+            实现
+          </a>
+          
+    <ul class="space-y-1 pl-4">
+      
+        <li class="text-sm leading-tight">
+          <a href="#功能分析" class="toc-link toc-h3" data-depth="3">
+            功能分析
+          </a>
+          
+        </li>
+      
+        <li class="text-sm leading-tight">
+          <a href="#实例展示" class="toc-link toc-h3" data-depth="3">
+            实例展示
+          </a>
+          
+        </li>
+      
+    </ul>
+  
+        </li>
+      
+        <li class="text-sm leading-tight">
+          <a href="#总结" class="toc-link toc-h2" data-depth="2">
+            总结
+          </a>
+          
+        </li>
+      
+        <li class="text-sm leading-tight">
+          <a href="#参考" class="toc-link toc-h2" data-depth="2">
+            参考
+          </a>
+          
+        </li>
+      
+    </ul>
+  </div></details></nav></aside></div><script data-astro-rerun>
+  ;(() => {
+    const ready = fn => {
+      if (document.readyState === 'loading')
+        document.addEventListener('DOMContentLoaded', fn, { once: true })
+      else fn()
+    }
+
+    function boot() {
+      const root = document.querySelector('.toc-root')
+      if (!root) return
+
+      const float = root.querySelector('.toc-float')
+      const atTop = () => window.scrollY <= 2
+      const onScroll = () => {
+        float?.classList.toggle('at-top', atTop())
+      }
+      onScroll()
+      window.addEventListener('scroll', onScroll, { passive: true })
+
+      const article = document.querySelector('article[data-pagefind-body]')
+      if (!article) return
+
+      // 更新选择器：支持 h1 到 h5
+      const heads = [
+        ...article.querySelectorAll('h1[id], h2[id], h3[id], h4[id], h5[id]'),
+      ]
+      if (!heads.length) return
+
+      const allLinks = [...root.querySelectorAll('.toc a.toc-link')]
+      const map = new Map()
+      for (const a of allLinks) {
+        const href = a.getAttribute('href') || ''
+        if (!href.startsWith('#')) continue
+        const id = href.slice(1)
+        if (!map.has(id)) map.set(id, [])
+        map.get(id).push(a)
+      }
+
+      let activeId = null
+      const setActive = id => {
+        if (activeId === id) return
+        if (activeId && map.has(activeId))
+          map.get(activeId).forEach(el => el.classList.remove('is-active'))
+        activeId = id
+        if (activeId && map.has(activeId))
+          map.get(activeId).forEach(el => el.classList.add('is-active'))
+      }
+
+      const io = new IntersectionObserver(
+        entries => {
+          const visible = entries
+            .filter(e => e.isIntersecting)
+            .sort((a, b) => a.boundingClientRect.top - b.boundingClientRect.top)
+          if (visible.length) {
+            setActive(visible[0].target.id)
+          } else {
+            const nearest = heads
+              .map(h => ({
+                id: h.id,
+                top: Math.abs(h.getBoundingClientRect().top),
+              }))
+              .sort((a, b) => a.top - b.top)[0]
+            if (nearest) setActive(nearest.id)
+          }
+        },
+        { root: null, threshold: [0, 1], rootMargin: '-96px 0px -60% 0px' },
+      )
+
+      heads.forEach(h => io.observe(h))
+
+      const onClick = e => {
+        const a = e.target.closest('.toc a.toc-link')
+        if (!a) return
+        const href = a.getAttribute('href') || ''
+        if (!href.startsWith('#')) return
+        const id = href.slice(1)
+        const el = document.getElementById(id)
+        if (!el) return
+        e.preventDefault()
+        el.scrollIntoView({ behavior: 'smooth', block: 'start' })
+      }
+      root.addEventListener('click', onClick)
+
+      const cleanup = () => {
+        window.removeEventListener('scroll', onScroll)
+        io.disconnect()
+        root.removeEventListener('click', onClick)
+      }
+      document.addEventListener('astro:before-swap', cleanup, { once: true })
+    }
+
+    ready(boot)
+    document.addEventListener('astro:page-load', boot)
+  })()
+</script> <article data-pagefind-body> <img src="/posts/async-await.jpg" alt="">
+<blockquote>
+<p>新调料，新味道</p>
+</blockquote>
+<!-- more -->
+<h2 id="基本概念">基本概念</h2>
+<h3 id="promise">Promise</h3>
+<p>保存着一个未来可用的值的代理，本身是严格按照异步方式执行的</p>
+<div class="expressive-code"><link rel="stylesheet" href="/_astro/ec.c86xd.css"><script type="module" src="/_astro/ec.0vx5m.js"></script><figure class="frame"><figcaption class="header"></figcaption><pre data-language="javascript"><code><div class="ec-line"><div class="code"><span style="--0:#D477F1;--1:#FF79C6">function</span><span style="--0:#D5CED9;--1:#F8F8F2"> </span><span style="--0:#FFE66D;--1:#50FA7B">resolveUnderThreeSeconds</span><span style="--0:#D5CED9;--1:#F8F8F2">(</span><span style="--0:#00E8C6;--1:#FFB86C;--1fs:italic">delay</span><span style="--0:#D5CED9;--1:#F8F8F2">) {</span></div></div><div class="ec-line"><div class="code"><span class="indent">  </span><span style="--0:#D477F1;--1:#FF79C6">return</span><span style="--0:#D5CED9;--1:#F8F8F2"> </span><span style="--0:#F17963;--1:#FF79C6;--1fw:bold">new</span><span style="--0:#D5CED9;--1:#F8F8F2"> </span><span style="--0:#F17963;--1:#8BE9FD;--1fs:italic">Promise</span><span style="--0:#D5CED9;--1:#F8F8F2">(</span><span style="--0:#D477F1;--1:#FF79C6">function</span><span style="--0:#D5CED9;--1:#F8F8F2">(</span><span style="--0:#00E8C6;--1:#FFB86C;--1fs:italic">resolve</span><span style="--0:#D5CED9;--1:#F8F8F2">, </span><span style="--0:#00E8C6;--1:#FFB86C;--1fs:italic">reject</span><span style="--0:#D5CED9;--1:#F8F8F2">) {</span></div></div><div class="ec-line"><div class="code"><span class="indent">    </span><span style="--0:#FFE66D;--1:#50FA7B">setTimeout</span><span style="--0:#D5CED9;--1:#F8F8F2">(() </span><span style="--0:#D477F1;--1:#FF79C6">=></span><span style="--0:#D5CED9;--1:#F8F8F2"> </span><span style="--0:#FFE66D;--1:#50FA7B">resolve</span><span style="--0:#D5CED9;--1:#F8F8F2">(</span><span style="--0:#96E072;--1:#E9F284">'</span><span style="--0:#96E072;--1:#F1FA8C">success</span><span style="--0:#96E072;--1:#E9F284">'</span><span style="--1:#F8F8F2"><span style="--0:#D5CED9">), </span><span style="--0:#00E8C6">delay</span><span style="--0:#D5CED9">)</span></span></div></div><div class="ec-line"><div class="code"><span class="indent">    </span><span style="--0:#FFE66D;--1:#50FA7B">setTimeout</span><span style="--0:#D5CED9;--1:#F8F8F2">(() </span><span style="--0:#D477F1;--1:#FF79C6">=></span><span style="--0:#D5CED9;--1:#F8F8F2"> </span><span style="--0:#FFE66D;--1:#50FA7B">reject</span><span style="--0:#D5CED9;--1:#F8F8F2">(</span><span style="--0:#96E072;--1:#E9F284">'</span><span style="--0:#96E072;--1:#F1FA8C">fail</span><span style="--0:#96E072;--1:#E9F284">'</span><span style="--0:#D5CED9;--1:#F8F8F2">), </span><span style="--0:#F39C12;--1:#BD93F9">3000</span><span style="--0:#D5CED9;--1:#F8F8F2">)</span></div></div><div class="ec-line"><div class="code"><span class="indent"><span style="--0:#D5CED9;--1:#F8F8F2">  </span></span><span style="--0:#D5CED9;--1:#F8F8F2">})</span></div></div><div class="ec-line"><div class="code"><span style="--0:#D5CED9;--1:#F8F8F2">}</span></div></div><div class="ec-line"><div class="code">
+</div></div><div class="ec-line"><div class="code"><span style="--0:#FFE66D;--1:#50FA7B">resolveUnderThreeSeconds</span><span style="--0:#D5CED9;--1:#F8F8F2">(</span><span style="--0:#F39C12;--1:#BD93F9">2000</span><span style="--0:#D5CED9;--1:#F8F8F2">)</span></div></div><div class="ec-line"><div class="code"><span class="indent"><span style="--0:#D5CED9;--1:#F8F8F2">  </span></span><span style="--0:#D5CED9;--1:#F8F8F2">.</span><span style="--0:#FFE66D;--1:#50FA7B">then</span><span style="--0:#D5CED9;--1:#F8F8F2">(</span><span style="--0:#00E8C6;--1:#FFB86C;--1fs:italic">res</span><span style="--0:#D5CED9;--1:#F8F8F2"> </span><span style="--0:#D477F1;--1:#FF79C6">=></span><span style="--0:#D5CED9;--1:#F8F8F2"> {</span></div></div><div class="ec-line"><div class="code"><span class="indent"><span style="--1:#F8F8F2">    </span></span><span style="--0:#F39C12;--1:#F8F8F2">console</span><span style="--0:#D5CED9;--1:#F8F8F2">.</span><span style="--0:#FFE66D;--1:#50FA7B">log</span><span style="--0:#D5CED9;--1:#F8F8F2">(</span><span style="--0:#96E072;--1:#E9F284">'</span><span style="--0:#96E072;--1:#F1FA8C">res</span><span style="--0:#96E072;--1:#E9F284">'</span><span style="--1:#F8F8F2"><span style="--0:#D5CED9">, </span><span style="--0:#00E8C6">res</span><span style="--0:#D5CED9">)</span></span></div></div><div class="ec-line"><div class="code"><span class="indent"><span style="--0:#D5CED9;--1:#F8F8F2">  </span></span><span style="--0:#D5CED9;--1:#F8F8F2">})</span></div></div><div class="ec-line"><div class="code"><span class="indent"><span style="--0:#D5CED9;--1:#F8F8F2">  </span></span><span style="--0:#D5CED9;--1:#F8F8F2">.</span><span style="--0:#FFE66D;--1:#50FA7B">catch</span><span style="--0:#D5CED9;--1:#F8F8F2">(</span><span style="--0:#00E8C6;--1:#FFB86C;--1fs:italic">err</span><span style="--0:#D5CED9;--1:#F8F8F2"> </span><span style="--0:#D477F1;--1:#FF79C6">=></span><span style="--0:#D5CED9;--1:#F8F8F2"> {</span></div></div><div class="ec-line"><div class="code"><span class="indent"><span style="--1:#F8F8F2">    </span></span><span style="--0:#F39C12;--1:#F8F8F2">console</span><span style="--0:#D5CED9;--1:#F8F8F2">.</span><span style="--0:#FFE66D;--1:#50FA7B">log</span><span style="--0:#D5CED9;--1:#F8F8F2">(</span><span style="--0:#96E072;--1:#E9F284">'</span><span style="--0:#96E072;--1:#F1FA8C">err</span><span style="--0:#96E072;--1:#E9F284">'</span><span style="--1:#F8F8F2"><span style="--0:#D5CED9">, </span><span style="--0:#00E8C6">err</span><span style="--0:#D5CED9">)</span></span></div></div><div class="ec-line"><div class="code"><span class="indent"><span style="--0:#D5CED9;--1:#F8F8F2">  </span></span><span style="--0:#D5CED9;--1:#F8F8F2">})</span></div></div></code></pre><div class="copy"><div aria-live="polite"></div><button title="Copy to clipboard" data-copied="Copied!" data-code="function resolveUnderThreeSeconds(delay) {  return new Promise(function(resolve, reject) {    setTimeout(() => resolve(&#x27;success&#x27;), delay)    setTimeout(() => reject(&#x27;fail&#x27;), 3000)  })}resolveUnderThreeSeconds(2000)  .then(res => {    console.log(&#x27;res&#x27;, res)  })  .catch(err => {    console.log(&#x27;err&#x27;, err)  })"><div></div></button></div></figure></div>
+<p>编写异步代码时，可能两个任务中的一个任务会依赖另一个任务的结果，因此这两个任务必须串行执行</p>
+<p><code>Promise.all()</code> 方法接受一个 <code>Promise</code> 数组，数组内所有 <code>Promise</code> 执行成功后，根据传入顺序返回各个 <code>Promise</code> 的结果数据，其中一个被拒绝，即会暂停，返回错误信息</p>
+<div class="expressive-code"><figure class="frame"><figcaption class="header"></figcaption><pre data-language="javascript"><code><div class="ec-line"><div class="code"><span style="--0:#D477F1;--1:#FF79C6">const</span><span style="--1:#F8F8F2"><span style="--0:#D5CED9"> </span><span style="--0:#00E8C6">p1</span><span style="--0:#D5CED9"> </span></span><span style="--0:#F17963;--1:#FF79C6">=</span><span style="--0:#D5CED9;--1:#F8F8F2"> </span><span style="--0:#F17963;--1:#8BE9FD;--1fs:italic">Promise</span><span style="--0:#D5CED9;--1:#F8F8F2">.</span><span style="--0:#FFE66D;--1:#50FA7B">reject</span><span style="--0:#D5CED9;--1:#F8F8F2">(</span><span style="--0:#96E072;--1:#E9F284">'</span><span style="--0:#96E072;--1:#F1FA8C">failed</span><span style="--0:#96E072;--1:#E9F284">'</span><span style="--0:#D5CED9;--1:#F8F8F2">)</span></div></div><div class="ec-line"><div class="code"><span style="--0:#D477F1;--1:#FF79C6">const</span><span style="--1:#F8F8F2"><span style="--0:#D5CED9"> </span><span style="--0:#00E8C6">p2</span><span style="--0:#D5CED9"> </span></span><span style="--0:#F17963;--1:#FF79C6">=</span><span style="--0:#D5CED9;--1:#F8F8F2"> </span><span style="--0:#F17963;--1:#8BE9FD;--1fs:italic">Promise</span><span style="--0:#D5CED9;--1:#F8F8F2">.</span><span style="--0:#FFE66D;--1:#50FA7B">resolve</span><span style="--0:#D5CED9;--1:#F8F8F2">(</span><span style="--0:#96E072;--1:#E9F284">'</span><span style="--0:#96E072;--1:#F1FA8C">success</span><span style="--0:#96E072;--1:#E9F284">'</span><span style="--0:#D5CED9;--1:#F8F8F2">)</span></div></div><div class="ec-line"><div class="code"><span style="--0:#D477F1;--1:#FF79C6">const</span><span style="--1:#F8F8F2"><span style="--0:#D5CED9"> </span><span style="--0:#00E8C6">p3</span><span style="--0:#D5CED9"> </span></span><span style="--0:#F17963;--1:#FF79C6">=</span><span style="--0:#D5CED9;--1:#F8F8F2"> </span><span style="--0:#F17963;--1:#8BE9FD;--1fs:italic">Promise</span><span style="--0:#D5CED9;--1:#F8F8F2">.</span><span style="--0:#FFE66D;--1:#50FA7B">resolve</span><span style="--0:#D5CED9;--1:#F8F8F2">(</span><span style="--0:#96E072;--1:#E9F284">'</span><span style="--0:#96E072;--1:#F1FA8C">success</span><span style="--0:#96E072;--1:#E9F284">'</span><span style="--0:#D5CED9;--1:#F8F8F2">)</span></div></div><div class="ec-line"><div class="code"><span style="--0:#D477F1;--1:#FF79C6">const</span><span style="--1:#F8F8F2"><span style="--0:#D5CED9"> </span><span style="--0:#00E8C6">p</span><span style="--0:#D5CED9"> </span></span><span style="--0:#F17963;--1:#FF79C6">=</span><span style="--0:#D5CED9;--1:#F8F8F2"> </span><span style="--0:#F17963;--1:#8BE9FD;--1fs:italic">Promise</span><span style="--0:#D5CED9;--1:#F8F8F2">.</span><span style="--0:#FFE66D;--1:#50FA7B">all</span><span style="--1:#F8F8F2"><span style="--0:#D5CED9">([</span><span style="--0:#00E8C6">p1</span><span style="--0:#D5CED9">, </span><span style="--0:#00E8C6">p2</span><span style="--0:#D5CED9">, </span><span style="--0:#00E8C6">p3</span><span style="--0:#D5CED9">]).</span></span><span style="--0:#FFE66D;--1:#50FA7B">catch</span><span style="--0:#D5CED9;--1:#F8F8F2">(</span><span style="--0:#00E8C6;--1:#FFB86C;--1fs:italic">err</span><span style="--0:#D5CED9;--1:#F8F8F2"> </span><span style="--0:#D477F1;--1:#FF79C6">=></span><span style="--1:#F8F8F2"><span style="--0:#D5CED9"> </span><span style="--0:#F39C12">console</span><span style="--0:#D5CED9">.</span></span><span style="--0:#FFE66D;--1:#50FA7B">log</span><span style="--1:#F8F8F2"><span style="--0:#D5CED9">(</span><span style="--0:#00E8C6">err</span><span style="--0:#D5CED9">))</span></span></div></div></code></pre><div class="copy"><div aria-live="polite"></div><button title="Copy to clipboard" data-copied="Copied!" data-code="const p1 = Promise.reject(&#x27;failed&#x27;)const p2 = Promise.resolve(&#x27;success&#x27;)const p3 = Promise.resolve(&#x27;success&#x27;)const p = Promise.all([p1, p2, p3]).catch(err => console.log(err))"><div></div></button></div></figure></div>
+<h3 id="asyncawait">Async/Await</h3>
+<p>async 函数兼顾了基于 Promise 的实现和生成器风格的同步写法</p>
+<div class="expressive-code"><figure class="frame"><figcaption class="header"></figcaption><pre data-language="javascript"><code><div class="ec-line"><div class="code"><span style="--0:#D477F1;--1:#FF79C6">function</span><span style="--0:#D5CED9;--1:#F8F8F2"> </span><span style="--0:#FFE66D;--1:#50FA7B">resolveAfter2Seconds</span><span style="--0:#D5CED9;--1:#F8F8F2">() {</span></div></div><div class="ec-line"><div class="code"><span class="indent">  </span><span style="--0:#D477F1;--1:#FF79C6">return</span><span style="--0:#D5CED9;--1:#F8F8F2"> </span><span style="--0:#F17963;--1:#FF79C6;--1fw:bold">new</span><span style="--0:#D5CED9;--1:#F8F8F2"> </span><span style="--0:#F17963;--1:#8BE9FD;--1fs:italic">Promise</span><span style="--0:#D5CED9;--1:#F8F8F2">(</span><span style="--0:#00E8C6;--1:#FFB86C;--1fs:italic">resolve</span><span style="--0:#D5CED9;--1:#F8F8F2"> </span><span style="--0:#D477F1;--1:#FF79C6">=></span><span style="--0:#D5CED9;--1:#F8F8F2"> {</span></div></div><div class="ec-line"><div class="code"><span class="indent">    </span><span style="--0:#FFE66D;--1:#50FA7B">setTimeout</span><span style="--0:#D5CED9;--1:#F8F8F2">(() </span><span style="--0:#D477F1;--1:#FF79C6">=></span><span style="--0:#D5CED9;--1:#F8F8F2"> {</span></div></div><div class="ec-line"><div class="code"><span class="indent">      </span><span style="--0:#FFE66D;--1:#50FA7B">resolve</span><span style="--0:#D5CED9;--1:#F8F8F2">(</span><span style="--0:#96E072;--1:#E9F284">'</span><span style="--0:#96E072;--1:#F1FA8C">resolved</span><span style="--0:#96E072;--1:#E9F284">'</span><span style="--0:#D5CED9;--1:#F8F8F2">);</span></div></div><div class="ec-line"><div class="code"><span class="indent"><span style="--0:#D5CED9;--1:#F8F8F2">    </span></span><span style="--0:#D5CED9;--1:#F8F8F2">}, </span><span style="--0:#F39C12;--1:#BD93F9">2000</span><span style="--0:#D5CED9;--1:#F8F8F2">);</span></div></div><div class="ec-line"><div class="code"><span class="indent"><span style="--0:#D5CED9;--1:#F8F8F2">  </span></span><span style="--0:#D5CED9;--1:#F8F8F2">});</span></div></div><div class="ec-line"><div class="code"><span style="--0:#D5CED9;--1:#F8F8F2">}</span></div></div><div class="ec-line"><div class="code">
+</div></div><div class="ec-line"><div class="code"><span style="--0:#D477F1;--1:#FF79C6">async</span><span style="--0:#D5CED9;--1:#F8F8F2"> </span><span style="--0:#D477F1;--1:#FF79C6">function</span><span style="--0:#D5CED9;--1:#F8F8F2"> </span><span style="--0:#FFE66D;--1:#50FA7B">asyncCall</span><span style="--0:#D5CED9;--1:#F8F8F2">() {</span></div></div><div class="ec-line"><div class="code"><span class="indent"><span style="--1:#F8F8F2">  </span></span><span style="--0:#F39C12;--1:#F8F8F2">console</span><span style="--0:#D5CED9;--1:#F8F8F2">.</span><span style="--0:#FFE66D;--1:#50FA7B">log</span><span style="--0:#D5CED9;--1:#F8F8F2">(</span><span style="--0:#96E072;--1:#E9F284">'</span><span style="--0:#96E072;--1:#F1FA8C">calling</span><span style="--0:#96E072;--1:#E9F284">'</span><span style="--0:#D5CED9;--1:#F8F8F2">);</span></div></div><div class="ec-line"><div class="code"><span class="indent">  </span><span style="--0:#D477F1;--1:#FF79C6">var</span><span style="--1:#F8F8F2"><span style="--0:#D5CED9"> </span><span style="--0:#00E8C6">result</span><span style="--0:#D5CED9"> </span></span><span style="--0:#F17963;--1:#FF79C6">=</span><span style="--0:#D5CED9;--1:#F8F8F2"> </span><span style="--0:#D477F1;--1:#FF79C6">await</span><span style="--0:#D5CED9;--1:#F8F8F2"> </span><span style="--0:#FFE66D;--1:#50FA7B">resolveAfter2Seconds</span><span style="--0:#D5CED9;--1:#F8F8F2">();</span></div></div><div class="ec-line"><div class="code"><span class="indent"><span style="--1:#F8F8F2">  </span></span><span style="--0:#F39C12;--1:#F8F8F2">console</span><span style="--0:#D5CED9;--1:#F8F8F2">.</span><span style="--0:#FFE66D;--1:#50FA7B">log</span><span style="--1:#F8F8F2"><span style="--0:#D5CED9">(</span><span style="--0:#00E8C6">result</span><span style="--0:#D5CED9">);</span></span></div></div><div class="ec-line"><div class="code"><span class="indent">  </span><span style="--0:#A0A1A7F4;--1:#96A1C2">// expected output: 'resolved'</span></div></div><div class="ec-line"><div class="code"><span style="--0:#D5CED9;--1:#F8F8F2">}</span></div></div><div class="ec-line"><div class="code">
+</div></div><div class="ec-line"><div class="code"><span style="--0:#FFE66D;--1:#50FA7B">asyncCall</span><span style="--0:#D5CED9;--1:#F8F8F2">();</span></div></div></code></pre><div class="copy"><div aria-live="polite"></div><button title="Copy to clipboard" data-copied="Copied!" data-code="function resolveAfter2Seconds() {  return new Promise(resolve => {    setTimeout(() => {      resolve(&#x27;resolved&#x27;);    }, 2000);  });}async function asyncCall() {  console.log(&#x27;calling&#x27;);  var result = await resolveAfter2Seconds();  console.log(result);  // expected output: &#x27;resolved&#x27;}asyncCall();"><div></div></button></div></figure></div>
+<h2 id="实现">实现</h2>
+<h3 id="功能分析">功能分析</h3>
+<p>关键：<code>Promise.all()</code> 传入的是 <code>promise</code> 数组，数组内所有 <code>Promise</code> 执行成功后，根据传入顺序返回各个 <code>Promise</code> 的结果数据，其中一个被拒绝，即会暂停，并返回错误信息</p>
+<p>数组进入 <code>async</code> 函数，循环使用 <code>async/await</code> 执行进入的数组函数，然后将函数结果组成数组，最后返回该数组即可</p>
+<p><code>try/catch</code> 可获取 <code>async</code> 函数内，任意 <code>await</code> 的错误，即可满足 <code>其中一个被拒绝，即会暂停，并返回错误信息</code> 的功能</p>
+<div class="expressive-code"><figure class="frame"><figcaption class="header"></figcaption><pre data-language="javascript"><code><div class="ec-line"><div class="code"><span style="--0:#D477F1;--1:#FF79C6">async</span><span style="--0:#D5CED9;--1:#F8F8F2"> </span><span style="--0:#D477F1;--1:#FF79C6">function</span><span style="--0:#D5CED9;--1:#F8F8F2"> </span><span style="--0:#FFE66D;--1:#50FA7B">asyncAlls</span><span style="--0:#D5CED9;--1:#F8F8F2">(</span><span style="--0:#00E8C6;--1:#FFB86C;--1fs:italic">jobs</span><span style="--0:#D5CED9;--1:#F8F8F2">) {</span></div></div><div class="ec-line"><div class="code"><span class="indent">  </span><span style="--0:#D477F1;--1:#FF79C6">try</span><span style="--0:#D5CED9;--1:#F8F8F2"> {</span></div></div><div class="ec-line"><div class="code"><span class="indent">    </span><span style="--0:#A0A1A7F4;--1:#96A1C2">// 循环执行</span></div></div><div class="ec-line"><div class="code"><span class="indent">    </span><span style="--0:#D477F1;--1:#FF79C6">let</span><span style="--1:#F8F8F2"><span style="--0:#D5CED9"> </span><span style="--0:#00E8C6">results</span><span style="--0:#D5CED9"> </span></span><span style="--0:#F17963;--1:#FF79C6">=</span><span style="--1:#F8F8F2"><span style="--0:#D5CED9"> </span><span style="--0:#F39C12">jobs</span><span style="--0:#D5CED9">.</span></span><span style="--0:#FFE66D;--1:#50FA7B">map</span><span style="--0:#D5CED9;--1:#F8F8F2">(</span><span style="--0:#D477F1;--1:#FF79C6">async</span><span style="--0:#D5CED9;--1:#F8F8F2"> </span><span style="--0:#00E8C6;--1:#FFB86C;--1fs:italic">job</span><span style="--0:#D5CED9;--1:#F8F8F2"> </span><span style="--0:#D477F1;--1:#FF79C6">=></span><span style="--0:#D5CED9;--1:#F8F8F2"> </span><span style="--0:#D477F1;--1:#FF79C6">await</span><span style="--1:#F8F8F2"><span style="--0:#D5CED9"> </span><span style="--0:#00E8C6">job</span><span style="--0:#D5CED9">)</span></span></div></div><div class="ec-line"><div class="code"><span class="indent">    </span><span style="--0:#D477F1;--1:#FF79C6">let</span><span style="--1:#F8F8F2"><span style="--0:#D5CED9"> </span><span style="--0:#00E8C6">res</span><span style="--0:#D5CED9"> </span></span><span style="--0:#F17963;--1:#FF79C6">=</span><span style="--0:#D5CED9;--1:#F8F8F2"> []</span></div></div><div class="ec-line"><div class="code"><span class="indent">    </span><span style="--0:#A0A1A7F4;--1:#96A1C2">// 组合数组</span></div></div><div class="ec-line"><div class="code"><span class="indent">    </span><span style="--0:#D477F1;--1:#FF79C6">for</span><span style="--0:#D5CED9;--1:#F8F8F2"> (</span><span style="--0:#D477F1;--1:#FF79C6">const</span><span style="--1:#F8F8F2"><span style="--0:#D5CED9"> </span><span style="--0:#00E8C6">result</span><span style="--0:#D5CED9"> </span></span><span style="--0:#F17963;--1:#FF79C6">of</span><span style="--1:#F8F8F2"><span style="--0:#D5CED9"> </span><span style="--0:#00E8C6">results</span><span style="--0:#D5CED9">) {</span></span></div></div><div class="ec-line"><div class="code"><span class="indent"><span style="--1:#F8F8F2">      </span></span><span style="--0:#F39C12;--1:#F8F8F2">res</span><span style="--0:#D5CED9;--1:#F8F8F2">.</span><span style="--0:#FFE66D;--1:#50FA7B">push</span><span style="--0:#D5CED9;--1:#F8F8F2">(</span><span style="--0:#D477F1;--1:#FF79C6">await</span><span style="--1:#F8F8F2"><span style="--0:#D5CED9"> </span><span style="--0:#00E8C6">result</span><span style="--0:#D5CED9">)</span></span></div></div><div class="ec-line"><div class="code"><span class="indent"><span style="--0:#D5CED9;--1:#F8F8F2">    </span></span><span style="--0:#D5CED9;--1:#F8F8F2">}</span></div></div><div class="ec-line"><div class="code"><span class="indent">    </span><span style="--0:#D477F1;--1:#FF79C6">return</span><span style="--1:#F8F8F2"><span style="--0:#D5CED9"> </span><span style="--0:#00E8C6">res</span></span></div></div><div class="ec-line"><div class="code"><span class="indent"><span style="--0:#D5CED9;--1:#F8F8F2">  </span></span><span style="--0:#D5CED9;--1:#F8F8F2">} </span><span style="--0:#D477F1;--1:#FF79C6">catch</span><span style="--1:#F8F8F2"><span style="--0:#D5CED9"> (</span><span style="--0:#00E8C6">error</span><span style="--0:#D5CED9">) {</span></span></div></div><div class="ec-line"><div class="code"><span class="indent">    </span><span style="--0:#D477F1;--1:#FF79C6">throw</span><span style="--0:#D5CED9;--1:#F8F8F2"> </span><span style="--0:#F17963;--1:#FF79C6;--1fw:bold">new</span><span style="--0:#D5CED9;--1:#F8F8F2"> </span><span style="--0:#FFE66D;--1:#50FA7B">Error</span><span style="--1:#F8F8F2"><span style="--0:#D5CED9">(</span><span style="--0:#00E8C6">error</span><span style="--0:#D5CED9">)</span></span></div></div><div class="ec-line"><div class="code"><span class="indent"><span style="--0:#D5CED9;--1:#F8F8F2">  </span></span><span style="--0:#D5CED9;--1:#F8F8F2">}</span></div></div><div class="ec-line"><div class="code"><span style="--0:#D5CED9;--1:#F8F8F2">}</span></div></div></code></pre><div class="copy"><div aria-live="polite"></div><button title="Copy to clipboard" data-copied="Copied!" data-code="async function asyncAlls(jobs) {  try {    // 循环执行    let results = jobs.map(async job => await job)    let res = []    // 组合数组    for (const result of results) {      res.push(await result)    }    return res  } catch (error) {    throw new Error(error)  }}"><div></div></button></div></figure></div>
+<h3 id="实例展示">实例展示</h3>
+<div class="expressive-code"><figure class="frame"><figcaption class="header"></figcaption><pre data-language="javascript"><code><div class="ec-line"><div class="code"><span style="--0:#D477F1;--1:#FF79C6">function</span><span style="--0:#D5CED9;--1:#F8F8F2"> </span><span style="--0:#FFE66D;--1:#50FA7B">doJob</span><span style="--0:#D5CED9;--1:#F8F8F2">(</span><span style="--0:#00E8C6;--1:#FFB86C;--1fs:italic">x</span><span style="--0:#D5CED9;--1:#F8F8F2">, </span><span style="--0:#00E8C6;--1:#FFB86C;--1fs:italic">sec</span><span style="--0:#D5CED9;--1:#F8F8F2">) {</span></div></div><div class="ec-line"><div class="code"><span class="indent">  </span><span style="--0:#D477F1;--1:#FF79C6">if</span><span style="--0:#D5CED9;--1:#F8F8F2"> (</span><span style="--0:#F17963;--1:#FF79C6">!</span><span style="--1:#F8F8F2"><span style="--0:#00E8C6">x</span><span style="--0:#D5CED9">) {</span></span></div></div><div class="ec-line"><div class="code"><span class="indent">    </span><span style="--0:#D477F1;--1:#FF79C6">throw</span><span style="--0:#D5CED9;--1:#F8F8F2"> </span><span style="--0:#F17963;--1:#FF79C6;--1fw:bold">new</span><span style="--0:#D5CED9;--1:#F8F8F2"> </span><span style="--0:#FFE66D;--1:#50FA7B">Error</span><span style="--0:#D5CED9;--1:#F8F8F2">(</span><span style="--0:#96E072;--1:#E9F284">'</span><span style="--0:#96E072;--1:#F1FA8C">test error</span><span style="--0:#96E072;--1:#E9F284">'</span><span style="--0:#D5CED9;--1:#F8F8F2">)</span></div></div><div class="ec-line"><div class="code"><span class="indent"><span style="--0:#D5CED9;--1:#F8F8F2">  </span></span><span style="--0:#D5CED9;--1:#F8F8F2">}</span></div></div><div class="ec-line"><div class="code"><span class="indent">  </span><span style="--0:#D477F1;--1:#FF79C6">return</span><span style="--0:#D5CED9;--1:#F8F8F2"> </span><span style="--0:#F17963;--1:#FF79C6;--1fw:bold">new</span><span style="--0:#D5CED9;--1:#F8F8F2"> </span><span style="--0:#F17963;--1:#8BE9FD;--1fs:italic">Promise</span><span style="--0:#D5CED9;--1:#F8F8F2">(</span><span style="--0:#00E8C6;--1:#FFB86C;--1fs:italic">resolve</span><span style="--0:#D5CED9;--1:#F8F8F2"> </span><span style="--0:#D477F1;--1:#FF79C6">=></span><span style="--0:#D5CED9;--1:#F8F8F2"> {</span></div></div><div class="ec-line"><div class="code"><span class="indent"><span style="--1:#F8F8F2">    </span></span><span style="--0:#F39C12;--1:#F8F8F2">console</span><span style="--0:#D5CED9;--1:#F8F8F2">.</span><span style="--0:#FFE66D;--1:#50FA7B">log</span><span style="--0:#D5CED9;--1:#F8F8F2">(</span><span style="--0:#96E072;--1:#E9F284">'</span><span style="--0:#96E072;--1:#F1FA8C">Start: </span><span style="--0:#96E072;--1:#E9F284">'</span><span style="--0:#D5CED9;--1:#F8F8F2"> </span><span style="--0:#F17963;--1:#FF79C6">+</span><span style="--1:#F8F8F2"><span style="--0:#D5CED9"> </span><span style="--0:#00E8C6">x</span><span style="--0:#D5CED9">)</span></span></div></div><div class="ec-line"><div class="code"><span class="indent">    </span><span style="--0:#FFE66D;--1:#50FA7B">setTimeout</span><span style="--0:#D5CED9;--1:#F8F8F2">(() </span><span style="--0:#D477F1;--1:#FF79C6">=></span><span style="--0:#D5CED9;--1:#F8F8F2"> {</span></div></div><div class="ec-line"><div class="code"><span class="indent"><span style="--1:#F8F8F2">      </span></span><span style="--0:#F39C12;--1:#F8F8F2">console</span><span style="--0:#D5CED9;--1:#F8F8F2">.</span><span style="--0:#FFE66D;--1:#50FA7B">log</span><span style="--0:#D5CED9;--1:#F8F8F2">(</span><span style="--0:#96E072;--1:#E9F284">'</span><span style="--0:#96E072;--1:#F1FA8C">End: </span><span style="--0:#96E072;--1:#E9F284">'</span><span style="--0:#D5CED9;--1:#F8F8F2"> </span><span style="--0:#F17963;--1:#FF79C6">+</span><span style="--1:#F8F8F2"><span style="--0:#D5CED9"> </span><span style="--0:#00E8C6">x</span><span style="--0:#D5CED9">)</span></span></div></div><div class="ec-line"><div class="code"><span class="indent">      </span><span style="--0:#FFE66D;--1:#50FA7B">resolve</span><span style="--1:#F8F8F2"><span style="--0:#D5CED9">(</span><span style="--0:#00E8C6">x</span><span style="--0:#D5CED9">)</span></span></div></div><div class="ec-line"><div class="code"><span class="indent"><span style="--0:#D5CED9;--1:#F8F8F2">    </span></span><span style="--0:#D5CED9;--1:#F8F8F2">}, </span><span style="--0:#00E8C6;--1:#F8F8F2">sec</span><span style="--0:#D5CED9;--1:#F8F8F2"> </span><span style="--0:#F17963;--1:#FF79C6">*</span><span style="--0:#D5CED9;--1:#F8F8F2"> </span><span style="--0:#F39C12;--1:#BD93F9">100</span><span style="--0:#D5CED9;--1:#F8F8F2">)</span></div></div><div class="ec-line"><div class="code"><span class="indent"><span style="--0:#D5CED9;--1:#F8F8F2">  </span></span><span style="--0:#D5CED9;--1:#F8F8F2">})</span></div></div><div class="ec-line"><div class="code"><span style="--0:#D5CED9;--1:#F8F8F2">}</span></div></div><div class="ec-line"><div class="code">
+</div></div><div class="ec-line"><div class="code"><span style="--0:#D477F1;--1:#FF79C6">async</span><span style="--0:#D5CED9;--1:#F8F8F2"> </span><span style="--0:#D477F1;--1:#FF79C6">function</span><span style="--0:#D5CED9;--1:#F8F8F2"> </span><span style="--0:#FFE66D;--1:#50FA7B">asyncAlls</span><span style="--0:#D5CED9;--1:#F8F8F2">(</span><span style="--0:#00E8C6;--1:#FFB86C;--1fs:italic">jobs</span><span style="--0:#D5CED9;--1:#F8F8F2">) {</span></div></div><div class="ec-line"><div class="code"><span class="indent">  </span><span style="--0:#D477F1;--1:#FF79C6">try</span><span style="--0:#D5CED9;--1:#F8F8F2"> {</span></div></div><div class="ec-line"><div class="code"><span class="indent">    </span><span style="--0:#D477F1;--1:#FF79C6">let</span><span style="--1:#F8F8F2"><span style="--0:#D5CED9"> </span><span style="--0:#00E8C6">results</span><span style="--0:#D5CED9"> </span></span><span style="--0:#F17963;--1:#FF79C6">=</span><span style="--1:#F8F8F2"><span style="--0:#D5CED9"> </span><span style="--0:#F39C12">jobs</span><span style="--0:#D5CED9">.</span></span><span style="--0:#FFE66D;--1:#50FA7B">map</span><span style="--0:#D5CED9;--1:#F8F8F2">(</span><span style="--0:#D477F1;--1:#FF79C6">async</span><span style="--0:#D5CED9;--1:#F8F8F2"> </span><span style="--0:#00E8C6;--1:#FFB86C;--1fs:italic">job</span><span style="--0:#D5CED9;--1:#F8F8F2"> </span><span style="--0:#D477F1;--1:#FF79C6">=></span><span style="--0:#D5CED9;--1:#F8F8F2"> </span><span style="--0:#D477F1;--1:#FF79C6">await</span><span style="--1:#F8F8F2"><span style="--0:#D5CED9"> </span><span style="--0:#00E8C6">job</span><span style="--0:#D5CED9">)</span></span></div></div><div class="ec-line"><div class="code"><span class="indent">    </span><span style="--0:#D477F1;--1:#FF79C6">let</span><span style="--1:#F8F8F2"><span style="--0:#D5CED9"> </span><span style="--0:#00E8C6">res</span><span style="--0:#D5CED9"> </span></span><span style="--0:#F17963;--1:#FF79C6">=</span><span style="--0:#D5CED9;--1:#F8F8F2"> []</span></div></div><div class="ec-line"><div class="code"><span class="indent">    </span><span style="--0:#D477F1;--1:#FF79C6">for</span><span style="--0:#D5CED9;--1:#F8F8F2"> (</span><span style="--0:#D477F1;--1:#FF79C6">const</span><span style="--1:#F8F8F2"><span style="--0:#D5CED9"> </span><span style="--0:#00E8C6">result</span><span style="--0:#D5CED9"> </span></span><span style="--0:#F17963;--1:#FF79C6">of</span><span style="--1:#F8F8F2"><span style="--0:#D5CED9"> </span><span style="--0:#00E8C6">results</span><span style="--0:#D5CED9">) {</span></span></div></div><div class="ec-line"><div class="code"><span class="indent"><span style="--1:#F8F8F2">      </span></span><span style="--0:#F39C12;--1:#F8F8F2">res</span><span style="--0:#D5CED9;--1:#F8F8F2">.</span><span style="--0:#FFE66D;--1:#50FA7B">push</span><span style="--0:#D5CED9;--1:#F8F8F2">(</span><span style="--0:#D477F1;--1:#FF79C6">await</span><span style="--1:#F8F8F2"><span style="--0:#D5CED9"> </span><span style="--0:#00E8C6">result</span><span style="--0:#D5CED9">)</span></span></div></div><div class="ec-line"><div class="code"><span class="indent"><span style="--0:#D5CED9;--1:#F8F8F2">    </span></span><span style="--0:#D5CED9;--1:#F8F8F2">}</span></div></div><div class="ec-line"><div class="code"><span class="indent">    </span><span style="--0:#D477F1;--1:#FF79C6">return</span><span style="--1:#F8F8F2"><span style="--0:#D5CED9"> </span><span style="--0:#00E8C6">res</span></span></div></div><div class="ec-line"><div class="code"><span class="indent"><span style="--0:#D5CED9;--1:#F8F8F2">  </span></span><span style="--0:#D5CED9;--1:#F8F8F2">} </span><span style="--0:#D477F1;--1:#FF79C6">catch</span><span style="--1:#F8F8F2"><span style="--0:#D5CED9"> (</span><span style="--0:#00E8C6">error</span><span style="--0:#D5CED9">) {</span></span></div></div><div class="ec-line"><div class="code"><span class="indent">    </span><span style="--0:#D477F1;--1:#FF79C6">throw</span><span style="--0:#D5CED9;--1:#F8F8F2"> </span><span style="--0:#F17963;--1:#FF79C6;--1fw:bold">new</span><span style="--0:#D5CED9;--1:#F8F8F2"> </span><span style="--0:#FFE66D;--1:#50FA7B">Error</span><span style="--1:#F8F8F2"><span style="--0:#D5CED9">(</span><span style="--0:#00E8C6">error</span><span style="--0:#D5CED9">)</span></span></div></div><div class="ec-line"><div class="code"><span class="indent"><span style="--0:#D5CED9;--1:#F8F8F2">  </span></span><span style="--0:#D5CED9;--1:#F8F8F2">}</span></div></div><div class="ec-line"><div class="code"><span style="--0:#D5CED9;--1:#F8F8F2">}</span></div></div><div class="ec-line"><div class="code"><span style="--0:#D5CED9;--1:#F8F8F2">(</span><span style="--0:#D477F1;--1:#FF79C6">async</span><span style="--0:#D5CED9;--1:#F8F8F2"> </span><span style="--0:#D477F1;--1:#FF79C6">function</span><span style="--0:#D5CED9;--1:#F8F8F2">() {</span></div></div><div class="ec-line"><div class="code"><span class="indent">  </span><span style="--0:#D477F1;--1:#FF79C6">try</span><span style="--0:#D5CED9;--1:#F8F8F2"> {</span></div></div><div class="ec-line"><div class="code"><span class="indent">    </span><span style="--0:#D477F1;--1:#FF79C6">const</span><span style="--1:#F8F8F2"><span style="--0:#D5CED9"> </span><span style="--0:#00E8C6">all1</span><span style="--0:#D5CED9"> </span></span><span style="--0:#F17963;--1:#FF79C6">=</span><span style="--0:#D5CED9;--1:#F8F8F2"> </span><span style="--0:#D477F1;--1:#FF79C6">await</span><span style="--0:#D5CED9;--1:#F8F8F2"> </span><span style="--0:#FFE66D;--1:#50FA7B">asyncAlls</span><span style="--0:#D5CED9;--1:#F8F8F2">([</span><span style="--0:#FFE66D;--1:#50FA7B">doJob</span><span style="--0:#D5CED9;--1:#F8F8F2">(</span><span style="--0:#F39C12;--1:#BD93F9">1</span><span style="--0:#D5CED9;--1:#F8F8F2">, </span><span style="--0:#F39C12;--1:#BD93F9">1</span><span style="--0:#D5CED9;--1:#F8F8F2">), </span><span style="--0:#FFE66D;--1:#50FA7B">doJob</span><span style="--0:#D5CED9;--1:#F8F8F2">(</span><span style="--0:#F39C12;--1:#BD93F9">2</span><span style="--0:#D5CED9;--1:#F8F8F2">, </span><span style="--0:#F39C12;--1:#BD93F9">1</span><span style="--0:#D5CED9;--1:#F8F8F2">), </span><span style="--0:#FFE66D;--1:#50FA7B">doJob</span><span style="--0:#D5CED9;--1:#F8F8F2">(</span><span style="--0:#F39C12;--1:#BD93F9">0</span><span style="--0:#D5CED9;--1:#F8F8F2">, </span><span style="--0:#F39C12;--1:#BD93F9">1</span><span style="--0:#D5CED9;--1:#F8F8F2">), </span><span style="--0:#FFE66D;--1:#50FA7B">doJob</span><span style="--0:#D5CED9;--1:#F8F8F2">(</span><span style="--0:#F39C12;--1:#BD93F9">4</span><span style="--0:#D5CED9;--1:#F8F8F2">, </span><span style="--0:#F39C12;--1:#BD93F9">1</span><span style="--0:#D5CED9;--1:#F8F8F2">)])</span></div></div><div class="ec-line"><div class="code"><span class="indent"><span style="--1:#F8F8F2">    </span></span><span style="--0:#F39C12;--1:#F8F8F2">console</span><span style="--0:#D5CED9;--1:#F8F8F2">.</span><span style="--0:#FFE66D;--1:#50FA7B">log</span><span style="--0:#D5CED9;--1:#F8F8F2">(</span><span style="--0:#96E072;--1:#E9F284">'</span><span style="--0:#96E072;--1:#F1FA8C">all1</span><span style="--0:#96E072;--1:#E9F284">'</span><span style="--1:#F8F8F2"><span style="--0:#D5CED9">, </span><span style="--0:#00E8C6">all1</span><span style="--0:#D5CED9">)</span></span></div></div><div class="ec-line"><div class="code"><span class="indent"><span style="--0:#D5CED9;--1:#F8F8F2">  </span></span><span style="--0:#D5CED9;--1:#F8F8F2">} </span><span style="--0:#D477F1;--1:#FF79C6">catch</span><span style="--1:#F8F8F2"><span style="--0:#D5CED9"> (</span><span style="--0:#00E8C6">error</span><span style="--0:#D5CED9">) {</span></span></div></div><div class="ec-line"><div class="code"><span class="indent"><span style="--1:#F8F8F2">    </span></span><span style="--0:#F39C12;--1:#F8F8F2">console</span><span style="--0:#D5CED9;--1:#F8F8F2">.</span><span style="--0:#FFE66D;--1:#50FA7B">log</span><span style="--0:#D5CED9;--1:#F8F8F2">(</span><span style="--0:#96E072;--1:#E9F284">'</span><span style="--0:#96E072;--1:#F1FA8C">0</span><span style="--0:#96E072;--1:#E9F284">'</span><span style="--1:#F8F8F2"><span style="--0:#D5CED9">, </span><span style="--0:#00E8C6">error</span><span style="--0:#D5CED9">)</span></span></div></div><div class="ec-line"><div class="code"><span class="indent"><span style="--0:#D5CED9;--1:#F8F8F2">  </span></span><span style="--0:#D5CED9;--1:#F8F8F2">}</span></div></div><div class="ec-line"><div class="code"><span class="indent">  </span><span style="--0:#D477F1;--1:#FF79C6">try</span><span style="--0:#D5CED9;--1:#F8F8F2"> {</span></div></div><div class="ec-line"><div class="code"><span class="indent">    </span><span style="--0:#D477F1;--1:#FF79C6">const</span><span style="--1:#F8F8F2"><span style="--0:#D5CED9"> </span><span style="--0:#00E8C6">all2</span><span style="--0:#D5CED9"> </span></span><span style="--0:#F17963;--1:#FF79C6">=</span><span style="--0:#D5CED9;--1:#F8F8F2"> </span><span style="--0:#D477F1;--1:#FF79C6">await</span><span style="--0:#D5CED9;--1:#F8F8F2"> </span><span style="--0:#FFE66D;--1:#50FA7B">asyncAlls</span><span style="--0:#D5CED9;--1:#F8F8F2">([</span><span style="--0:#FFE66D;--1:#50FA7B">doJob</span><span style="--0:#D5CED9;--1:#F8F8F2">(</span><span style="--0:#F39C12;--1:#BD93F9">5</span><span style="--0:#D5CED9;--1:#F8F8F2">, </span><span style="--0:#F39C12;--1:#BD93F9">1</span><span style="--0:#D5CED9;--1:#F8F8F2">), </span><span style="--0:#FFE66D;--1:#50FA7B">doJob</span><span style="--0:#D5CED9;--1:#F8F8F2">(</span><span style="--0:#F39C12;--1:#BD93F9">6</span><span style="--0:#D5CED9;--1:#F8F8F2">, </span><span style="--0:#F39C12;--1:#BD93F9">1</span><span style="--0:#D5CED9;--1:#F8F8F2">), </span><span style="--0:#FFE66D;--1:#50FA7B">doJob</span><span style="--0:#D5CED9;--1:#F8F8F2">(</span><span style="--0:#F39C12;--1:#BD93F9">7</span><span style="--0:#D5CED9;--1:#F8F8F2">, </span><span style="--0:#F39C12;--1:#BD93F9">1</span><span style="--0:#D5CED9;--1:#F8F8F2">), </span><span style="--0:#FFE66D;--1:#50FA7B">doJob</span><span style="--0:#D5CED9;--1:#F8F8F2">(</span><span style="--0:#F39C12;--1:#BD93F9">8</span><span style="--0:#D5CED9;--1:#F8F8F2">, </span><span style="--0:#F39C12;--1:#BD93F9">1</span><span style="--0:#D5CED9;--1:#F8F8F2">)])</span></div></div><div class="ec-line"><div class="code"><span class="indent"><span style="--1:#F8F8F2">    </span></span><span style="--0:#F39C12;--1:#F8F8F2">console</span><span style="--0:#D5CED9;--1:#F8F8F2">.</span><span style="--0:#FFE66D;--1:#50FA7B">log</span><span style="--0:#D5CED9;--1:#F8F8F2">(</span><span style="--0:#96E072;--1:#E9F284">'</span><span style="--0:#96E072;--1:#F1FA8C">all2</span><span style="--0:#96E072;--1:#E9F284">'</span><span style="--1:#F8F8F2"><span style="--0:#D5CED9">, </span><span style="--0:#00E8C6">all2</span><span style="--0:#D5CED9">)</span></span></div></div><div class="ec-line"><div class="code"><span class="indent"><span style="--0:#D5CED9;--1:#F8F8F2">  </span></span><span style="--0:#D5CED9;--1:#F8F8F2">} </span><span style="--0:#D477F1;--1:#FF79C6">catch</span><span style="--1:#F8F8F2"><span style="--0:#D5CED9"> (</span><span style="--0:#00E8C6">error</span><span style="--0:#D5CED9">) {</span></span></div></div><div class="ec-line"><div class="code"><span class="indent"><span style="--1:#F8F8F2">    </span></span><span style="--0:#F39C12;--1:#F8F8F2">console</span><span style="--0:#D5CED9;--1:#F8F8F2">.</span><span style="--0:#FFE66D;--1:#50FA7B">log</span><span style="--0:#D5CED9;--1:#F8F8F2">(</span><span style="--0:#96E072;--1:#E9F284">'</span><span style="--0:#96E072;--1:#F1FA8C">1</span><span style="--0:#96E072;--1:#E9F284">'</span><span style="--1:#F8F8F2"><span style="--0:#D5CED9">, </span><span style="--0:#00E8C6">error</span><span style="--0:#D5CED9">)</span></span></div></div><div class="ec-line"><div class="code"><span class="indent"><span style="--0:#D5CED9;--1:#F8F8F2">  </span></span><span style="--0:#D5CED9;--1:#F8F8F2">}</span></div></div><div class="ec-line"><div class="code"><span style="--0:#D5CED9;--1:#F8F8F2">})()</span></div></div></code></pre><div class="copy"><div aria-live="polite"></div><button title="Copy to clipboard" data-copied="Copied!" data-code="function doJob(x, sec) {  if (!x) {    throw new Error(&#x27;test error&#x27;)  }  return new Promise(resolve => {    console.log(&#x27;Start: &#x27; + x)    setTimeout(() => {      console.log(&#x27;End: &#x27; + x)      resolve(x)    }, sec * 100)  })}async function asyncAlls(jobs) {  try {    let results = jobs.map(async job => await job)    let res = []    for (const result of results) {      res.push(await result)    }    return res  } catch (error) {    throw new Error(error)  }}(async function() {  try {    const all1 = await asyncAlls([doJob(1, 1), doJob(2, 1), doJob(0, 1), doJob(4, 1)])    console.log(&#x27;all1&#x27;, all1)  } catch (error) {    console.log(&#x27;0&#x27;, error)  }  try {    const all2 = await asyncAlls([doJob(5, 1), doJob(6, 1), doJob(7, 1), doJob(8, 1)])    console.log(&#x27;all2&#x27;, all2)  } catch (error) {    console.log(&#x27;1&#x27;, error)  }})()"><div></div></button></div></figure></div>
+<h2 id="总结">总结</h2>
+<p>本文思路源于一个面试题，迫于好奇，花了点时间实现了一下，期间有诸多不懂的地方也请教了许多小伙伴，感谢诸位小伙伴解惑</p>
+<hr>
+<h2 id="参考">参考</h2>
+<p><a href="https://techbrij.com/javascript-async-await-parallel-sequence">JavaScript Async/Await: Serial, Parallel and Complex Flow</a>
+<a href="https://github.com/mqyqingfeng/Blog/issues/100">ES6 系列之我们来聊聊 Async</a></p> </article> </main> <div class="random"> <div class="w-full h-1 bg-gray-600 mb-4 dark:bg-gray-300"></div> <h1 class="mb-4 text-xl font-heading font-bold text-zinc-900 dark:text-zinc-100">
+Random Read
+</h1> <ul class="flex flex-col gap-1.5"> <li> <a href="/posts/jquery-usage-notes" class="group flex justify-between gap-3 text-sm" data-umami-event="Random-article"> <span class="group-hover:underline">jQuery的使用心得</span> <span class="text-nowrap text-zinc-500 font-mono"> 2017-12-18 </span> </a> </li><li> <a href="/posts/upload-file" class="group flex justify-between gap-3 text-sm" data-umami-event="Random-article"> <span class="group-hover:underline">Ajax 之文件上传</span> <span class="text-nowrap text-zinc-500 font-mono"> 2018-05-31 </span> </a> </li><li> <a href="/posts/amap-js-api-summary" class="group flex justify-between gap-3 text-sm" data-umami-event="Random-article"> <span class="group-hover:underline">高德地图JS_api小总结</span> <span class="text-nowrap text-zinc-500 font-mono"> 2018-03-29 </span> </a> </li> </ul> </div>  <script data-astro-rerun>
+    (() => {
+      if (window.__lightboxInstalled) return;
+      window.__lightboxInstalled = true;
+
+      const prefersReduced = window.matchMedia?.("(prefers-reduced-motion: reduce)")?.matches;
+      const D = prefersReduced ? 0 : 180;
+      const state = { overlay: null };
+
+      const close = () => {
+        const overlay = state.overlay;
+        if (!overlay) return;
+        const img = overlay.querySelector(".lightbox-img");
+
+        const fade = overlay.animate([{ opacity: 1 }, { opacity: 0 }], { duration: D, easing: "ease-in", fill: "forwards" });
+        const shrink = img?.animate([{ transform: "scale(1)" }, { transform: "scale(0.96)" }], { duration: D, easing: "ease-in", fill: "forwards" });
+
+        Promise.allSettled([fade?.finished ?? Promise.resolve(), shrink?.finished ?? Promise.resolve()]).finally(() => {
+          overlay.remove();
+          state.overlay = null;
+          document.body.style.overflow = "";
+          document.body.style.paddingRight = "";
+          document.removeEventListener("keydown", onKeydown);
+        });
+      };
+
+      const onKeydown = (e) => { if (e.key === "Escape") close(); };
+
+      const openFrom = (thumb) => {
+        if (state.overlay) return;
+
+        const overlay = document.createElement("div");
+        overlay.className = "lightbox-overlay";
+        overlay.dataset.armed = "0";
+        setTimeout(() => { if (overlay.isConnected) overlay.dataset.armed = "1"; }, D || 120);
+
+        const big = thumb.cloneNode(true);
+        big.classList.add("lightbox-img");
+        big.removeAttribute("width");
+        big.removeAttribute("height");
+        big.style.maxWidth = "";
+        big.style.maxHeight = "";
+        big.draggable = false;
+
+        overlay.appendChild(big);
+        document.body.appendChild(overlay);
+        state.overlay = overlay;
+
+        const pad = window.innerWidth - document.documentElement.clientWidth;
+        if (pad > 0) document.body.style.paddingRight = pad + "px";
+        document.body.style.overflow = "hidden";
+
+        overlay.animate([{ opacity: 0 }, { opacity: 1 }], { duration: D, easing: "ease-out", fill: "forwards" });
+        big.animate([{ transform: "scale(0.96)" }, { transform: "scale(1)" }], { duration: D, easing: "ease-out", fill: "forwards" });
+
+        overlay.addEventListener("click", () => { if (overlay?.dataset.armed === "1") close(); });
+        document.addEventListener("keydown", onKeydown);
+      };
+
+      const onDocClick = (e) => {
+        const target = e.target;
+        if (!(target instanceof Element)) return;
+        const article = target.closest("article[data-pagefind-body]");
+        if (!article) return;
+        const img = target.closest("img");
+        if (!img) return;
+        if (e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
+
+        e.preventDefault();
+        e.stopPropagation();
+        openFrom(img);
+      };
+
+      document.addEventListener("click", onDocClick, { passive: false });
+      document.addEventListener("astro:before-swap", close);
+    })();
+  </script>   </div> <script>
+  function setTheme() {
+    let theme
+
+    if (typeof localStorage !== 'undefined' && localStorage.getItem('theme')) {
+      theme = localStorage.getItem('theme')
+    } else {
+      theme = window.matchMedia('(prefers-color-scheme: dark)').matches
+        ? 'dark'
+        : 'light'
+    }
+
+    document.documentElement.classList[theme ? 'add' : 'remove'](theme)
+
+    if (typeof localStorage !== 'undefined') {
+      const observer = new MutationObserver(() => {
+        const isDark = document.documentElement.classList.contains('dark')
+        localStorage.setItem('theme', isDark ? 'dark' : 'light')
+      })
+      observer.observe(document.documentElement, {
+        attributes: true,
+        attributeFilter: ['class'],
+      })
+    }
+  }
+
+  setTheme()
+
+  document.addEventListener('astro:after-swap', setTheme)
+</script></body></html>

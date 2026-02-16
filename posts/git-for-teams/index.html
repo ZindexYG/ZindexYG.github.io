@@ -1,0 +1,851 @@
+<!DOCTYPE html><html lang="en" class="relative bg-fontdefault dark:bg-bgdefault"> <head><meta name="generator" content="Astro"><!-- Global Metadata --><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><link rel="icon" type="image/svg+xml" href="/favicon.svg"><meta name="generator" content="Astro v5.16.6"><!-- Font preloads --><link rel="preload" href="/fonts/geist-variable.woff2" as="font" type="font/woff2" crossorigin><link rel="preload" href="/fonts/geist-mono-variable.woff2" as="font" type="font/woff2" crossorigin><!-- Canonical URL --><link rel="canonical" href="https://z-index.me/posts/git-for-teams/"><!-- Primary Meta Tags --><title>关于 Git 二三事</title><meta name="title" content="关于 Git 二三事"><meta name="description" content="工具往往需要反复检验"><!-- Open Graph / Facebook --><meta property="og:type" content="website"><meta property="og:url" content="https://z-index.me/posts/git-for-teams/"><meta property="og:title" content="关于 Git 二三事"><meta property="og:description" content="工具往往需要反复检验"><meta property="og:image" content="https://z-index.me/static/ogimage.png"><!-- Twitter --><meta property="twitter:card" content="summary_large_image"><meta property="twitter:url" content="https://z-index.me/posts/git-for-teams/"><meta property="twitter:title" content="关于 Git 二三事"><meta property="twitter:description" content="工具往往需要反复检验"><meta property="twitter:image" content="https://z-index.me/static/ogimage.png"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/twikoo@1.6.44/dist/twikoo.css" crossorigin="anonymous"><link rel="stylesheet" href="/_astro/index.wYwjb_5q.css">
+<style>.toc-root[data-astro-cid-6t6zfk7k] .toc-inline[data-astro-cid-6t6zfk7k]{display:block}.toc-root[data-astro-cid-6t6zfk7k] .toc-float[data-astro-cid-6t6zfk7k]{display:none}@media(min-width:1200px){.toc-root[data-astro-cid-6t6zfk7k] .toc-inline[data-astro-cid-6t6zfk7k]{display:none}.toc-root[data-astro-cid-6t6zfk7k] .toc-float[data-astro-cid-6t6zfk7k]{display:block}}.toc-root[data-astro-cid-6t6zfk7k] .toc[data-astro-cid-6t6zfk7k] details[data-astro-cid-6t6zfk7k]{padding:1rem;border-radius:10px;border:1px solid #83838330;margin-bottom:1rem}.toc-root[data-astro-cid-6t6zfk7k] .toc-float[data-astro-cid-6t6zfk7k]{position:fixed;top:84px;right:max(12px,env(safe-area-inset-right));width:260px;max-height:78vh;overflow:auto;z-index:40;transition:opacity .25s ease,transform .25s ease}.toc-root[data-astro-cid-6t6zfk7k] .toc-float[data-astro-cid-6t6zfk7k].at-top{opacity:0;pointer-events:none;transform:translateY(-4px)}.toc-root[data-astro-cid-6t6zfk7k] .toc[data-astro-cid-6t6zfk7k] a[data-astro-cid-6t6zfk7k].toc-link{position:relative;display:block;padding:.125rem 0;color:#6b7280;text-decoration:none;transition:color .15s ease}.dark[data-astro-cid-6t6zfk7k] .toc-root[data-astro-cid-6t6zfk7k] .toc[data-astro-cid-6t6zfk7k] a[data-astro-cid-6t6zfk7k].toc-link{color:#a1a1aa}.toc-root[data-astro-cid-6t6zfk7k] .toc[data-astro-cid-6t6zfk7k] a[data-astro-cid-6t6zfk7k].toc-link:hover{color:#3f3f46}.dark[data-astro-cid-6t6zfk7k] .toc-root[data-astro-cid-6t6zfk7k] .toc[data-astro-cid-6t6zfk7k] a[data-astro-cid-6t6zfk7k].toc-link:hover{color:#e4e4e7}.toc-root[data-astro-cid-6t6zfk7k] .toc[data-astro-cid-6t6zfk7k] a[data-astro-cid-6t6zfk7k].toc-link.is-active:before{content:"";position:absolute;left:-12px;top:.6em;width:5px;height:5px;border-radius:50%;background:currentColor}.toc-root[data-astro-cid-6t6zfk7k] .toc[data-astro-cid-6t6zfk7k] a[data-astro-cid-6t6zfk7k][data-depth="1"]{font-weight:600}.toc-root[data-astro-cid-6t6zfk7k] .toc[data-astro-cid-6t6zfk7k] a[data-astro-cid-6t6zfk7k][data-depth="3"],.toc-root[data-astro-cid-6t6zfk7k] .toc[data-astro-cid-6t6zfk7k] a[data-astro-cid-6t6zfk7k][data-depth="4"],.toc-root[data-astro-cid-6t6zfk7k] .toc[data-astro-cid-6t6zfk7k] a[data-astro-cid-6t6zfk7k][data-depth="5"]{opacity:.8;font-size:.9em}.toc-root[data-astro-cid-6t6zfk7k] .toc-float[data-astro-cid-6t6zfk7k] .toc[data-astro-cid-6t6zfk7k] details[data-astro-cid-6t6zfk7k]{padding:.75rem;border:1px solid rgba(0,0,0,.08);background-color:#00000008}.dark[data-astro-cid-6t6zfk7k] .toc-root[data-astro-cid-6t6zfk7k] .toc-float[data-astro-cid-6t6zfk7k] .toc[data-astro-cid-6t6zfk7k] details[data-astro-cid-6t6zfk7k]{border-color:#ffffff14;background-color:#ffffff0a}article[data-pagefind-body] :is(h1[id],h2[id],h3[id],h4[id],h5[id]){scroll-margin-top:96px}article[data-pagefind-body] img{cursor:pointer}article[data-pagefind-body] img{transition:transform .18s ease,filter .18s ease;transform-origin:center center;will-change:transform;backface-visibility:hidden}article[data-pagefind-body] img:hover{transform:scale(1.01)}.lightbox-img:hover{transform:none!important}@media(prefers-reduced-motion:reduce){article[data-pagefind-body] img{transition:none}}.lightbox-overlay{position:fixed;inset:0;display:flex;align-items:center;justify-content:center;background:#0009;cursor:zoom-out;z-index:1000;opacity:0;touch-action:none;-webkit-tap-highlight-color:transparent}.dark .lightbox-overlay{background:#000000b3}.lightbox-img{max-width:92vw;max-height:92vh;border-radius:12px;box-shadow:0 10px 40px #0006;will-change:transform}.dark .lightbox-img{box-shadow:0 10px 40px #000000b3}@media(prefers-reduced-motion:reduce){.lightbox-overlay,.lightbox-img{animation:none !重要;transition:none !重要}}.expressive-code .frame{all:unset;position:relative;display:block;--header-border-radius: calc(var(--ec-brdRad) + var(--ec-brdWd));--tab-border-radius: calc(var(--ec-frm-edTabBrdRad) + var(--ec-brdWd));--button-spacing: .4rem;--code-background: var(--ec-frm-edBg);border-radius:var(--header-border-radius);box-shadow:0 0 0 var(--ec-brdWd) var(--ec-frm-edBrdClr)!important}
+</style></head> <body class="font-sans min-h-svh text-zinc-900 bg-fontdefault antialiased transition-colors dark:bg-bgdefault dark:text-fontdefault"> <div class="mx-auto p-4 pb-16 max-w-3xl"> <header class="sticky top-0 z-50 w-full mb-6
+         bg-fontdefault dark:bg-bgdefault transition-colors" data-astro-cid-3ef6ksr2> <!-- 仅内容限宽；背景全屏铺开 --> <div class="mx-auto w-full max-w-screen-md
+              flex h-12 items-center justify-between" data-astro-cid-3ef6ksr2>  <nav class="hidden md:flex items-center gap-4" data-astro-cid-3ef6ksr2> <a href="/" data-astro-cid-3ef6ksr2>Home</a> <a href="/posts" data-astro-cid-3ef6ksr2>Posts</a> <a href="/library" data-astro-cid-3ef6ksr2>Library</a> <!-- <a href="/bmmg">Media</a> --> <!-- <a href="https://exercise.asyncx.top" target="_blank" rel="noopener noreferrer">Steps</a> --> </nav>  <div class="hidden md:block" data-astro-cid-3ef6ksr2> <div class="flex justify-end space-x-2"> <button id="search" class="inline-flex items-center rounded-md border p-1 transition-colors hover:bg-zinc-50 dark:border-zinc-700 dark:hover:bg-zinc-800 [&_svg]:text-zinc-500 [&_svg]:hover:text-zinc-900 [&_svg]:dark:hover:text-zinc-100" aria-label="Search" onclick="window.location.href='/search'" data-umami-event="Button-Search" type="button"> <span class="sr-only">Search</span> <svg class="size-4" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"> <g transform="scale(0.015625)"> <path d="M975.474921 917.123519l-152.442347-152.502577c150.575215-165.512276 146.419339-421.550372-13.431309-581.40102a421.610602 421.610602 0 0 0-596.217622 596.277851c138.890578 138.890578 350.47887 160.151799 512.136422 64.626882l161.47686 161.537091a62.518829 62.518829 0 1 0 88.477996-88.538227z m-251.038998-222.851318a301.15043 301.15043 0 0 1-425.886938 0 301.15043 301.15043 0 0 1 0-425.886938 301.15043 301.15043 0 1 1 425.886938 425.886938z" fill="currentColor"></path> </g> </svg> </button> <button id="rss" class="inline-flex items-center rounded-md border p-1 transition-colors hover:bg-zinc-50 dark:border-zinc-700 dark:hover:bg-zinc-800 [&_svg]:text-zinc-500 [&_svg]:hover:text-zinc-900 [&_svg]:dark:hover:text-zinc-100" aria-label="RSS Feed" onclick="window.location.href='/rss.xml'" data-umami-event="Button-RSS" type="button"> <span class="sr-only">RSS Feed</span> <svg class="size-4" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"> <g transform="scale(0.015625)"> <path d="M42.666667 853.333333a128 128 0 1 1 256 0 128 128 0 0 1-256 0z m938.666666 128h-178.773333c0-418.986667-340.906667-759.893333-759.893333-759.893333V42.666667c517.546667 0 938.666667 421.12 938.666666 938.666666z m-298.666666 0h-182.826667c0-252.074667-205.098667-457.130667-457.173333-457.130666V341.333333c352.896 0 640 287.104 640 640z" fill="currentColor"></path> </g> </svg> </button> <button id="douban" class="inline-flex items-center rounded-md border p-1 transition-colors hover:bg-zinc-50 dark:border-zinc-700 dark:hover:bg-zinc-800 [&_svg]:text-zinc-500 [&_svg]:hover:text-zinc-900 [&_svg]:dark:hover:text-zinc-100" aria-label="Douban" onclick="window.open('https://douban.com/people/141874159/', '_blank')" data-umami-event="Button-Douban" type="button"> <span class="sr-only">Douban</span> <svg class="size-4" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" fill="currentColor"> <path d="M.51 3.06h22.98V.755H.51V3.06Zm20.976 2.537v9.608h-2.137l-1.669 5.76H24v2.28H0v-2.28h6.32l-1.67-5.76H2.515V5.597h18.972Zm-5.066 9.608H7.58l1.67 5.76h5.501l1.67-5.76ZM18.367 7.9H5.634v5.025h12.733V7.9Z"></path> </svg> </button> <button id="github" class="inline-flex items-center rounded-md border p-1 transition-colors hover:bg-zinc-50 dark:border-zinc-700 dark:hover:bg-zinc-800 [&_svg]:text-zinc-500 [&_svg]:hover:text-zinc-900 [&_svg]:dark:hover:text-zinc-100" aria-label="GitHub" onclick="window.open('https://github.com/ZindexYG/z-index.me', '_blank')" data-umami-event="Button-GitHub" type="button"> <span class="sr-only">GitHub</span> <svg class="size-4" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" fill="currentColor"> <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"></path> </svg> </button> <button id="theme-toggle" class="inline-flex items-center rounded-md border p-1 transition-colors hover:bg-zinc-50 dark:border-zinc-700 dark:hover:bg-zinc-800 [&_svg]:text-zinc-500 [&_svg]:hover:text-zinc-900 [&_svg]:dark:hover:text-zinc-100" aria-label="Toggle theme" data-umami-event="Button-Theme" type="button"> <span class="sr-only">Toggle theme</span> <svg id="sun" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor" class="hidden size-4 dark:block"> <path d="M8 1a.75.75 0 0 1 .75.75v1.5a.75.75 0 0 1-1.5 0v-1.5A.75.75 0 0 1 8 1ZM10.5 8a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0ZM12.95 4.11a.75.75 0 1 0-1.06-1.06l-1.062 1.06a.75.75 0 0 0 1.061 1.062l1.06-1.061ZM15 8a.75.75 0 0 1-.75.75h-1.5a.75.75 0 0 1 0-1.5h1.5A.75.75 0 0 1 15 8ZM11.89 12.95a.75.75 0 0 0 1.06-1.06l-1.06-1.062a.75.75 0 0 0-1.062 1.061l1.061 1.06ZM8 12a.75.75 0 0 1 .75.75v1.5a.75.75 0 0 1-1.5 0v-1.5A.75.75 0 0 1 8 12ZM5.172 11.89a.75.75 0 0 0-1.061-1.062L3.05 11.89a.75.75 0 1 0 1.06 1.06l1.06-1.06ZM4 8a.75.75 0 0 1-.75.75h-1.5a.75.75 0 0 1 0-1.5h1.5A.75.75 0 0 1 4 8ZM4.11 5.172A.75.75 0 0 0 5.173 4.11L4.11 3.05a.75.75 0 1 0-1.06 1.06l1.06 1.06Z"></path> </svg> <svg id="moon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor" class="size-4 dark:hidden"> <path d="M14.438 10.148c.19-.425-.321-.787-.748-.601A5.5 5.5 0 0 1 6.453 2.31c.186-.427-.176-.938-.6-.748a6.501 6.501 0 1 0 8.585 8.586Z"></path> </svg> </button> </div> <script type="module">function t(){document.getElementById("theme-toggle")?.addEventListener("click",()=>{document.documentElement.classList.toggle("dark")})}t();document.addEventListener("astro:after-swap",t);</script> </div>  <div class="md:hidden flex items-center gap-2" data-astro-cid-3ef6ksr2> <details class="relative" data-astro-cid-3ef6ksr2> <summary class="list-none cursor-pointer p-2 rounded-md
+                 hover:bg-zinc-100 dark:hover:bg-zinc-800
+                 outline-none focus-visible:ring-2
+                 focus-visible:ring-zinc-400 dark:focus-visible:ring-zinc-600" aria-label="Open menu" data-astro-cid-3ef6ksr2> <!-- 汉堡图标 --> <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" data-astro-cid-3ef6ksr2> <path stroke-linecap="round" stroke-linejoin="round" d="M4 7h16M4 12h16M4 17h16" data-astro-cid-3ef6ksr2></path> </svg> </summary> <!-- 下拉菜单背景也跟随站点配色 --> <nav class="absolute top-0 left-[calc(100%+0.5rem)] z-50
+                  w-56 max-w-[80vw]
+                  rounded-lg border border-zinc-200 dark:border-zinc-800
+                  bg-fontdefault dark:bg-bgdefault shadow-lg" data-astro-cid-3ef6ksr2> <ul class="py-1" data-astro-cid-3ef6ksr2> <li data-astro-cid-3ef6ksr2> <a class="block px-3 py-2 rounded hover:bg-zinc-100 dark:hover:bg-zinc-800" href="/" data-astro-cid-3ef6ksr2>Home</a> </li> <li data-astro-cid-3ef6ksr2> <a class="block px-3 py-2 rounded hover:bg-zinc-100 dark:hover:bg-zinc-800" href="/posts" data-astro-cid-3ef6ksr2>Posts</a> </li> <!-- <li>
+              <a
+                class='block px-3 py-2 rounded hover:bg-zinc-100 dark:hover:bg-zinc-800'
+                href='/tags'>Tag</a
+              >
+            </li> --> <!-- <li>
+              <a
+                class='block px-3 py-2 rounded hover:bg-zinc-100 dark:hover:bg-zinc-800'
+                href='/bmmg'>Media</a
+              >
+            </li> --> <!-- <li>
+              <a
+                class='block px-3 py-2 rounded hover:bg-zinc-100 dark:hover:bg-zinc-800'
+                href='https://exercise.asyncx.top'
+                target='_blank'
+                rel='noopener noreferrer'>Steps</a
+              >
+            </li> --> <!-- <li>
+              <a
+                class='block px-3 py-2 rounded hover:bg-zinc-100 dark:hover:bg-zinc-800'
+                href='/about'>README.md</a
+              >
+            </li> --> </ul> </nav> </details> <div class="flex justify-end space-x-2"> <button id="search" class="inline-flex items-center rounded-md border p-1 transition-colors hover:bg-zinc-50 dark:border-zinc-700 dark:hover:bg-zinc-800 [&_svg]:text-zinc-500 [&_svg]:hover:text-zinc-900 [&_svg]:dark:hover:text-zinc-100" aria-label="Search" onclick="window.location.href='/search'" data-umami-event="Button-Search" type="button"> <span class="sr-only">Search</span> <svg class="size-4" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"> <g transform="scale(0.015625)"> <path d="M975.474921 917.123519l-152.442347-152.502577c150.575215-165.512276 146.419339-421.550372-13.431309-581.40102a421.610602 421.610602 0 0 0-596.217622 596.277851c138.890578 138.890578 350.47887 160.151799 512.136422 64.626882l161.47686 161.537091a62.518829 62.518829 0 1 0 88.477996-88.538227z m-251.038998-222.851318a301.15043 301.15043 0 0 1-425.886938 0 301.15043 301.15043 0 0 1 0-425.886938 301.15043 301.15043 0 1 1 425.886938 425.886938z" fill="currentColor"></path> </g> </svg> </button> <button id="rss" class="inline-flex items-center rounded-md border p-1 transition-colors hover:bg-zinc-50 dark:border-zinc-700 dark:hover:bg-zinc-800 [&_svg]:text-zinc-500 [&_svg]:hover:text-zinc-900 [&_svg]:dark:hover:text-zinc-100" aria-label="RSS Feed" onclick="window.location.href='/rss.xml'" data-umami-event="Button-RSS" type="button"> <span class="sr-only">RSS Feed</span> <svg class="size-4" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"> <g transform="scale(0.015625)"> <path d="M42.666667 853.333333a128 128 0 1 1 256 0 128 128 0 0 1-256 0z m938.666666 128h-178.773333c0-418.986667-340.906667-759.893333-759.893333-759.893333V42.666667c517.546667 0 938.666667 421.12 938.666666 938.666666z m-298.666666 0h-182.826667c0-252.074667-205.098667-457.130667-457.173333-457.130666V341.333333c352.896 0 640 287.104 640 640z" fill="currentColor"></path> </g> </svg> </button> <button id="douban" class="inline-flex items-center rounded-md border p-1 transition-colors hover:bg-zinc-50 dark:border-zinc-700 dark:hover:bg-zinc-800 [&_svg]:text-zinc-500 [&_svg]:hover:text-zinc-900 [&_svg]:dark:hover:text-zinc-100" aria-label="Douban" onclick="window.open('https://douban.com/people/141874159/', '_blank')" data-umami-event="Button-Douban" type="button"> <span class="sr-only">Douban</span> <svg class="size-4" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" fill="currentColor"> <path d="M.51 3.06h22.98V.755H.51V3.06Zm20.976 2.537v9.608h-2.137l-1.669 5.76H24v2.28H0v-2.28h6.32l-1.67-5.76H2.515V5.597h18.972Zm-5.066 9.608H7.58l1.67 5.76h5.501l1.67-5.76ZM18.367 7.9H5.634v5.025h12.733V7.9Z"></path> </svg> </button> <button id="github" class="inline-flex items-center rounded-md border p-1 transition-colors hover:bg-zinc-50 dark:border-zinc-700 dark:hover:bg-zinc-800 [&_svg]:text-zinc-500 [&_svg]:hover:text-zinc-900 [&_svg]:dark:hover:text-zinc-100" aria-label="GitHub" onclick="window.open('https://github.com/ZindexYG/z-index.me', '_blank')" data-umami-event="Button-GitHub" type="button"> <span class="sr-only">GitHub</span> <svg class="size-4" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" fill="currentColor"> <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"></path> </svg> </button> <button id="theme-toggle" class="inline-flex items-center rounded-md border p-1 transition-colors hover:bg-zinc-50 dark:border-zinc-700 dark:hover:bg-zinc-800 [&_svg]:text-zinc-500 [&_svg]:hover:text-zinc-900 [&_svg]:dark:hover:text-zinc-100" aria-label="Toggle theme" data-umami-event="Button-Theme" type="button"> <span class="sr-only">Toggle theme</span> <svg id="sun" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor" class="hidden size-4 dark:block"> <path d="M8 1a.75.75 0 0 1 .75.75v1.5a.75.75 0 0 1-1.5 0v-1.5A.75.75 0 0 1 8 1ZM10.5 8a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0ZM12.95 4.11a.75.75 0 1 0-1.06-1.06l-1.062 1.06a.75.75 0 0 0 1.061 1.062l1.06-1.061ZM15 8a.75.75 0 0 1-.75.75h-1.5a.75.75 0 0 1 0-1.5h1.5A.75.75 0 0 1 15 8ZM11.89 12.95a.75.75 0 0 0 1.06-1.06l-1.06-1.062a.75.75 0 0 0-1.062 1.061l1.061 1.06ZM8 12a.75.75 0 0 1 .75.75v1.5a.75.75 0 0 1-1.5 0v-1.5A.75.75 0 0 1 8 12ZM5.172 11.89a.75.75 0 0 0-1.061-1.062L3.05 11.89a.75.75 0 1 0 1.06 1.06l1.06-1.06ZM4 8a.75.75 0 0 1-.75.75h-1.5a.75.75 0 0 1 0-1.5h1.5A.75.75 0 0 1 4 8ZM4.11 5.172A.75.75 0 0 0 5.173 4.11L4.11 3.05a.75.75 0 1 0-1.06 1.06l1.06 1.06Z"></path> </svg> <svg id="moon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor" class="size-4 dark:hidden"> <path d="M14.438 10.148c.19-.425-.321-.787-.748-.601A5.5 5.5 0 0 1 6.453 2.31c.186-.427-.176-.938-.6-.748a6.501 6.501 0 1 0 8.585 8.586Z"></path> </svg> </button> </div>  </div> </div> </header>   <main> <div class="mb-5 flex items-center justify-between"> <h1 class="text-xl font-heading font-bold text-zinc-900 dark:text-zinc-100"> 关于 Git 二三事 </h1> <p class="ml-4 text-sm font-medium text-zinc-500"> 2022-07-16 </p> </div>  <div class="mb-5" data-pagefind-ignore="all"> <ul class="flex flex-wrap gap-2"> <li> <a href="/tags/git/" class="group flex justify-between gap-3 rounded px-2 py-1 text-sm bg-bgdefault text-fontdefault dark:bg-fontdefault dark:text-bgdefault">
+# git </a> </li><li> <a href="/tags/read note/" class="group flex justify-between gap-3 rounded px-2 py-1 text-sm bg-bgdefault text-fontdefault dark:bg-fontdefault dark:text-bgdefault">
+# read note </a> </li> </ul> </div>  <div class="toc-root" data-astro-cid-6t6zfk7k><nav class="toc toc-inline" aria-label="Table Of Contents" data-astro-cid-6t6zfk7k><details open data-astro-cid-6t6zfk7k><summary class="text-sm font-semibold" data-astro-cid-6t6zfk7k>Table of Contents</summary><div class="mt-4 ml-4" data-astro-cid-6t6zfk7k>
+    <ul class="space-y-1 pl-4">
+      
+        <li class="text-sm leading-tight">
+          <a href="#关于目录" class="toc-link toc-h3" data-depth="3">
+            关于目录
+          </a>
+          
+        </li>
+      
+        <li class="text-sm leading-tight">
+          <a href="#关于描述问题" class="toc-link toc-h3" data-depth="3">
+            关于描述问题
+          </a>
+          
+        </li>
+      
+        <li class="text-sm leading-tight">
+          <a href="#关于经典场景--解决方案" class="toc-link toc-h3" data-depth="3">
+            关于经典场景 && 解决方案
+          </a>
+          
+    <ul class="space-y-1 pl-4">
+      
+        <li class="text-sm leading-tight">
+          <a href="#q文件删除造成的变基冲突" class="toc-link toc-h4" data-depth="4">
+            Q：文件删除造成的变基冲突
+          </a>
+          
+    <ul class="space-y-1 pl-4">
+      
+        <li class="text-sm leading-tight">
+          <a href="#关键消息" class="toc-link toc-h5" data-depth="5">
+            关键消息
+          </a>
+          
+        </li>
+      
+        <li class="text-sm leading-tight">
+          <a href="#此信息告诉我需要按以下步骤操作" class="toc-link toc-h5" data-depth="5">
+            此信息告诉我需要按以下步骤操作
+          </a>
+          
+        </li>
+      
+    </ul>
+  
+        </li>
+      
+        <li class="text-sm leading-tight">
+          <a href="#q单个文件合并并冲突造成的变基冲突" class="toc-link toc-h4" data-depth="4">
+            Q：单个文件合并并冲突造成的变基冲突
+          </a>
+          
+    <ul class="space-y-1 pl-4">
+      
+        <li class="text-sm leading-tight">
+          <a href="#解决思路" class="toc-link toc-h5" data-depth="5">
+            解决思路
+          </a>
+          
+        </li>
+      
+    </ul>
+  
+        </li>
+      
+        <li class="text-sm leading-tight">
+          <a href="#q定位丢失的工作" class="toc-link toc-h4" data-depth="4">
+            Q：定位丢失的工作
+          </a>
+          
+    <ul class="space-y-1 pl-4">
+      
+        <li class="text-sm leading-tight">
+          <a href="#临时修改" class="toc-link toc-h5" data-depth="5">
+            临时修改
+          </a>
+          
+        </li>
+      
+        <li class="text-sm leading-tight">
+          <a href="#复制提交-cherry-pick" class="toc-link toc-h5" data-depth="5">
+            复制提交 cherry-pick
+          </a>
+          
+        </li>
+      
+    </ul>
+  
+        </li>
+      
+        <li class="text-sm leading-tight">
+          <a href="#q误删除文件" class="toc-link toc-h4" data-depth="4">
+            Q：误删除文件
+          </a>
+          
+        </li>
+      
+        <li class="text-sm leading-tight">
+          <a href="#q撤销分支合并" class="toc-link toc-h4" data-depth="4">
+            Q：撤销分支合并
+          </a>
+          
+        </li>
+      
+    </ul>
+  
+        </li>
+      
+        <li class="text-sm leading-tight">
+          <a href="#关于一点点小技巧" class="toc-link toc-h3" data-depth="3">
+            关于一点点小技巧
+          </a>
+          
+        </li>
+      
+        <li class="text-sm leading-tight">
+          <a href="#关于小结" class="toc-link toc-h3" data-depth="3">
+            关于小结
+          </a>
+          
+        </li>
+      
+        <li class="text-sm leading-tight">
+          <a href="#关于常用指令合集" class="toc-link toc-h3" data-depth="3">
+            关于常用指令合集
+          </a>
+          
+        </li>
+      
+    </ul>
+  </div></details></nav><aside class="toc-float" data-astro-cid-6t6zfk7k><nav class="toc" aria-label="Table Of Contents" data-astro-cid-6t6zfk7k><details open data-astro-cid-6t6zfk7k><summary class="text-sm font-semibold" data-astro-cid-6t6zfk7k>Table of Contents</summary><div class="mt-2" data-astro-cid-6t6zfk7k>
+    <ul class="space-y-1 pl-4">
+      
+        <li class="text-sm leading-tight">
+          <a href="#关于目录" class="toc-link toc-h3" data-depth="3">
+            关于目录
+          </a>
+          
+        </li>
+      
+        <li class="text-sm leading-tight">
+          <a href="#关于描述问题" class="toc-link toc-h3" data-depth="3">
+            关于描述问题
+          </a>
+          
+        </li>
+      
+        <li class="text-sm leading-tight">
+          <a href="#关于经典场景--解决方案" class="toc-link toc-h3" data-depth="3">
+            关于经典场景 && 解决方案
+          </a>
+          
+    <ul class="space-y-1 pl-4">
+      
+        <li class="text-sm leading-tight">
+          <a href="#q文件删除造成的变基冲突" class="toc-link toc-h4" data-depth="4">
+            Q：文件删除造成的变基冲突
+          </a>
+          
+    <ul class="space-y-1 pl-4">
+      
+        <li class="text-sm leading-tight">
+          <a href="#关键消息" class="toc-link toc-h5" data-depth="5">
+            关键消息
+          </a>
+          
+        </li>
+      
+        <li class="text-sm leading-tight">
+          <a href="#此信息告诉我需要按以下步骤操作" class="toc-link toc-h5" data-depth="5">
+            此信息告诉我需要按以下步骤操作
+          </a>
+          
+        </li>
+      
+    </ul>
+  
+        </li>
+      
+        <li class="text-sm leading-tight">
+          <a href="#q单个文件合并并冲突造成的变基冲突" class="toc-link toc-h4" data-depth="4">
+            Q：单个文件合并并冲突造成的变基冲突
+          </a>
+          
+    <ul class="space-y-1 pl-4">
+      
+        <li class="text-sm leading-tight">
+          <a href="#解决思路" class="toc-link toc-h5" data-depth="5">
+            解决思路
+          </a>
+          
+        </li>
+      
+    </ul>
+  
+        </li>
+      
+        <li class="text-sm leading-tight">
+          <a href="#q定位丢失的工作" class="toc-link toc-h4" data-depth="4">
+            Q：定位丢失的工作
+          </a>
+          
+    <ul class="space-y-1 pl-4">
+      
+        <li class="text-sm leading-tight">
+          <a href="#临时修改" class="toc-link toc-h5" data-depth="5">
+            临时修改
+          </a>
+          
+        </li>
+      
+        <li class="text-sm leading-tight">
+          <a href="#复制提交-cherry-pick" class="toc-link toc-h5" data-depth="5">
+            复制提交 cherry-pick
+          </a>
+          
+        </li>
+      
+    </ul>
+  
+        </li>
+      
+        <li class="text-sm leading-tight">
+          <a href="#q误删除文件" class="toc-link toc-h4" data-depth="4">
+            Q：误删除文件
+          </a>
+          
+        </li>
+      
+        <li class="text-sm leading-tight">
+          <a href="#q撤销分支合并" class="toc-link toc-h4" data-depth="4">
+            Q：撤销分支合并
+          </a>
+          
+        </li>
+      
+    </ul>
+  
+        </li>
+      
+        <li class="text-sm leading-tight">
+          <a href="#关于一点点小技巧" class="toc-link toc-h3" data-depth="3">
+            关于一点点小技巧
+          </a>
+          
+        </li>
+      
+        <li class="text-sm leading-tight">
+          <a href="#关于小结" class="toc-link toc-h3" data-depth="3">
+            关于小结
+          </a>
+          
+        </li>
+      
+        <li class="text-sm leading-tight">
+          <a href="#关于常用指令合集" class="toc-link toc-h3" data-depth="3">
+            关于常用指令合集
+          </a>
+          
+        </li>
+      
+    </ul>
+  </div></details></nav></aside></div><script data-astro-rerun>
+  ;(() => {
+    const ready = fn => {
+      if (document.readyState === 'loading')
+        document.addEventListener('DOMContentLoaded', fn, { once: true })
+      else fn()
+    }
+
+    function boot() {
+      const root = document.querySelector('.toc-root')
+      if (!root) return
+
+      const float = root.querySelector('.toc-float')
+      const atTop = () => window.scrollY <= 2
+      const onScroll = () => {
+        float?.classList.toggle('at-top', atTop())
+      }
+      onScroll()
+      window.addEventListener('scroll', onScroll, { passive: true })
+
+      const article = document.querySelector('article[data-pagefind-body]')
+      if (!article) return
+
+      // 更新选择器：支持 h1 到 h5
+      const heads = [
+        ...article.querySelectorAll('h1[id], h2[id], h3[id], h4[id], h5[id]'),
+      ]
+      if (!heads.length) return
+
+      const allLinks = [...root.querySelectorAll('.toc a.toc-link')]
+      const map = new Map()
+      for (const a of allLinks) {
+        const href = a.getAttribute('href') || ''
+        if (!href.startsWith('#')) continue
+        const id = href.slice(1)
+        if (!map.has(id)) map.set(id, [])
+        map.get(id).push(a)
+      }
+
+      let activeId = null
+      const setActive = id => {
+        if (activeId === id) return
+        if (activeId && map.has(activeId))
+          map.get(activeId).forEach(el => el.classList.remove('is-active'))
+        activeId = id
+        if (activeId && map.has(activeId))
+          map.get(activeId).forEach(el => el.classList.add('is-active'))
+      }
+
+      const io = new IntersectionObserver(
+        entries => {
+          const visible = entries
+            .filter(e => e.isIntersecting)
+            .sort((a, b) => a.boundingClientRect.top - b.boundingClientRect.top)
+          if (visible.length) {
+            setActive(visible[0].target.id)
+          } else {
+            const nearest = heads
+              .map(h => ({
+                id: h.id,
+                top: Math.abs(h.getBoundingClientRect().top),
+              }))
+              .sort((a, b) => a.top - b.top)[0]
+            if (nearest) setActive(nearest.id)
+          }
+        },
+        { root: null, threshold: [0, 1], rootMargin: '-96px 0px -60% 0px' },
+      )
+
+      heads.forEach(h => io.observe(h))
+
+      const onClick = e => {
+        const a = e.target.closest('.toc a.toc-link')
+        if (!a) return
+        const href = a.getAttribute('href') || ''
+        if (!href.startsWith('#')) return
+        const id = href.slice(1)
+        const el = document.getElementById(id)
+        if (!el) return
+        e.preventDefault()
+        el.scrollIntoView({ behavior: 'smooth', block: 'start' })
+      }
+      root.addEventListener('click', onClick)
+
+      const cleanup = () => {
+        window.removeEventListener('scroll', onScroll)
+        io.disconnect()
+        root.removeEventListener('click', onClick)
+      }
+      document.addEventListener('astro:before-swap', cleanup, { once: true })
+    }
+
+    ready(boot)
+    document.addEventListener('astro:page-load', boot)
+  })()
+</script> <article data-pagefind-body> <figure><img src="/posts/git-for-teams.jpg" alt="banner"><figcaption>banner</figcaption></figure>
+<blockquote>
+<p>工具往往需要反复检验</p>
+</blockquote>
+<!-- more -->
+<h3 id="关于目录">关于目录</h3>
+<ul>
+<li>关于描述问题</li>
+<li>关于经典场景 &#x26;&#x26; 解决方案</li>
+<li>关于一点点小技巧</li>
+<li>关于小结</li>
+<li>关于常用指令合集</li>
+</ul>
+<h3 id="关于描述问题">关于描述问题</h3>
+<blockquote>
+<p>一图胜千言</p>
+</blockquote>
+<figure><img src="/posts//git-for-teams/git-status-module.png" alt="git-status-module"><figcaption>git-status-module</figcaption></figure>
+<p>例子： 选择正确的撤销方法</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>想要…</th><th>备注</th><th>解决方案</th></tr></thead><tbody><tr><td>舍弃工作目录中对一个文件的修改</td><td>修改的文件未被暂存或提交</td><td>checkout —[file_name]</td></tr><tr><td>舍弃工作目录中所有未保存的变更</td><td>文件已暂存,但未被提交</td><td>reset —hard</td></tr><tr><td>合并与某个特定提交(但不含)之间的多个提交</td><td>—</td><td>reset [commit]</td></tr><tr><td>移除所有未保存的变更,包含未跟踪的文件</td><td>修改的文件未被提交</td><td>clean -fd</td></tr><tr><td>移除所有已暂存的变更和在某个提交之前提交的工作,但不移除工作目录中的新文件</td><td>---</td><td>reset —hard [commit]</td></tr><tr><td>移除之前的工作,但完整保留提交历史记录( “前进式回滚” )</td><td>分支已经被发布,工作目录是干净的</td><td>revert [commit]</td></tr><tr><td>从分支历史记录中移除一个单独的提交</td><td>修改的文件已经被提交,工作目录是干净的,分支尚未进行发布</td><td>rebase —interactive [commit]</td></tr><tr><td>保留之前的工作,但与另一提交合并</td><td>选择 squash(压缩)选项</td><td>rebase —interactive [commit]</td></tr></tbody></table>
+<p>通过清晰区分自己当前所要的场景并频繁使用 <code>git status</code> 查看当前状态，来明辨的场景</p>
+<h3 id="关于经典场景--解决方案">关于经典场景 &#x26;&#x26; 解决方案</h3>
+<h4 id="q文件删除造成的变基冲突">Q：文件删除造成的变基冲突</h4>
+<figure><img src="/posts//git-for-teams/git-rebase.png" alt="git-rebase"><figcaption>git-rebase</figcaption></figure>
+<div class="expressive-code"><link rel="stylesheet" href="/_astro/ec.c86xd.css"><script type="module" src="/_astro/ec.0vx5m.js"></script><figure class="frame is-terminal"><figcaption class="header"><span class="title"></span><span class="sr-only">Terminal window</span></figcaption><pre data-language="bash"><code><div class="ec-line"><div class="code"><span style="--0:#FFE66D;--1:#50FA7B">First,</span><span style="--0:#D5CED9;--1:#F8F8F2"> </span><span style="--0:#96E072;--1:#F1FA8C">rewinding</span><span style="--0:#D5CED9;--1:#F8F8F2"> </span><span style="--0:#96E072;--1:#F1FA8C">head</span><span style="--0:#D5CED9;--1:#F8F8F2"> </span><span style="--0:#96E072;--1:#F1FA8C">to</span><span style="--0:#D5CED9;--1:#F8F8F2"> </span><span style="--0:#96E072;--1:#F1FA8C">replay</span><span style="--0:#D5CED9;--1:#F8F8F2"> </span><span style="--0:#96E072;--1:#F1FA8C">your</span><span style="--0:#D5CED9;--1:#F8F8F2"> </span><span style="--0:#96E072;--1:#F1FA8C">work</span><span style="--0:#D5CED9;--1:#F8F8F2"> </span><span style="--0:#96E072;--1:#F1FA8C">on</span><span style="--0:#D5CED9;--1:#F8F8F2"> </span><span style="--0:#96E072;--1:#F1FA8C">top</span><span style="--0:#D5CED9;--1:#F8F8F2"> </span><span style="--0:#96E072;--1:#F1FA8C">of</span><span style="--0:#D5CED9;--1:#F8F8F2"> </span><span style="--0:#96E072;--1:#F1FA8C">it...</span></div></div><div class="ec-line"><div class="code"><span style="--0:#FFE66D;--1:#50FA7B">Applying:</span><span style="--0:#D5CED9;--1:#F8F8F2"> </span><span style="--0:#96E072;--1:#F1FA8C">CH10:</span><span style="--0:#D5CED9;--1:#F8F8F2"> </span><span style="--0:#96E072;--1:#F1FA8C">Stub</span><span style="--0:#D5CED9;--1:#F8F8F2"> </span><span style="--0:#96E072;--1:#F1FA8C">file</span><span style="--0:#D5CED9;--1:#F8F8F2"> </span><span style="--0:#96E072;--1:#F1FA8C">added</span><span style="--0:#D5CED9;--1:#F8F8F2"> </span><span style="--0:#96E072;--1:#F1FA8C">with</span><span style="--0:#D5CED9;--1:#F8F8F2"> </span><span style="--0:#96E072;--1:#F1FA8C">notes</span><span style="--0:#D5CED9;--1:#F8F8F2"> </span><span style="--0:#96E072;--1:#F1FA8C">copied</span><span style="--0:#D5CED9;--1:#F8F8F2"> </span><span style="--0:#96E072;--1:#F1FA8C">from</span><span style="--0:#D5CED9;--1:#F8F8F2"> </span><span style="--0:#96E072;--1:#F1FA8C">video</span><span style="--0:#D5CED9;--1:#F8F8F2"> </span><span style="--0:#96E072;--1:#F1FA8C">recording</span><span style="--0:#D5CED9;--1:#F8F8F2"> </span><span style="--0:#96E072;--1:#F1FA8C">lessons.</span></div></div><div class="ec-line"><div class="code"><span style="--0:#FFE66D;--1:#50FA7B">Using</span><span style="--0:#D5CED9;--1:#F8F8F2"> </span><span style="--0:#96E072;--1:#F1FA8C">index</span><span style="--0:#D5CED9;--1:#F8F8F2"> </span><span style="--0:#96E072;--1:#F1FA8C">info</span><span style="--0:#D5CED9;--1:#F8F8F2"> </span><span style="--0:#96E072;--1:#F1FA8C">to</span><span style="--0:#D5CED9;--1:#F8F8F2"> </span><span style="--0:#96E072;--1:#F1FA8C">reconstruct</span><span style="--0:#D5CED9;--1:#F8F8F2"> </span><span style="--0:#96E072;--1:#F1FA8C">a</span><span style="--0:#D5CED9;--1:#F8F8F2"> </span><span style="--0:#96E072;--1:#F1FA8C">base</span><span style="--0:#D5CED9;--1:#F8F8F2"> </span><span style="--0:#96E072;--1:#F1FA8C">tree...</span></div></div><div class="ec-line"><div class="code"><span style="--0:#FFE66D;--1:#50FA7B">A</span><span style="--0:#D5CED9;--1:#F8F8F2">   </span><span style="--0:#96E072;--1:#F1FA8C">ch10.asciidoc</span></div></div><div class="ec-line"><div class="code"><span style="--0:#FFE66D;--1:#50FA7B">Falling</span><span style="--0:#D5CED9;--1:#F8F8F2"> </span><span style="--0:#96E072;--1:#F1FA8C">back</span><span style="--0:#D5CED9;--1:#F8F8F2"> </span><span style="--0:#96E072;--1:#F1FA8C">to</span><span style="--0:#D5CED9;--1:#F8F8F2"> </span><span style="--0:#96E072;--1:#F1FA8C">patching</span><span style="--0:#D5CED9;--1:#F8F8F2"> </span><span style="--0:#96E072;--1:#F1FA8C">base</span><span style="--0:#D5CED9;--1:#F8F8F2"> </span><span style="--0:#96E072;--1:#F1FA8C">and</span><span style="--0:#D5CED9;--1:#F8F8F2"> </span><span style="--0:#96E072;--1:#F1FA8C">3-way</span><span style="--0:#D5CED9;--1:#F8F8F2"> </span><span style="--0:#96E072;--1:#F1FA8C">merge...</span></div></div><div class="ec-line"><div class="code"><span style="--0:#FFE66D;--1:#50FA7B">CONFLICT</span><span style="--0:#D5CED9;--1:#F8F8F2"> (modify/delete): ch10.asciidoc deleted in HEAD and modified in CH10: Stub file added with notes copied from video recording lessons.. Version CH10: Stub file added with notes copied from video recording lessons. of ch10.asciidoc left in tree.</span></div></div><div class="ec-line"><div class="code"><span style="--0:#FFE66D;--1:#50FA7B">Failed</span><span style="--0:#D5CED9;--1:#F8F8F2"> </span><span style="--0:#96E072;--1:#F1FA8C">to</span><span style="--0:#D5CED9;--1:#F8F8F2"> </span><span style="--0:#96E072;--1:#F1FA8C">merge</span><span style="--0:#D5CED9;--1:#F8F8F2"> </span><span style="--0:#96E072;--1:#F1FA8C">in</span><span style="--0:#D5CED9;--1:#F8F8F2"> </span><span style="--0:#96E072;--1:#F1FA8C">the</span><span style="--0:#D5CED9;--1:#F8F8F2"> </span><span style="--0:#96E072;--1:#F1FA8C">changes.</span></div></div><div class="ec-line"><div class="code"><span style="--0:#FFE66D;--1:#50FA7B">Patch</span><span style="--0:#D5CED9;--1:#F8F8F2"> </span><span style="--0:#96E072;--1:#F1FA8C">failed</span><span style="--0:#D5CED9;--1:#F8F8F2"> </span><span style="--0:#96E072;--1:#F1FA8C">at</span><span style="--0:#D5CED9;--1:#F8F8F2"> </span><span style="--0:#F39C12;--1:#BD93F9">0001</span><span style="--0:#D5CED9;--1:#F8F8F2"> </span><span style="--0:#96E072;--1:#F1FA8C">CH10:</span><span style="--0:#D5CED9;--1:#F8F8F2"> </span><span style="--0:#96E072;--1:#F1FA8C">Stub</span><span style="--0:#D5CED9;--1:#F8F8F2"> </span><span style="--0:#96E072;--1:#F1FA8C">file</span><span style="--0:#D5CED9;--1:#F8F8F2"> </span><span style="--0:#96E072;--1:#F1FA8C">added</span><span style="--0:#D5CED9;--1:#F8F8F2"> </span><span style="--0:#96E072;--1:#F1FA8C">with</span><span style="--0:#D5CED9;--1:#F8F8F2"> </span><span style="--0:#96E072;--1:#F1FA8C">notes</span><span style="--0:#D5CED9;--1:#F8F8F2"> </span><span style="--0:#96E072;--1:#F1FA8C">copied</span><span style="--0:#D5CED9;--1:#F8F8F2"> </span><span style="--0:#96E072;--1:#F1FA8C">from</span><span style="--0:#D5CED9;--1:#F8F8F2"> </span><span style="--0:#96E072;--1:#F1FA8C">video</span><span style="--0:#D5CED9;--1:#F8F8F2"> </span><span style="--0:#96E072;--1:#F1FA8C">recording</span><span style="--0:#D5CED9;--1:#F8F8F2"> </span><span style="--0:#96E072;--1:#F1FA8C">lessons.</span></div></div><div class="ec-line"><div class="code"><span style="--0:#FFE66D;--1:#50FA7B">The</span><span style="--0:#D5CED9;--1:#F8F8F2"> </span><span style="--0:#96E072;--1:#F1FA8C">copy</span><span style="--0:#D5CED9;--1:#F8F8F2"> </span><span style="--0:#96E072;--1:#F1FA8C">of</span><span style="--0:#D5CED9;--1:#F8F8F2"> </span><span style="--0:#96E072;--1:#F1FA8C">the</span><span style="--0:#D5CED9;--1:#F8F8F2"> </span><span style="--0:#96E072;--1:#F1FA8C">patch</span><span style="--0:#D5CED9;--1:#F8F8F2"> </span><span style="--0:#96E072;--1:#F1FA8C">that</span><span style="--0:#D5CED9;--1:#F8F8F2"> </span><span style="--0:#96E072;--1:#F1FA8C">failed</span><span style="--0:#D5CED9;--1:#F8F8F2"> </span><span style="--0:#96E072;--1:#F1FA8C">is</span><span style="--0:#D5CED9;--1:#F8F8F2"> </span><span style="--0:#96E072;--1:#F1FA8C">found</span><span style="--0:#D5CED9;--1:#F8F8F2"> </span><span style="--0:#96E072;--1:#F1FA8C">in:</span></div></div><div class="ec-line"><div class="code"><span class="indent">   </span><span style="--0:#FFE66D;--1:#50FA7B">/Users/emmajane/Git/1234000002182/.git/rebase-apply/patch</span></div></div><div class="ec-line"><div class="code">
+</div></div><div class="ec-line"><div class="code"><span style="--0:#FFE66D;--1:#50FA7B">When</span><span style="--0:#D5CED9;--1:#F8F8F2"> </span><span style="--0:#96E072;--1:#F1FA8C">you</span><span style="--0:#D5CED9;--1:#F8F8F2"> </span><span style="--0:#96E072;--1:#F1FA8C">have</span><span style="--0:#D5CED9;--1:#F8F8F2"> </span><span style="--0:#96E072;--1:#F1FA8C">resolved</span><span style="--0:#D5CED9;--1:#F8F8F2"> </span><span style="--0:#96E072;--1:#F1FA8C">this</span><span style="--0:#D5CED9;--1:#F8F8F2"> </span><span style="--0:#96E072;--1:#F1FA8C">problem,</span><span style="--0:#D5CED9;--1:#F8F8F2"> </span><span style="--0:#96E072;--1:#F1FA8C">run</span><span style="--0:#D5CED9;--1:#F8F8F2"> </span><span style="--0:#96E072;--1:#E9F284">"</span><span style="--0:#96E072;--1:#F1FA8C">git rebase --continue</span><span style="--0:#96E072;--1:#E9F284">"</span><span style="--0:#96E072;--1:#F1FA8C">.</span></div></div><div class="ec-line"><div class="code"><span style="--0:#FFE66D;--1:#50FA7B">If</span><span style="--0:#D5CED9;--1:#F8F8F2"> </span><span style="--0:#96E072;--1:#F1FA8C">you</span><span style="--0:#D5CED9;--1:#F8F8F2"> </span><span style="--0:#96E072;--1:#F1FA8C">prefer</span><span style="--0:#D5CED9;--1:#F8F8F2"> </span><span style="--0:#96E072;--1:#F1FA8C">to</span><span style="--0:#D5CED9;--1:#F8F8F2"> </span><span style="--0:#96E072;--1:#F1FA8C">skip</span><span style="--0:#D5CED9;--1:#F8F8F2"> </span><span style="--0:#96E072;--1:#F1FA8C">this</span><span style="--0:#D5CED9;--1:#F8F8F2"> </span><span style="--0:#96E072;--1:#F1FA8C">patch,</span><span style="--0:#D5CED9;--1:#F8F8F2"> </span><span style="--0:#96E072;--1:#F1FA8C">run</span><span style="--0:#D5CED9;--1:#F8F8F2"> </span><span style="--0:#96E072;--1:#E9F284">"</span><span style="--0:#96E072;--1:#F1FA8C">git rebase --skip</span><span style="--0:#96E072;--1:#E9F284">"</span><span style="--0:#D5CED9;--1:#F8F8F2"> </span><span style="--0:#96E072;--1:#F1FA8C">instead.</span></div></div><div class="ec-line"><div class="code"><span style="--0:#FFE66D;--1:#50FA7B">To</span><span style="--0:#D5CED9;--1:#F8F8F2"> </span><span style="--0:#96E072;--1:#F1FA8C">check</span><span style="--0:#D5CED9;--1:#F8F8F2"> </span><span style="--0:#96E072;--1:#F1FA8C">out</span><span style="--0:#D5CED9;--1:#F8F8F2"> </span><span style="--0:#96E072;--1:#F1FA8C">the</span><span style="--0:#D5CED9;--1:#F8F8F2"> </span><span style="--0:#96E072;--1:#F1FA8C">original</span><span style="--0:#D5CED9;--1:#F8F8F2"> </span><span style="--0:#96E072;--1:#F1FA8C">branch</span><span style="--0:#D5CED9;--1:#F8F8F2"> </span><span style="--0:#96E072;--1:#F1FA8C">and</span><span style="--0:#D5CED9;--1:#F8F8F2"> </span><span style="--0:#96E072;--1:#F1FA8C">stop</span><span style="--0:#D5CED9;--1:#F8F8F2"> </span><span style="--0:#96E072;--1:#F1FA8C">rebasing,</span><span style="--0:#D5CED9;--1:#F8F8F2"> </span><span style="--0:#96E072;--1:#F1FA8C">run</span><span style="--0:#D5CED9;--1:#F8F8F2"> </span><span style="--0:#96E072;--1:#E9F284">"</span><span style="--0:#96E072;--1:#F1FA8C">git rebase --abort</span><span style="--0:#96E072;--1:#E9F284">"</span><span style="--0:#96E072;--1:#F1FA8C">.</span></div></div></code></pre><div class="copy"><div aria-live="polite"></div><button title="Copy to clipboard" data-copied="Copied!" data-code="First, rewinding head to replay your work on top of it...Applying: CH10: Stub file added with notes copied from video recording lessons.Using index info to reconstruct a base tree...A   ch10.asciidocFalling back to patching base and 3-way merge...CONFLICT (modify/delete): ch10.asciidoc deleted in HEAD and modified in CH10: Stub file added with notes copied from video recording lessons.. Version CH10: Stub file added with notes copied from video recording lessons. of ch10.asciidoc left in tree.Failed to merge in the changes.Patch failed at 0001 CH10: Stub file added with notes copied from video recording lessons.The copy of the patch that failed is found in:   /Users/emmajane/Git/1234000002182/.git/rebase-apply/patchWhen you have resolved this problem, run &#x22;git rebase --continue&#x22;.If you prefer to skip this patch, run &#x22;git rebase --skip&#x22; instead.To check out the original branch and stop rebasing, run &#x22;git rebase --abort&#x22;."><div></div></button></div></figure></div>
+<h5 id="关键消息">关键消息</h5>
+<p>When you have resolved this problem, run “git rebase —continue”.</p>
+<h5 id="此信息告诉我需要按以下步骤操作">此信息告诉我需要按以下步骤操作</h5>
+<ol>
+<li>解决合并冲突 <code>vim [file_name]</code></li>
+<li>当合并冲突已经被解决，运行命令 <code>git rebase --continue</code></li>
+<li>查看当前状态 <code>git status</code>
+<ul>
+<li>根据消息 <code>git reset HEAD [file_name]</code></li>
+<li>查看状态 <code>git status</code></li>
+<li>添加存储 <code>git add [file_name]</code></li>
+<li>添加提交 <code>git commit -m [message]</code></li>
+</ul>
+</li>
+</ol>
+<h4 id="q单个文件合并并冲突造成的变基冲突">Q：单个文件合并并冲突造成的变基冲突</h4>
+<div class="expressive-code"><figure class="frame is-terminal"><figcaption class="header"><span class="title"></span><span class="sr-only">Terminal window</span></figcaption><pre data-language="bash"><code><div class="ec-line"><div class="code"><span style="--0:#FFE66D;--1:#50FA7B">Applying:</span><span style="--0:#D5CED9;--1:#F8F8F2"> </span><span style="--0:#96E072;--1:#F1FA8C">CH10:</span><span style="--0:#D5CED9;--1:#F8F8F2"> </span><span style="--0:#96E072;--1:#F1FA8C">Stub</span><span style="--0:#D5CED9;--1:#F8F8F2"> </span><span style="--0:#96E072;--1:#F1FA8C">file</span><span style="--0:#D5CED9;--1:#F8F8F2"> </span><span style="--0:#96E072;--1:#F1FA8C">added</span><span style="--0:#D5CED9;--1:#F8F8F2"> </span><span style="--0:#96E072;--1:#F1FA8C">with</span><span style="--0:#D5CED9;--1:#F8F8F2"> </span><span style="--0:#96E072;--1:#F1FA8C">notes</span><span style="--0:#D5CED9;--1:#F8F8F2"> </span><span style="--0:#96E072;--1:#F1FA8C">copied</span><span style="--0:#D5CED9;--1:#F8F8F2"> </span><span style="--0:#96E072;--1:#F1FA8C">from</span><span style="--0:#D5CED9;--1:#F8F8F2"> </span><span style="--0:#96E072;--1:#F1FA8C">video</span><span style="--0:#D5CED9;--1:#F8F8F2"> </span><span style="--0:#96E072;--1:#F1FA8C">recording</span><span style="--0:#D5CED9;--1:#F8F8F2"> </span><span style="--0:#96E072;--1:#F1FA8C">lessons.</span></div></div><div class="ec-line"><div class="code"><span style="--0:#FFE66D;--1:#50FA7B">Applying:</span><span style="--0:#D5CED9;--1:#F8F8F2"> </span><span style="--0:#96E072;--1:#F1FA8C">TOC:</span><span style="--0:#D5CED9;--1:#F8F8F2"> </span><span style="--0:#96E072;--1:#F1FA8C">Adding</span><span style="--0:#D5CED9;--1:#F8F8F2"> </span><span style="--0:#96E072;--1:#F1FA8C">Chapter</span><span style="--0:#D5CED9;--1:#F8F8F2"> </span><span style="--0:#F39C12;--1:#BD93F9">10</span><span style="--0:#D5CED9;--1:#F8F8F2"> </span><span style="--0:#96E072;--1:#F1FA8C">to</span><span style="--0:#D5CED9;--1:#F8F8F2"> </span><span style="--0:#96E072;--1:#F1FA8C">the</span><span style="--0:#D5CED9;--1:#F8F8F2"> </span><span style="--0:#96E072;--1:#F1FA8C">book</span><span style="--0:#D5CED9;--1:#F8F8F2"> </span><span style="--0:#96E072;--1:#F1FA8C">build.</span></div></div><div class="ec-line"><div class="code"><span style="--0:#FFE66D;--1:#50FA7B">Using</span><span style="--0:#D5CED9;--1:#F8F8F2"> </span><span style="--0:#96E072;--1:#F1FA8C">index</span><span style="--0:#D5CED9;--1:#F8F8F2"> </span><span style="--0:#96E072;--1:#F1FA8C">info</span><span style="--0:#D5CED9;--1:#F8F8F2"> </span><span style="--0:#96E072;--1:#F1FA8C">to</span><span style="--0:#D5CED9;--1:#F8F8F2"> </span><span style="--0:#96E072;--1:#F1FA8C">reconstruct</span><span style="--0:#D5CED9;--1:#F8F8F2"> </span><span style="--0:#96E072;--1:#F1FA8C">a</span><span style="--0:#D5CED9;--1:#F8F8F2"> </span><span style="--0:#96E072;--1:#F1FA8C">base</span><span style="--0:#D5CED9;--1:#F8F8F2"> </span><span style="--0:#96E072;--1:#F1FA8C">tree...</span></div></div><div class="ec-line"><div class="code"><span style="--0:#FFE66D;--1:#50FA7B">M</span><span style="--0:#D5CED9;--1:#F8F8F2">   </span><span style="--0:#96E072;--1:#F1FA8C">book.asciidoc</span></div></div><div class="ec-line"><div class="code"><span style="--0:#FFE66D;--1:#50FA7B">Falling</span><span style="--0:#D5CED9;--1:#F8F8F2"> </span><span style="--0:#96E072;--1:#F1FA8C">back</span><span style="--0:#D5CED9;--1:#F8F8F2"> </span><span style="--0:#96E072;--1:#F1FA8C">to</span><span style="--0:#D5CED9;--1:#F8F8F2"> </span><span style="--0:#96E072;--1:#F1FA8C">patching</span><span style="--0:#D5CED9;--1:#F8F8F2"> </span><span style="--0:#96E072;--1:#F1FA8C">base</span><span style="--0:#D5CED9;--1:#F8F8F2"> </span><span style="--0:#96E072;--1:#F1FA8C">and</span><span style="--0:#D5CED9;--1:#F8F8F2"> </span><span style="--0:#96E072;--1:#F1FA8C">3-way</span><span style="--0:#D5CED9;--1:#F8F8F2"> </span><span style="--0:#96E072;--1:#F1FA8C">merge...</span></div></div><div class="ec-line"><div class="code"><span style="--0:#FFE66D;--1:#50FA7B">Auto-merging</span><span style="--0:#D5CED9;--1:#F8F8F2"> </span><span style="--0:#96E072;--1:#F1FA8C">book.asciidoc</span></div></div><div class="ec-line"><div class="code"><span style="--0:#FFE66D;--1:#50FA7B">CONFLICT</span><span style="--0:#D5CED9;--1:#F8F8F2"> (content): Merge conflict in book.asciidoc</span></div></div><div class="ec-line"><div class="code"><span style="--0:#FFE66D;--1:#50FA7B">Recorded</span><span style="--0:#D5CED9;--1:#F8F8F2"> </span><span style="--0:#96E072;--1:#F1FA8C">preimage</span><span style="--0:#D5CED9;--1:#F8F8F2"> </span><span style="--0:#96E072;--1:#F1FA8C">for</span><span style="--0:#D5CED9;--1:#F8F8F2"> </span><span style="--0:#96E072;--1:#E9F284">'</span><span style="--0:#96E072;--1:#F1FA8C">book.asciidoc</span><span style="--0:#96E072;--1:#E9F284">'</span></div></div><div class="ec-line"><div class="code"><span style="--0:#FFE66D;--1:#50FA7B">Failed</span><span style="--0:#D5CED9;--1:#F8F8F2"> </span><span style="--0:#96E072;--1:#F1FA8C">to</span><span style="--0:#D5CED9;--1:#F8F8F2"> </span><span style="--0:#96E072;--1:#F1FA8C">merge</span><span style="--0:#D5CED9;--1:#F8F8F2"> </span><span style="--0:#96E072;--1:#F1FA8C">in</span><span style="--0:#D5CED9;--1:#F8F8F2"> </span><span style="--0:#96E072;--1:#F1FA8C">the</span><span style="--0:#D5CED9;--1:#F8F8F2"> </span><span style="--0:#96E072;--1:#F1FA8C">changes.</span></div></div><div class="ec-line"><div class="code"><span style="--0:#FFE66D;--1:#50FA7B">Patch</span><span style="--0:#D5CED9;--1:#F8F8F2"> </span><span style="--0:#96E072;--1:#F1FA8C">failed</span><span style="--0:#D5CED9;--1:#F8F8F2"> </span><span style="--0:#96E072;--1:#F1FA8C">at</span><span style="--0:#D5CED9;--1:#F8F8F2"> </span><span style="--0:#F39C12;--1:#BD93F9">0002</span><span style="--0:#D5CED9;--1:#F8F8F2"> </span><span style="--0:#96E072;--1:#F1FA8C">TOC:</span><span style="--0:#D5CED9;--1:#F8F8F2"> </span><span style="--0:#96E072;--1:#F1FA8C">Adding</span><span style="--0:#D5CED9;--1:#F8F8F2"> </span><span style="--0:#96E072;--1:#F1FA8C">Chapter</span><span style="--0:#D5CED9;--1:#F8F8F2"> </span><span style="--0:#F39C12;--1:#BD93F9">10</span><span style="--0:#D5CED9;--1:#F8F8F2"> </span><span style="--0:#96E072;--1:#F1FA8C">to</span><span style="--0:#D5CED9;--1:#F8F8F2"> </span><span style="--0:#96E072;--1:#F1FA8C">the</span><span style="--0:#D5CED9;--1:#F8F8F2"> </span><span style="--0:#96E072;--1:#F1FA8C">book</span><span style="--0:#D5CED9;--1:#F8F8F2"> </span><span style="--0:#96E072;--1:#F1FA8C">build.</span></div></div><div class="ec-line"><div class="code"><span style="--0:#FFE66D;--1:#50FA7B">The</span><span style="--0:#D5CED9;--1:#F8F8F2"> </span><span style="--0:#96E072;--1:#F1FA8C">copy</span><span style="--0:#D5CED9;--1:#F8F8F2"> </span><span style="--0:#96E072;--1:#F1FA8C">of</span><span style="--0:#D5CED9;--1:#F8F8F2"> </span><span style="--0:#96E072;--1:#F1FA8C">the</span><span style="--0:#D5CED9;--1:#F8F8F2"> </span><span style="--0:#96E072;--1:#F1FA8C">patch</span><span style="--0:#D5CED9;--1:#F8F8F2"> </span><span style="--0:#96E072;--1:#F1FA8C">that</span><span style="--0:#D5CED9;--1:#F8F8F2"> </span><span style="--0:#96E072;--1:#F1FA8C">failed</span><span style="--0:#D5CED9;--1:#F8F8F2"> </span><span style="--0:#96E072;--1:#F1FA8C">is</span><span style="--0:#D5CED9;--1:#F8F8F2"> </span><span style="--0:#96E072;--1:#F1FA8C">found</span><span style="--0:#D5CED9;--1:#F8F8F2"> </span><span style="--0:#96E072;--1:#F1FA8C">in:</span></div></div><div class="ec-line"><div class="code"><span class="indent">   </span><span style="--0:#FFE66D;--1:#50FA7B">/Users/emmajane/Git/1234000002182/.git/rebase-apply/patch</span></div></div><div class="ec-line"><div class="code">
+</div></div><div class="ec-line"><div class="code"><span style="--0:#FFE66D;--1:#50FA7B">When</span><span style="--0:#D5CED9;--1:#F8F8F2"> </span><span style="--0:#96E072;--1:#F1FA8C">you</span><span style="--0:#D5CED9;--1:#F8F8F2"> </span><span style="--0:#96E072;--1:#F1FA8C">have</span><span style="--0:#D5CED9;--1:#F8F8F2"> </span><span style="--0:#96E072;--1:#F1FA8C">resolved</span><span style="--0:#D5CED9;--1:#F8F8F2"> </span><span style="--0:#96E072;--1:#F1FA8C">this</span><span style="--0:#D5CED9;--1:#F8F8F2"> </span><span style="--0:#96E072;--1:#F1FA8C">problem,</span><span style="--0:#D5CED9;--1:#F8F8F2"> </span><span style="--0:#96E072;--1:#F1FA8C">run</span><span style="--0:#D5CED9;--1:#F8F8F2"> </span><span style="--0:#96E072;--1:#E9F284">"</span><span style="--0:#96E072;--1:#F1FA8C">git rebase --continue</span><span style="--0:#96E072;--1:#E9F284">"</span><span style="--0:#96E072;--1:#F1FA8C">.</span></div></div><div class="ec-line"><div class="code"><span style="--0:#FFE66D;--1:#50FA7B">If</span><span style="--0:#D5CED9;--1:#F8F8F2"> </span><span style="--0:#96E072;--1:#F1FA8C">you</span><span style="--0:#D5CED9;--1:#F8F8F2"> </span><span style="--0:#96E072;--1:#F1FA8C">prefer</span><span style="--0:#D5CED9;--1:#F8F8F2"> </span><span style="--0:#96E072;--1:#F1FA8C">to</span><span style="--0:#D5CED9;--1:#F8F8F2"> </span><span style="--0:#96E072;--1:#F1FA8C">skip</span><span style="--0:#D5CED9;--1:#F8F8F2"> </span><span style="--0:#96E072;--1:#F1FA8C">this</span><span style="--0:#D5CED9;--1:#F8F8F2"> </span><span style="--0:#96E072;--1:#F1FA8C">patch,</span><span style="--0:#D5CED9;--1:#F8F8F2"> </span><span style="--0:#96E072;--1:#F1FA8C">run</span><span style="--0:#D5CED9;--1:#F8F8F2"> </span><span style="--0:#96E072;--1:#E9F284">"</span><span style="--0:#96E072;--1:#F1FA8C">git rebase --skip</span><span style="--0:#96E072;--1:#E9F284">"</span><span style="--0:#D5CED9;--1:#F8F8F2"> </span><span style="--0:#96E072;--1:#F1FA8C">instead.</span></div></div><div class="ec-line"><div class="code"><span style="--0:#FFE66D;--1:#50FA7B">To</span><span style="--0:#D5CED9;--1:#F8F8F2"> </span><span style="--0:#96E072;--1:#F1FA8C">check</span><span style="--0:#D5CED9;--1:#F8F8F2"> </span><span style="--0:#96E072;--1:#F1FA8C">out</span><span style="--0:#D5CED9;--1:#F8F8F2"> </span><span style="--0:#96E072;--1:#F1FA8C">the</span><span style="--0:#D5CED9;--1:#F8F8F2"> </span><span style="--0:#96E072;--1:#F1FA8C">original</span><span style="--0:#D5CED9;--1:#F8F8F2"> </span><span style="--0:#96E072;--1:#F1FA8C">branch</span><span style="--0:#D5CED9;--1:#F8F8F2"> </span><span style="--0:#96E072;--1:#F1FA8C">and</span><span style="--0:#D5CED9;--1:#F8F8F2"> </span><span style="--0:#96E072;--1:#F1FA8C">stop</span><span style="--0:#D5CED9;--1:#F8F8F2"> </span><span style="--0:#96E072;--1:#F1FA8C">rebasing,</span><span style="--0:#D5CED9;--1:#F8F8F2"> </span><span style="--0:#96E072;--1:#F1FA8C">run</span><span style="--0:#D5CED9;--1:#F8F8F2"> </span><span style="--0:#96E072;--1:#E9F284">"</span><span style="--0:#96E072;--1:#F1FA8C">git rebase --abort</span><span style="--0:#96E072;--1:#E9F284">"</span><span style="--0:#96E072;--1:#F1FA8C">.</span></div></div></code></pre><div class="copy"><div aria-live="polite"></div><button title="Copy to clipboard" data-copied="Copied!" data-code="Applying: CH10: Stub file added with notes copied from video recording lessons.Applying: TOC: Adding Chapter 10 to the book build.Using index info to reconstruct a base tree...M   book.asciidocFalling back to patching base and 3-way merge...Auto-merging book.asciidocCONFLICT (content): Merge conflict in book.asciidocRecorded preimage for &#x27;book.asciidoc&#x27;Failed to merge in the changes.Patch failed at 0002 TOC: Adding Chapter 10 to the book build.The copy of the patch that failed is found in:   /Users/emmajane/Git/1234000002182/.git/rebase-apply/patchWhen you have resolved this problem, run &#x22;git rebase --continue&#x22;.If you prefer to skip this patch, run &#x22;git rebase --skip&#x22; instead.To check out the original branch and stop rebasing, run &#x22;git rebase --abort&#x22;."><div></div></button></div></figure></div>
+<h5 id="解决思路">解决思路</h5>
+<ul>
+<li>查看 git 状态消息 <code>git status</code></li>
+<li>通过 vscode 解决冲突</li>
+<li>查看 git 状态消息 <code>git status</code></li>
+</ul>
+<h4 id="q定位丢失的工作">Q：定位丢失的工作</h4>
+<h5 id="临时修改">临时修改</h5>
+<div class="expressive-code"><figure class="frame is-terminal"><figcaption class="header"><span class="title"></span><span class="sr-only">Terminal window</span></figcaption><pre data-language="bash"><code><div class="ec-line"><div class="code"><span style="--0:#A0A1A7F4;--1:#96A1C2"># 查看 log 与 relog 的区别</span></div></div><div class="ec-line"><div class="code"><span style="--0:#A0A1A7F4;--1:#96A1C2"># 查看压缩过的项目历史</span></div></div><div class="ec-line"><div class="code"><span style="--0:#FFE66D;--1:#50FA7B">git</span><span style="--0:#D5CED9;--1:#F8F8F2"> </span><span style="--0:#96E072;--1:#F1FA8C">log</span><span style="--0:#D5CED9;--1:#F8F8F2"> </span><span style="--0:#F17963;--1:#BD93F9">--oneline</span></div></div><div class="ec-line"><div class="code"><span style="--0:#A0A1A7F4;--1:#96A1C2"># 查看本地操作记录</span></div></div><div class="ec-line"><div class="code"><span style="--0:#FFE66D;--1:#50FA7B">git</span><span style="--0:#D5CED9;--1:#F8F8F2"> </span><span style="--0:#96E072;--1:#F1FA8C">relog</span></div></div><div class="ec-line"><div class="code"><span style="--0:#A0A1A7F4;--1:#96A1C2"># 签出特定提交，这时候会处于分离状态</span></div></div><div class="ec-line"><div class="code"><span style="--0:#FFE66D;--1:#50FA7B">git</span><span style="--0:#D5CED9;--1:#F8F8F2"> </span><span style="--0:#96E072;--1:#F1FA8C">checkout</span><span style="--0:#D5CED9;--1:#F8F8F2"> [commit]</span></div></div><div class="ec-line"><div class="code"><span style="--0:#A0A1A7F4;--1:#96A1C2"># 遵循 git 提示</span></div></div><div class="ec-line"><div class="code"><span style="--0:#FFE66D;--1:#50FA7B">git</span><span style="--0:#D5CED9;--1:#F8F8F2"> </span><span style="--0:#96E072;--1:#F1FA8C">checkout</span><span style="--0:#D5CED9;--1:#F8F8F2"> </span><span style="--0:#F17963;--1:#BD93F9">-b</span><span style="--0:#D5CED9;--1:#F8F8F2"> [restoring_old_commit]</span></div></div><div class="ec-line"><div class="code"><span style="--0:#A0A1A7F4;--1:#96A1C2"># 修改完相关工作后， 合并回分支</span></div></div><div class="ec-line"><div class="code"><span style="--0:#FFE66D;--1:#50FA7B">git</span><span style="--0:#D5CED9;--1:#F8F8F2"> </span><span style="--0:#96E072;--1:#F1FA8C">checkout</span><span style="--0:#D5CED9;--1:#F8F8F2"> [working_branch]</span></div></div><div class="ec-line"><div class="code"><span style="--0:#FFE66D;--1:#50FA7B">git</span><span style="--0:#D5CED9;--1:#F8F8F2"> </span><span style="--0:#96E072;--1:#F1FA8C">merge</span><span style="--0:#D5CED9;--1:#F8F8F2"> [restoring_old_commit]</span></div></div><div class="ec-line"><div class="code"><span style="--0:#A0A1A7F4;--1:#96A1C2"># 删除临时分支</span></div></div><div class="ec-line"><div class="code"><span style="--0:#FFE66D;--1:#50FA7B">git</span><span style="--0:#D5CED9;--1:#F8F8F2"> </span><span style="--0:#96E072;--1:#F1FA8C">branch</span><span style="--0:#D5CED9;--1:#F8F8F2"> </span><span style="--0:#F17963;--1:#BD93F9">--delete</span><span style="--0:#D5CED9;--1:#F8F8F2"> [restoring_old_commit]</span></div></div><div class="ec-line"><div class="code"><span style="--0:#A0A1A7F4;--1:#96A1C2"># 如果已经发布，需要删除远程分支</span></div></div><div class="ec-line"><div class="code"><span style="--0:#FFE66D;--1:#50FA7B">git</span><span style="--0:#D5CED9;--1:#F8F8F2"> </span><span style="--0:#96E072;--1:#F1FA8C">push</span><span style="--0:#D5CED9;--1:#F8F8F2"> </span><span style="--0:#F17963;--1:#BD93F9">--delete</span><span style="--0:#D5CED9;--1:#F8F8F2"> [restoring_old_commit]</span></div></div></code></pre><div class="copy"><div aria-live="polite"></div><button title="Copy to clipboard" data-copied="Copied!" data-code="git log --onelinegit reloggit checkout [commit]git checkout -b [restoring_old_commit]git checkout [working_branch]git merge [restoring_old_commit]git branch --delete [restoring_old_commit]git push --delete [restoring_old_commit]"><div></div></button></div></figure></div>
+<h5 id="复制提交-cherry-pick">复制提交 cherry-pick</h5>
+<div class="expressive-code"><figure class="frame is-terminal"><figcaption class="header"><span class="title"></span><span class="sr-only">Terminal window</span></figcaption><pre data-language="bash"><code><div class="ec-line"><div class="code"><span style="--0:#A0A1A7F4;--1:#96A1C2"># 查看图形化日志</span></div></div><div class="ec-line"><div class="code"><span style="--0:#FFE66D;--1:#50FA7B">git</span><span style="--0:#D5CED9;--1:#F8F8F2"> </span><span style="--0:#96E072;--1:#F1FA8C">log</span><span style="--0:#D5CED9;--1:#F8F8F2"> </span><span style="--0:#F17963;--1:#BD93F9">--online</span><span style="--0:#D5CED9;--1:#F8F8F2"> </span><span style="--0:#F17963;--1:#BD93F9">--graph</span></div></div><div class="ec-line"><div class="code"><span style="--0:#A0A1A7F4;--1:#96A1C2"># 复制另一个分支的提交 在提交信息的末尾追加一行(cherry picked from commit ...)，方便以后查到这个提交是如何产生的。</span></div></div><div class="ec-line"><div class="code"><span style="--0:#FFE66D;--1:#50FA7B">git</span><span style="--0:#D5CED9;--1:#F8F8F2"> </span><span style="--0:#96E072;--1:#F1FA8C">cherry-pick</span><span style="--0:#D5CED9;--1:#F8F8F2"> </span><span style="--0:#F17963;--1:#BD93F9">-x</span><span style="--0:#D5CED9;--1:#F8F8F2"> [commit]</span></div></div><div class="ec-line"><div class="code"><span style="--0:#A0A1A7F4;--1:#96A1C2"># 复制一段提交，不包含 start_commit</span></div></div><div class="ec-line"><div class="code"><span style="--0:#FFE66D;--1:#50FA7B">git</span><span style="--0:#D5CED9;--1:#F8F8F2"> </span><span style="--0:#96E072;--1:#F1FA8C">cherry-pick</span><span style="--0:#D5CED9;--1:#F8F8F2"> [start_commit]..[end_commit]</span></div></div><div class="ec-line"><div class="code"><span style="--0:#A0A1A7F4;--1:#96A1C2"># 复制一段提交，包含 start_commit</span></div></div><div class="ec-line"><div class="code"><span style="--0:#FFE66D;--1:#50FA7B">git</span><span style="--0:#D5CED9;--1:#F8F8F2"> </span><span style="--0:#96E072;--1:#F1FA8C">cherry-pick</span><span style="--0:#D5CED9;--1:#F8F8F2"> [start_commit]^..[end_commit]</span></div></div></code></pre><div class="copy"><div aria-live="polite"></div><button title="Copy to clipboard" data-copied="Copied!" data-code="git log --online --graphgit cherry-pick -x [commit]git cherry-pick [start_commit]..[end_commit]git cherry-pick [start_commit]^..[end_commit]"><div></div></button></div></figure></div>
+<h4 id="q误删除文件">Q：误删除文件</h4>
+<div class="expressive-code"><figure class="frame is-terminal"><figcaption class="header"><span class="title"></span><span class="sr-only">Terminal window</span></figcaption><pre data-language="bash"><code><div class="ec-line"><div class="code"><span style="--0:#A0A1A7F4;--1:#96A1C2"># 通过 HEAD 的快捷方式</span></div></div><div class="ec-line"><div class="code"><span style="--0:#FFE66D;--1:#50FA7B">git</span><span style="--0:#D5CED9;--1:#F8F8F2"> </span><span style="--0:#96E072;--1:#F1FA8C">reset</span><span style="--0:#D5CED9;--1:#F8F8F2"> </span><span style="--0:#96E072;--1:#F1FA8C">HEAD</span><span style="--0:#D5CED9;--1:#F8F8F2"> [file_name]</span></div></div><div class="ec-line"><div class="code"><span style="--0:#A0A1A7F4;--1:#96A1C2"># 通过 checkout 恢复被删除文件</span></div></div><div class="ec-line"><div class="code"><span style="--0:#FFE66D;--1:#50FA7B">git</span><span style="--0:#D5CED9;--1:#F8F8F2"> </span><span style="--0:#96E072;--1:#F1FA8C">checout</span><span style="--0:#D5CED9;--1:#F8F8F2"> </span><span style="--0:#F17963;--1:#BD93F9">--</span><span style="--0:#D5CED9;--1:#F8F8F2"> [file_name]</span></div></div><div class="ec-line"><div class="code">
+</div></div><div class="ec-line"><div class="code"><span style="--0:#A0A1A7F4;--1:#96A1C2"># 合并指令</span></div></div><div class="ec-line"><div class="code"><span style="--0:#FFE66D;--1:#50FA7B">git</span><span style="--0:#D5CED9;--1:#F8F8F2"> </span><span style="--0:#96E072;--1:#F1FA8C">reset</span><span style="--0:#D5CED9;--1:#F8F8F2"> </span><span style="--0:#F17963;--1:#BD93F9">--hard</span><span style="--0:#D5CED9;--1:#F8F8F2"> </span><span style="--0:#96E072;--1:#F1FA8C">HEAD</span><span style="--0:#D5CED9;--1:#F8F8F2">  </span><span style="--0:#F17963;--1:#BD93F9">--</span><span style="--0:#D5CED9;--1:#F8F8F2"> [file_name]</span></div></div><div class="ec-line"><div class="code">
+</div></div><div class="ec-line"><div class="code"><span style="--0:#A0A1A7F4;--1:#96A1C2"># 批量操作</span></div></div><div class="ec-line"><div class="code"><span style="--0:#FFE66D;--1:#50FA7B">git</span><span style="--0:#D5CED9;--1:#F8F8F2"> </span><span style="--0:#96E072;--1:#F1FA8C">reset</span><span style="--0:#D5CED9;--1:#F8F8F2"> </span><span style="--0:#F17963;--1:#BD93F9">--hard</span><span style="--0:#D5CED9;--1:#F8F8F2"> </span><span style="--0:#96E072;--1:#F1FA8C">HEAD</span></div></div></code></pre><div class="copy"><div aria-live="polite"></div><button title="Copy to clipboard" data-copied="Copied!" data-code="git reset HEAD [file_name]git checout -- [file_name]git reset --hard HEAD  -- [file_name]git reset --hard HEAD"><div></div></button></div></figure></div>
+<h4 id="q撤销分支合并">Q：撤销分支合并</h4>
+<p>理想情况下，合并分支后，立马意识到这是个错误合并。Git 在执行合并时候会保存一个指向最新提交的指针 <code>ORIG_HEADs</code>，这时候直接通过 reset 取消合并即可</p>
+<div class="expressive-code"><figure class="frame is-terminal"><figcaption class="header"><span class="title"></span><span class="sr-only">Terminal window</span></figcaption><pre data-language="bash"><code><div class="ec-line"><div class="code"><span style="--0:#FFE66D;--1:#50FA7B">git</span><span style="--0:#D5CED9;--1:#F8F8F2"> </span><span style="--0:#96E072;--1:#F1FA8C">reset</span><span style="--0:#D5CED9;--1:#F8F8F2"> </span><span style="--0:#F17963;--1:#BD93F9">--merge</span><span style="--0:#D5CED9;--1:#F8F8F2"> </span><span style="--0:#96E072;--1:#F1FA8C">ORIG_HEAD</span></div></div></code></pre><div class="copy"><div aria-live="polite"></div><button title="Copy to clipboard" data-copied="Copied!" data-code="git reset --merge ORIG_HEAD"><div></div></button></div></figure></div>
+<p>若没有意识到这是个错误合并，已经继续提交了，那么可以开始头脑风暴了</p>
+<figure><img src="/posts//git-for-teams/unmerge.png" alt="unmerge"><figcaption>unmerge</figcaption></figure>
+<div class="expressive-code"><figure class="frame is-terminal"><figcaption class="header"><span class="title"></span><span class="sr-only">Terminal window</span></figcaption><pre data-language="bash"><code><div class="ec-line"><div class="code"><span style="--0:#A0A1A7F4;--1:#96A1C2"># 稳健的创建一个分支</span></div></div><div class="ec-line"><div class="code"><span style="--0:#FFE66D;--1:#50FA7B">git</span><span style="--0:#D5CED9;--1:#F8F8F2"> </span><span style="--0:#96E072;--1:#F1FA8C">checkout</span><span style="--0:#D5CED9;--1:#F8F8F2"> </span><span style="--0:#F17963;--1:#BD93F9">-b</span><span style="--0:#D5CED9;--1:#F8F8F2"> [pre_branch]</span></div></div><div class="ec-line"><div class="code"><span style="--0:#A0A1A7F4;--1:#96A1C2"># 截取希望保存的 commit</span></div></div><div class="ec-line"><div class="code"><span style="--0:#FFE66D;--1:#50FA7B">git</span><span style="--0:#D5CED9;--1:#F8F8F2"> </span><span style="--0:#96E072;--1:#F1FA8C">cherry-pick</span><span style="--0:#D5CED9;--1:#F8F8F2"> </span><span style="--0:#96E072;--1:#F1FA8C">commit_to_restore</span></div></div><div class="ec-line"><div class="code"><span style="--0:#A0A1A7F4;--1:#96A1C2"># 回到错误分支</span></div></div><div class="ec-line"><div class="code"><span style="--0:#FFE66D;--1:#50FA7B">git</span><span style="--0:#D5CED9;--1:#F8F8F2"> </span><span style="--0:#96E072;--1:#F1FA8C">checkout</span><span style="--0:#D5CED9;--1:#F8F8F2">  [error_branch]</span></div></div><div class="ec-line"><div class="code"><span style="--0:#A0A1A7F4;--1:#96A1C2"># 回退</span></div></div><div class="ec-line"><div class="code"><span style="--0:#FFE66D;--1:#50FA7B">git</span><span style="--0:#D5CED9;--1:#F8F8F2"> </span><span style="--0:#96E072;--1:#F1FA8C">reset</span><span style="--0:#D5CED9;--1:#F8F8F2"> [last_correct_commit]</span></div></div><div class="ec-line"><div class="code"><span style="--0:#A0A1A7F4;--1:#96A1C2"># 再次合并</span></div></div><div class="ec-line"><div class="code"><span style="--0:#FFE66D;--1:#50FA7B">git</span><span style="--0:#D5CED9;--1:#F8F8F2"> </span><span style="--0:#96E072;--1:#F1FA8C">merge</span><span style="--0:#D5CED9;--1:#F8F8F2"> [good_commits]</span></div></div></code></pre><div class="copy"><div aria-live="polite"></div><button title="Copy to clipboard" data-copied="Copied!" data-code="git checkout -b [pre_branch]git cherry-pick commit_to_restoregit checkout  [error_branch]git reset [last_correct_commit]git merge [good_commits]"><div></div></button></div></figure></div>
+<h3 id="关于一点点小技巧">关于一点点小技巧</h3>
+<div class="expressive-code"><figure class="frame is-terminal"><figcaption class="header"><span class="title"></span><span class="sr-only">Terminal window</span></figcaption><pre data-language="bash"><code><div class="ec-line"><div class="code"><span style="--0:#A0A1A7F4;--1:#96A1C2"># stash 进行保存, 该命令只会保存已知的文件进度</span></div></div><div class="ec-line"><div class="code"><span style="--0:#FFE66D;--1:#50FA7B">git</span><span style="--0:#D5CED9;--1:#F8F8F2"> </span><span style="--0:#96E072;--1:#F1FA8C">stash</span><span style="--0:#D5CED9;--1:#F8F8F2"> </span><span style="--0:#96E072;--1:#F1FA8C">save</span></div></div><div class="ec-line"><div class="code"><span style="--0:#A0A1A7F4;--1:#96A1C2"># 为加入未跟踪文件，可添加 --include-untracked</span></div></div><div class="ec-line"><div class="code"><span style="--0:#FFE66D;--1:#50FA7B">git</span><span style="--0:#D5CED9;--1:#F8F8F2"> </span><span style="--0:#96E072;--1:#F1FA8C">stash</span><span style="--0:#D5CED9;--1:#F8F8F2"> </span><span style="--0:#96E072;--1:#F1FA8C">save</span><span style="--0:#D5CED9;--1:#F8F8F2"> </span><span style="--0:#F17963;--1:#BD93F9">--include-untracked</span></div></div><div class="ec-line"><div class="code"><span style="--0:#A0A1A7F4;--1:#96A1C2"># 亦可以丢弃它们</span></div></div><div class="ec-line"><div class="code"><span style="--0:#FFE66D;--1:#50FA7B">git</span><span style="--0:#D5CED9;--1:#F8F8F2"> </span><span style="--0:#96E072;--1:#F1FA8C">stash</span><span style="--0:#D5CED9;--1:#F8F8F2"> </span><span style="--0:#96E072;--1:#F1FA8C">save</span></div></div><div class="ec-line"><div class="code"><span style="--0:#FFE66D;--1:#50FA7B">git</span><span style="--0:#D5CED9;--1:#F8F8F2"> </span><span style="--0:#96E072;--1:#F1FA8C">clean</span><span style="--0:#D5CED9;--1:#F8F8F2"> </span><span style="--0:#F17963;--1:#BD93F9">-D</span></div></div><div class="ec-line"><div class="code"><span style="--0:#A0A1A7F4;--1:#96A1C2"># 查看保存的 stash</span></div></div><div class="ec-line"><div class="code"><span style="--0:#FFE66D;--1:#50FA7B">git</span><span style="--0:#D5CED9;--1:#F8F8F2"> </span><span style="--0:#96E072;--1:#F1FA8C">stash</span><span style="--0:#D5CED9;--1:#F8F8F2"> </span><span style="--0:#96E072;--1:#F1FA8C">list</span></div></div><div class="ec-line"><div class="code"><span style="--0:#A0A1A7F4;--1:#96A1C2"># 查看 stash 中的内容</span></div></div><div class="ec-line"><div class="code"><span style="--0:#FFE66D;--1:#50FA7B">git</span><span style="--0:#D5CED9;--1:#F8F8F2"> </span><span style="--0:#96E072;--1:#F1FA8C">show</span><span style="--0:#D5CED9;--1:#F8F8F2"> </span><span style="--0:#96E072;--1:#F1FA8C">stash@{</span><span style="--0:#F39C12;--1:#BD93F9">0</span><span style="--0:#96E072;--1:#F1FA8C">}</span></div></div><div class="ec-line"><div class="code">
+</div></div><div class="ec-line"><div class="code">
+</div></div><div class="ec-line"><div class="code"><span style="--0:#A0A1A7F4;--1:#96A1C2"># 可以通过添加内容来区分 stash</span></div></div><div class="ec-line"><div class="code"><span style="--0:#FFE66D;--1:#50FA7B">git</span><span style="--0:#D5CED9;--1:#F8F8F2"> </span><span style="--0:#96E072;--1:#F1FA8C">stash</span><span style="--0:#D5CED9;--1:#F8F8F2"> </span><span style="--0:#96E072;--1:#F1FA8C">save</span><span style="--0:#D5CED9;--1:#F8F8F2"> </span><span style="--0:#F17963;--1:#BD93F9">--include-untracked</span><span style="--0:#D5CED9;--1:#F8F8F2"> </span><span style="--0:#96E072;--1:#E9F284">"</span><span style="--0:#96E072;--1:#F1FA8C">msg</span><span style="--0:#96E072;--1:#E9F284">"</span></div></div><div class="ec-line"><div class="code">
+</div></div><div class="ec-line"><div class="code"><span style="--0:#A0A1A7F4;--1:#96A1C2"># 可以继续工作</span></div></div><div class="ec-line"><div class="code"><span style="--0:#FFE66D;--1:#50FA7B">git</span><span style="--0:#D5CED9;--1:#F8F8F2"> </span><span style="--0:#96E072;--1:#F1FA8C">stash</span><span style="--0:#D5CED9;--1:#F8F8F2"> </span><span style="--0:#96E072;--1:#F1FA8C">list</span></div></div><div class="ec-line"><div class="code"><span style="--0:#FFE66D;--1:#50FA7B">git</span><span style="--0:#D5CED9;--1:#F8F8F2"> </span><span style="--0:#96E072;--1:#F1FA8C">stash</span><span style="--0:#D5CED9;--1:#F8F8F2"> </span><span style="--0:#96E072;--1:#F1FA8C">apply</span><span style="--0:#D5CED9;--1:#F8F8F2"> </span><span style="--0:#96E072;--1:#F1FA8C">stash@{</span><span style="--0:#F39C12;--1:#BD93F9">0</span><span style="--0:#96E072;--1:#F1FA8C">}</span></div></div><div class="ec-line"><div class="code">
+</div></div><div class="ec-line"><div class="code"><span style="--0:#A0A1A7F4;--1:#96A1C2"># 删除 stash</span></div></div><div class="ec-line"><div class="code"><span style="--0:#FFE66D;--1:#50FA7B">git</span><span style="--0:#D5CED9;--1:#F8F8F2"> </span><span style="--0:#96E072;--1:#F1FA8C">stash</span><span style="--0:#D5CED9;--1:#F8F8F2"> </span><span style="--0:#96E072;--1:#F1FA8C">drop</span><span style="--0:#D5CED9;--1:#F8F8F2"> </span><span style="--0:#96E072;--1:#F1FA8C">stash@{</span><span style="--0:#F39C12;--1:#BD93F9">0</span><span style="--0:#96E072;--1:#F1FA8C">}</span></div></div><div class="ec-line"><div class="code">
+</div></div><div class="ec-line"><div class="code"><span style="--0:#A0A1A7F4;--1:#96A1C2"># 应用后删除 stash</span></div></div><div class="ec-line"><div class="code"><span style="--0:#FFE66D;--1:#50FA7B">git</span><span style="--0:#D5CED9;--1:#F8F8F2"> </span><span style="--0:#96E072;--1:#F1FA8C">stash</span><span style="--0:#D5CED9;--1:#F8F8F2"> </span><span style="--0:#96E072;--1:#F1FA8C">pop</span><span style="--0:#D5CED9;--1:#F8F8F2"> </span><span style="--0:#96E072;--1:#F1FA8C">stash@{</span><span style="--0:#F39C12;--1:#BD93F9">0</span><span style="--0:#96E072;--1:#F1FA8C">}</span></div></div></code></pre><div class="copy"><div aria-live="polite"></div><button title="Copy to clipboard" data-copied="Copied!" data-code="git stash savegit stash save --include-untrackedgit stash savegit clean -Dgit stash listgit show stash@{0}git stash save --include-untracked &#x22;msg&#x22;git stash listgit stash apply stash@{0}git stash drop stash@{0}git stash pop stash@{0}"><div></div></button></div></figure></div>
+<h3 id="关于小结">关于小结</h3>
+<p>本文是关于《Git 团队协作》的阅读笔记，该书已经过于久远，很多指令也已经更新，例如 <code>git checkout [branch]</code> 已经可以使用 <code>git switch [branch]</code> 来替代了，阅读之后还是能比较清晰的</p>
+<h3 id="关于常用指令合集">关于常用指令合集</h3>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>命令</th><th>用途</th></tr></thead><tbody><tr><td>git clone [url]</td><td>下载远程仓库</td></tr><tr><td>git init</td><td>初始化仓库</td></tr><tr><td>git status</td><td>获取 git 状态</td></tr><tr><td>git add —all OR git add .</td><td>将所有修改过的文件和新文件添加至仓库的暂存区</td></tr><tr><td>git commit -m ‘[message]‘</td><td>将所有暂存的文件提交至仓库</td></tr><tr><td>git log</td><td>查看项目历史</td></tr><tr><td>git log —oneline</td><td>查看压缩过的项目历史</td></tr><tr><td>git branch —list</td><td>列出所有本地分支</td></tr><tr><td>git branch —all</td><td>列出本地和远程分支</td></tr><tr><td>git branch —remotes</td><td>列出所有远程分支</td></tr><tr><td>git checkout —track [branch_name]</td><td>创建远程分支的副本,在本地使用</td></tr><tr><td>git checkout [branch_name]</td><td>切换到另一个本地分支</td></tr><tr><td>git checkout -b [branch_name] [branch_name_parent]</td><td>从指定分支创建一个新分支</td></tr><tr><td>git add [file_name]</td><td>仅暂存并准备提交指定文件</td></tr><tr><td>git add —patch [file_name]</td><td>仅暂存并准备提交部分文件</td></tr><tr><td>git add HEAD [file_name]</td><td>从暂存区移除提出的文件修改</td></tr><tr><td>git commit —amend</td><td>使用当前暂存的修改更新之前的提交,并提供一个新的提交消息</td></tr><tr><td>git show commit</td><td>输出某个提交的详细信息</td></tr><tr><td>git tag tag commit</td><td>为某个提交对象打上标签</td></tr><tr><td>git tag</td><td>列出所有标签</td></tr><tr><td>git show tag</td><td>输出所有带标签提交的详细信息</td></tr><tr><td>git remote add [remote_name] [url]</td><td>创建一个指向远程仓库的引用</td></tr><tr><td>git push</td><td>将当前分支上的修改上传至远程仓库</td></tr><tr><td>git remote —verbose</td><td>列出所有可用远程连接中 fetch 和 push 命令使用的 URL</td></tr><tr><td>git push —set-upstream [remote_name] [branch_local] [branch_remote]</td><td>将本地分支的副本推送至远程服务器</td></tr><tr><td>git merge [branch]</td><td>将当前存储在另一分支的提交并入当前分支</td></tr><tr><td>git push —delete [remote_name] [branch_remote]</td><td>在远程服务器中移除指定名称的分支</td></tr><tr><td>git checkout -b [branch_name]</td><td>创建一个名为 branch 的分支</td></tr><tr><td>git add [file_name]</td><td>暂存文件,准备提交至仓库</td></tr><tr><td>git commit</td><td>将暂存的变更保存至仓库</td></tr><tr><td>git checkout [branch]</td><td>切换到指定分支</td></tr><tr><td>git merge [branch]</td><td>将 branch 中的提交并入当前分支</td></tr><tr><td>git branch —delete</td><td>移除本地分支</td></tr><tr><td>git branch -D</td><td>移除不包含并入其他分支的提交的本地分支</td></tr><tr><td>git clone [URL]</td><td>下载一份远程仓库的副本</td></tr><tr><td>git log</td><td>查看项目历史记录</td></tr><tr><td>git reflog</td><td>查看分支的详细历史记录</td></tr><tr><td>git checkout [commit]</td><td>切换到另一个本地分支</td></tr><tr><td>git cherry-pick [commit]</td><td>将提交从一个分支复制到另一个分支</td></tr><tr><td>git reset —merge ORIG_HEAD</td><td>移除当前分支中所有在最近一次合并中引入的提交</td></tr><tr><td>git checkout HEAD [file_name]</td><td>还原已变更但尚未提交的文件</td></tr><tr><td>git reset HEAD [file_name]</td><td>从暂存区移除提出的文件修改</td></tr><tr><td>git reset —hard HEAD</td><td>将所有已变更的文件还原到之前保存的状态</td></tr><tr><td>git reset [commit]</td><td>取消暂存在这个提交之前的所有提交中的变更</td></tr><tr><td>git rebase —interactive [commit]</td><td>编辑,或压缩提交后的所有提交</td></tr><tr><td>git rebase —continue</td><td>在解决合并冲突后,继续变基过程</td></tr><tr><td>git revert [commit]</td><td>取消应用指定提交中的变更,创建一个共享友好的历史记录还原</td></tr><tr><td>git log —oneline —graph</td><td>显示分支的图形化历史记录</td></tr><tr><td>git revert —mainline 1 [commit]</td><td>反转一个合并提交</td></tr><tr><td>git branch —contains [commit]</td><td>列出所有包含指定提交对象的分支</td></tr><tr><td>git revert —no-commit [last_commit_to_keep..newest_commit_to_reject]</td><td>使用一个提交反转一组提交,而不是为每个撤销的提交都创建一个对象</td></tr><tr><td>git filter-branch</td><td>从仓库中永久移除文件</td></tr><tr><td>git reflog expire</td><td>忽略详细历史记录,仅使用存储的提交消息</td></tr><tr><td>git gc —prune=now</td><td>运行垃圾回收器并确保所有未提交的变更从本地内存中移除</td></tr></tbody></table> </article> </main> <div class="random"> <div class="w-full h-1 bg-gray-600 mb-4 dark:bg-gray-300"></div> <h1 class="mb-4 text-xl font-heading font-bold text-zinc-900 dark:text-zinc-100">
+Random Read
+</h1> <ul class="flex flex-col gap-1.5"> <li> <a href="/posts/business-of-tag" class="group flex justify-between gap-3 text-sm" data-umami-event="Random-article"> <span class="group-hover:underline">管理系统内 Tag 功能的实现</span> <span class="text-nowrap text-zinc-500 font-mono"> 2019-08-08 </span> </a> </li><li> <a href="/posts/sublime-config-and-usage" class="group flex justify-between gap-3 text-sm" data-umami-event="Random-article"> <span class="group-hover:underline">Sublime 配置与使用</span> <span class="text-nowrap text-zinc-500 font-mono"> 2017-12-17 </span> </a> </li><li> <a href="/posts/you-dont-know-bootstrap" class="group flex justify-between gap-3 text-sm" data-umami-event="Random-article"> <span class="group-hover:underline">你不知道的bootstrap中文网</span> <span class="text-nowrap text-zinc-500 font-mono"> 2017-12-19 </span> </a> </li> </ul> </div>  <script data-astro-rerun>
+    (() => {
+      if (window.__lightboxInstalled) return;
+      window.__lightboxInstalled = true;
+
+      const prefersReduced = window.matchMedia?.("(prefers-reduced-motion: reduce)")?.matches;
+      const D = prefersReduced ? 0 : 180;
+      const state = { overlay: null };
+
+      const close = () => {
+        const overlay = state.overlay;
+        if (!overlay) return;
+        const img = overlay.querySelector(".lightbox-img");
+
+        const fade = overlay.animate([{ opacity: 1 }, { opacity: 0 }], { duration: D, easing: "ease-in", fill: "forwards" });
+        const shrink = img?.animate([{ transform: "scale(1)" }, { transform: "scale(0.96)" }], { duration: D, easing: "ease-in", fill: "forwards" });
+
+        Promise.allSettled([fade?.finished ?? Promise.resolve(), shrink?.finished ?? Promise.resolve()]).finally(() => {
+          overlay.remove();
+          state.overlay = null;
+          document.body.style.overflow = "";
+          document.body.style.paddingRight = "";
+          document.removeEventListener("keydown", onKeydown);
+        });
+      };
+
+      const onKeydown = (e) => { if (e.key === "Escape") close(); };
+
+      const openFrom = (thumb) => {
+        if (state.overlay) return;
+
+        const overlay = document.createElement("div");
+        overlay.className = "lightbox-overlay";
+        overlay.dataset.armed = "0";
+        setTimeout(() => { if (overlay.isConnected) overlay.dataset.armed = "1"; }, D || 120);
+
+        const big = thumb.cloneNode(true);
+        big.classList.add("lightbox-img");
+        big.removeAttribute("width");
+        big.removeAttribute("height");
+        big.style.maxWidth = "";
+        big.style.maxHeight = "";
+        big.draggable = false;
+
+        overlay.appendChild(big);
+        document.body.appendChild(overlay);
+        state.overlay = overlay;
+
+        const pad = window.innerWidth - document.documentElement.clientWidth;
+        if (pad > 0) document.body.style.paddingRight = pad + "px";
+        document.body.style.overflow = "hidden";
+
+        overlay.animate([{ opacity: 0 }, { opacity: 1 }], { duration: D, easing: "ease-out", fill: "forwards" });
+        big.animate([{ transform: "scale(0.96)" }, { transform: "scale(1)" }], { duration: D, easing: "ease-out", fill: "forwards" });
+
+        overlay.addEventListener("click", () => { if (overlay?.dataset.armed === "1") close(); });
+        document.addEventListener("keydown", onKeydown);
+      };
+
+      const onDocClick = (e) => {
+        const target = e.target;
+        if (!(target instanceof Element)) return;
+        const article = target.closest("article[data-pagefind-body]");
+        if (!article) return;
+        const img = target.closest("img");
+        if (!img) return;
+        if (e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
+
+        e.preventDefault();
+        e.stopPropagation();
+        openFrom(img);
+      };
+
+      document.addEventListener("click", onDocClick, { passive: false });
+      document.addEventListener("astro:before-swap", close);
+    })();
+  </script>   </div> <script>
+  function setTheme() {
+    let theme
+
+    if (typeof localStorage !== 'undefined' && localStorage.getItem('theme')) {
+      theme = localStorage.getItem('theme')
+    } else {
+      theme = window.matchMedia('(prefers-color-scheme: dark)').matches
+        ? 'dark'
+        : 'light'
+    }
+
+    document.documentElement.classList[theme ? 'add' : 'remove'](theme)
+
+    if (typeof localStorage !== 'undefined') {
+      const observer = new MutationObserver(() => {
+        const isDark = document.documentElement.classList.contains('dark')
+        localStorage.setItem('theme', isDark ? 'dark' : 'light')
+      })
+      observer.observe(document.documentElement, {
+        attributes: true,
+        attributeFilter: ['class'],
+      })
+    }
+  }
+
+  setTheme()
+
+  document.addEventListener('astro:after-swap', setTheme)
+</script></body></html>
