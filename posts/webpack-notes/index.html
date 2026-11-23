@@ -1,0 +1,579 @@
+<!DOCTYPE html><html lang="en" class="relative bg-fontdefault dark:bg-bgdefault"><head><meta name="generator" content="Astro"><!-- Global Metadata --><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="color-scheme" content="light dark"><link rel="icon" type="image/svg+xml" href="/favicon.svg"><meta name="generator" content="Astro v7.4.13"><script>
+      (() => {
+        let storedTheme = null
+
+        try {
+          storedTheme = localStorage.getItem('theme')
+        }
+        catch {
+          // Fall back to the system preference when storage is unavailable.
+        }
+
+        const theme = storedTheme === 'light' || storedTheme === 'dark'
+          ? storedTheme
+          : window.matchMedia('(prefers-color-scheme: dark)').matches
+            ? 'dark'
+            : 'light'
+
+        document.documentElement.classList.toggle('dark', theme === 'dark')
+        document.documentElement.dataset.theme = theme
+      })()
+    </script><!-- Font preloads --><link rel="preload" href="/fonts/geist-variable.woff2" as="font" type="font/woff2" crossorigin><link rel="preload" href="/fonts/geist-mono-variable.woff2" as="font" type="font/woff2" crossorigin><!-- Canonical URL --><link rel="canonical" href="https://z-index.me/posts/webpack-notes/"><!-- Primary Meta Tags --><title>webpack学习笔记</title><meta name="title" content="webpack学习笔记"><meta name="description" content="学学习习，记记又录录"><!-- Open Graph / Facebook --><meta property="og:type" content="website"><meta property="og:url" content="https://z-index.me/posts/webpack-notes/"><meta property="og:title" content="webpack学习笔记"><meta property="og:description" content="学学习习，记记又录录"><meta property="og:image" content="https://z-index.me/static/ogimage.png"><!-- Twitter --><meta property="twitter:card" content="summary_large_image"><meta property="twitter:url" content="https://z-index.me/posts/webpack-notes/"><meta property="twitter:title" content="webpack学习笔记"><meta property="twitter:description" content="学学习习，记记又录录"><meta property="twitter:image" content="https://z-index.me/static/ogimage.png"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/twikoo@1.6.44/dist/twikoo.css" crossorigin="anonymous"><link rel="stylesheet" href="/_astro/Layout.CtD51LCH.css"><style>article[data-pagefind-body] :is(h1[id],h2[id],h3[id],h4[id],h5[id]){scroll-margin-top:96px}.toc-root[data-astro-cid-7k3pnqyz] .toc-inline[data-astro-cid-7k3pnqyz]{display:block}.toc-root[data-astro-cid-7k3pnqyz] .toc-float[data-astro-cid-7k3pnqyz]{display:none}@media (width>=1200px){.toc-root[data-astro-cid-7k3pnqyz] .toc-inline[data-astro-cid-7k3pnqyz]{display:none}.toc-root[data-astro-cid-7k3pnqyz] .toc-float[data-astro-cid-7k3pnqyz]{display:block}}.toc-root[data-astro-cid-7k3pnqyz] .toc[data-astro-cid-7k3pnqyz] details[data-astro-cid-7k3pnqyz]{border:1px solid #83838330;border-radius:10px;margin-bottom:1rem;padding:1rem}.toc-root[data-astro-cid-7k3pnqyz] .toc-float[data-astro-cid-7k3pnqyz]{top:84px;right:max(12px, env(safe-area-inset-right));z-index:40;width:260px;max-height:78vh;transition:opacity .25s,transform .25s;position:fixed;overflow:auto}.toc-root[data-astro-cid-7k3pnqyz] .toc-float[data-astro-cid-7k3pnqyz].at-top{opacity:0;pointer-events:none;transform:translateY(-4px)}.toc-root[data-astro-cid-7k3pnqyz] .toc[data-astro-cid-7k3pnqyz] a[data-astro-cid-7k3pnqyz].toc-link{color:#6b7280;padding:.125rem 0;text-decoration:none;transition:color .15s;display:block;position:relative}.dark[data-astro-cid-7k3pnqyz] .toc-root[data-astro-cid-7k3pnqyz] .toc[data-astro-cid-7k3pnqyz] a[data-astro-cid-7k3pnqyz].toc-link{color:#b8b0a8}.toc-root[data-astro-cid-7k3pnqyz] .toc[data-astro-cid-7k3pnqyz] a[data-astro-cid-7k3pnqyz].toc-link:hover{color:#3f3f46}.dark[data-astro-cid-7k3pnqyz] .toc-root[data-astro-cid-7k3pnqyz] .toc[data-astro-cid-7k3pnqyz] a[data-astro-cid-7k3pnqyz].toc-link:hover{color:#e6e1dc}.toc-root[data-astro-cid-7k3pnqyz] .toc[data-astro-cid-7k3pnqyz] a[data-astro-cid-7k3pnqyz].toc-link.is-active:before{content:"";background:currentColor;border-radius:50%;width:5px;height:5px;position:absolute;top:.6em;left:-12px}.toc-root[data-astro-cid-7k3pnqyz] .toc[data-astro-cid-7k3pnqyz] a[data-astro-cid-7k3pnqyz][data-depth="1"]{font-weight:600}.toc-root[data-astro-cid-7k3pnqyz] .toc[data-astro-cid-7k3pnqyz] a[data-astro-cid-7k3pnqyz][data-depth="3"],.toc-root[data-astro-cid-7k3pnqyz] .toc[data-astro-cid-7k3pnqyz] a[data-astro-cid-7k3pnqyz][data-depth="4"],.toc-root[data-astro-cid-7k3pnqyz] .toc[data-astro-cid-7k3pnqyz] a[data-astro-cid-7k3pnqyz][data-depth="5"]{opacity:.8;font-size:.9em}.toc-root[data-astro-cid-7k3pnqyz] .toc-float[data-astro-cid-7k3pnqyz] .toc[data-astro-cid-7k3pnqyz] details[data-astro-cid-7k3pnqyz]{background-color:#00000008;border:1px solid #00000014;padding:.75rem}.dark[data-astro-cid-7k3pnqyz] .toc-root[data-astro-cid-7k3pnqyz] .toc-float[data-astro-cid-7k3pnqyz] .toc[data-astro-cid-7k3pnqyz] details[data-astro-cid-7k3pnqyz]{background-color:#ffffff0a;border-color:#ffffff14}article[data-pagefind-body] img{cursor:pointer;transform-origin:50%;will-change:transform;backface-visibility:hidden;transition:transform .18s,filter .18s}article[data-pagefind-body] img:hover{transform:scale(1.01)}.lightbox-img:hover{transform:none!important}@media (prefers-reduced-motion:reduce){article[data-pagefind-body] img{transition:none}}.lightbox-overlay{cursor:zoom-out;z-index:1000;opacity:0;touch-action:none;-webkit-tap-highlight-color:transparent;background:#0009;justify-content:center;align-items:center;display:flex;position:fixed;inset:0}.dark .lightbox-overlay{background:#000000b3}.lightbox-img{will-change:transform;border-radius:12px;max-width:92vw;max-height:92vh;box-shadow:0 10px 40px #0006}.dark .lightbox-img{box-shadow:0 10px 40px #000000b3}@media (prefers-reduced-motion:reduce){.lightbox-overlay,.lightbox-img{transition:none!important;animation:none!important}}.expressive-code .frame{all:unset;--header-border-radius:calc(var(--ec-brdRad) + var(--ec-brdWd));--tab-border-radius:calc(var(--ec-frm-edTabBrdRad) + var(--ec-brdWd));--button-spacing:.4rem;--code-background:var(--ec-frm-edBg);border-radius:var(--header-border-radius);display:block;position:relative;box-shadow:0 0 0 var(--ec-brdWd) var(--ec-frm-edBrdClr)!important}
+</style></head><body class="font-sans min-h-svh text-zinc-900 bg-fontdefault antialiased transition-colors motion-reduce:transition-none dark:bg-bgdefault dark:text-fontdefault"><div class="mx-auto p-4 pb-16 max-w-3xl"><header class="sticky top-0 z-50 w-full mb-6
+         bg-fontdefault dark:bg-bgdefault transition-colors motion-reduce:transition-none" data-astro-cid-nen7h5rs><!-- 仅内容限宽；背景全屏铺开 --><div class="mx-auto w-full max-w-screen-md
+              flex h-12 items-center justify-between" data-astro-cid-nen7h5rs><nav class="hidden md:flex items-center gap-4" data-astro-cid-nen7h5rs><a href="/" data-astro-cid-nen7h5rs>Home</a><a href="/posts" data-astro-cid-nen7h5rs>Posts</a><a href="/library" data-astro-cid-nen7h5rs>Library</a><!-- <a href="/bmmg">Media</a> --><!-- <a href="https://exercise.asyncx.top" target="_blank" rel="noopener noreferrer">Steps</a> --></nav><div class="hidden md:block" data-astro-cid-nen7h5rs><div class="flex justify-end space-x-2" data-astro-cid-l6lhmie6><button class="inline-flex items-center rounded-md border p-1 transition-colors hover:bg-zinc-50 dark:border-border-dark dark:hover:bg-surface-hover-dark [&amp;_svg]:text-zinc-500 [&amp;_svg]:hover:text-zinc-900 [&amp;_svg]:dark:text-muted-dark [&amp;_svg]:dark:hover:text-fontdefault" aria-label="Search" onclick="window.location.href='/search'" data-umami-event="Button-Search" type="button" data-astro-cid-l6lhmie6><span class="sr-only" data-astro-cid-l6lhmie6>Search</span><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-search size-4" aria-hidden="true" data-astro-cid-l6lhmie6="true"><path d="m21 21-4.34-4.34"></path><circle cx="11" cy="11" r="8"></circle></svg></button><button class="inline-flex items-center rounded-md border p-1 transition-colors hover:bg-zinc-50 dark:border-border-dark dark:hover:bg-surface-hover-dark [&amp;_svg]:text-zinc-500 [&amp;_svg]:hover:text-zinc-900 [&amp;_svg]:dark:text-muted-dark [&amp;_svg]:dark:hover:text-fontdefault" aria-label="RSS Feed" onclick="window.location.href='/rss.xml'" data-umami-event="Button-RSS" type="button" data-astro-cid-l6lhmie6><span class="sr-only" data-astro-cid-l6lhmie6>RSS Feed</span><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-rss size-4" aria-hidden="true" data-astro-cid-l6lhmie6="true"><path d="M4 11a9 9 0 0 1 9 9"></path><path d="M4 4a16 16 0 0 1 16 16"></path><circle cx="5" cy="19" r="1"></circle></svg></button><button class="inline-flex items-center rounded-md border p-1 transition-colors hover:bg-zinc-50 dark:border-border-dark dark:hover:bg-surface-hover-dark [&amp;_svg]:text-zinc-500 [&amp;_svg]:hover:text-zinc-900 [&amp;_svg]:dark:text-muted-dark [&amp;_svg]:dark:hover:text-fontdefault" aria-label="Douban" onclick="window.open('https://douban.com/people/141874159/', '_blank')" data-umami-event="Button-Douban" type="button" data-astro-cid-l6lhmie6><span class="sr-only" data-astro-cid-l6lhmie6>Douban</span><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-book-open size-4" aria-hidden="true" data-astro-cid-l6lhmie6="true"><path d="M12 5v16"></path><path d="M20.001 19A2 2 0 0022 17V5a2 2 0 00-1.999-2L16 3.002A5 5 0 0012 5a5 5 0 00-4-2H4a2 2 0 00-2 2v12a2 2 0 001.999 2H8a5 5 0 014 2 5 5 0 014-2z"></path></svg></button><button class="inline-flex items-center rounded-md border p-1 transition-colors hover:bg-zinc-50 dark:border-border-dark dark:hover:bg-surface-hover-dark [&amp;_svg]:text-zinc-500 [&amp;_svg]:hover:text-zinc-900 [&amp;_svg]:dark:text-muted-dark [&amp;_svg]:dark:hover:text-fontdefault" aria-label="GitHub" onclick="window.open('https://github.com/ZindexYG/z-index.me', '_blank')" data-umami-event="Button-GitHub" type="button" data-astro-cid-l6lhmie6><span class="sr-only" data-astro-cid-l6lhmie6>GitHub</span><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-code-xml lucide-code-2 size-4" aria-hidden="true" data-astro-cid-l6lhmie6="true"><path d="m18 16 4-4-4-4"></path><path d="m6 8-4 4 4 4"></path><path d="m14.5 4-5 16"></path></svg></button><button class="theme-toggle inline-flex items-center rounded-md border p-1 transition-colors hover:bg-zinc-50 dark:border-border-dark dark:hover:bg-surface-hover-dark [&amp;_svg]:text-zinc-500 [&amp;_svg]:hover:text-zinc-900 [&amp;_svg]:dark:text-muted-dark [&amp;_svg]:dark:hover:text-fontdefault disabled:cursor-wait" aria-label="Switch to dark theme" aria-pressed="false" data-theme-toggle data-umami-event="Button-Theme" type="button" data-astro-cid-l6lhmie6><span class="sr-only" data-theme-label data-astro-cid-l6lhmie6>Switch to dark theme</span><span class="theme-icon-stage grid size-4" aria-hidden="true" data-astro-cid-l6lhmie6><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-sun theme-icon theme-icon-sun size-4" aria-hidden="true" data-astro-cid-l6lhmie6="true"><circle cx="12" cy="12" r="4"></circle><path d="M12 2v2"></path><path d="M12 20v2"></path><path d="m4.93 4.93 1.41 1.41"></path><path d="m17.66 17.66 1.41 1.41"></path><path d="M2 12h2"></path><path d="M20 12h2"></path><path d="m6.34 17.66-1.41 1.41"></path><path d="m19.07 4.93-1.41 1.41"></path></svg><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-moon theme-icon theme-icon-moon size-4" aria-hidden="true" data-astro-cid-l6lhmie6="true"><path d="M20.985 12.486a9 9 0 1 1-9.473-9.472c.405-.022.617.46.402.803a6 6 0 0 0 8.268 8.268c.344-.215.825-.004.803.401"></path></svg></span></button></div><script type="module">var e=`theme`,t=document.documentElement,n=window.matchMedia(`(prefers-color-scheme: dark)`),r=window.matchMedia(`(prefers-reduced-motion: reduce)`),i=!1;function a(){try{let t=localStorage.getItem(e);return t===`light`||t===`dark`?t:null}catch{return null}}function o(){return t.classList.contains(`dark`)?`dark`:`light`}function s(e){let t=`Switch to ${e===`dark`?`light`:`dark`} theme`;document.querySelectorAll(`[data-theme-toggle]`).forEach(n=>{n.disabled=i,n.setAttribute(`aria-label`,t),n.setAttribute(`aria-pressed`,String(e===`dark`)),n.title=t;let r=n.querySelector(`[data-theme-label]`);r&&(r.textContent=t)})}function c(n,r=!1){if(t.classList.toggle(`dark`,n===`dark`),t.dataset.theme=n,r)try{localStorage.setItem(e,n)}catch{}s(n)}function l(e){i=!1,delete t.dataset.themeTransition,e.removeAttribute(`data-theme-transition-trigger`),t.style.removeProperty(`--theme-transition-x`),t.style.removeProperty(`--theme-transition-y`),t.style.removeProperty(`--theme-transition-start-radius`),t.style.removeProperty(`--theme-transition-end-radius`),s(o())}async function u(e){if(i)return;let n=o()===`dark`?`light`:`dark`,a=(e.querySelector(`.theme-icon-stage`)??e).getBoundingClientRect(),u=a.left+a.width/2,d=a.top+a.height/2,f=Math.max(a.width,a.height)/2,p=Math.hypot(Math.max(u,window.innerWidth-u),Math.max(d,window.innerHeight-d)),m=document.startViewTransition?.bind(document);i=!0,s(o()),r.matches||!m?(c(n,!0),window.setTimeout(l,r.matches?0:400,e)):(t.dataset.themeTransition=`to-${n}`,t.style.setProperty(`--theme-transition-x`,`${u}px`),t.style.setProperty(`--theme-transition-y`,`${d}px`),t.style.setProperty(`--theme-transition-start-radius`,`${f}px`),t.style.setProperty(`--theme-transition-end-radius`,`${p}px`),e.setAttribute(`data-theme-transition-trigger`,``),await m(()=>c(n,!0)).finished.catch(()=>void 0),l(e))}document.addEventListener(`click`,e=>{let t=e.target;if(!(t instanceof Element))return;let n=t.closest(`[data-theme-toggle]`);n&&u(n)}),n.addEventListener(`change`,e=>{a()||c(e.matches?`dark`:`light`)}),c(o());</script></div><div class="md:hidden flex items-center gap-2" data-astro-cid-nen7h5rs><details class="relative" data-astro-cid-nen7h5rs><summary class="list-none cursor-pointer p-2 rounded-md
+                 hover:bg-zinc-100 dark:hover:bg-surface-hover-dark
+                 outline-none focus-visible:ring-2
+                 focus-visible:ring-zinc-400 dark:focus-visible:ring-accent-dark" aria-label="Open menu" data-astro-cid-nen7h5rs><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-menu size-6" aria-hidden="true" data-astro-cid-nen7h5rs="true"><path d="M4 5h16"></path><path d="M4 12h16"></path><path d="M4 19h16"></path></svg></summary><!-- 下拉菜单背景也跟随站点配色 --><nav class="absolute top-0 left-[calc(100%+0.5rem)] z-50
+                  w-56 max-w-[80vw]
+                  rounded-lg border border-zinc-200 dark:border-border-dark
+                  bg-fontdefault dark:bg-surface-dark shadow-lg" data-astro-cid-nen7h5rs><ul class="py-1" data-astro-cid-nen7h5rs><li data-astro-cid-nen7h5rs><a class="block px-3 py-2 rounded hover:bg-zinc-100 dark:hover:bg-surface-hover-dark" href="/" data-astro-cid-nen7h5rs>Home</a></li><li data-astro-cid-nen7h5rs><a class="block px-3 py-2 rounded hover:bg-zinc-100 dark:hover:bg-surface-hover-dark" href="/posts" data-astro-cid-nen7h5rs>Posts</a></li><!-- <li>
+              <a
+                class='block px-3 py-2 rounded hover:bg-zinc-100 dark:hover:bg-surface-hover-dark'
+                href='/tags'>Tag</a
+              >
+            </li> --><!-- <li>
+              <a
+                class='block px-3 py-2 rounded hover:bg-zinc-100 dark:hover:bg-surface-hover-dark'
+                href='/bmmg'>Media</a
+              >
+            </li> --><!-- <li>
+              <a
+                class='block px-3 py-2 rounded hover:bg-zinc-100 dark:hover:bg-surface-hover-dark'
+                href='https://exercise.asyncx.top'
+                target='_blank'
+                rel='noopener noreferrer'>Steps</a
+              >
+            </li> --><!-- <li>
+              <a
+                class='block px-3 py-2 rounded hover:bg-zinc-100 dark:hover:bg-surface-hover-dark'
+                href='/about'>README.md</a
+              >
+            </li> --></ul></nav></details><div class="flex justify-end space-x-2" data-astro-cid-l6lhmie6><button class="inline-flex items-center rounded-md border p-1 transition-colors hover:bg-zinc-50 dark:border-border-dark dark:hover:bg-surface-hover-dark [&amp;_svg]:text-zinc-500 [&amp;_svg]:hover:text-zinc-900 [&amp;_svg]:dark:text-muted-dark [&amp;_svg]:dark:hover:text-fontdefault" aria-label="Search" onclick="window.location.href='/search'" data-umami-event="Button-Search" type="button" data-astro-cid-l6lhmie6><span class="sr-only" data-astro-cid-l6lhmie6>Search</span><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-search size-4" aria-hidden="true" data-astro-cid-l6lhmie6="true"><path d="m21 21-4.34-4.34"></path><circle cx="11" cy="11" r="8"></circle></svg></button><button class="inline-flex items-center rounded-md border p-1 transition-colors hover:bg-zinc-50 dark:border-border-dark dark:hover:bg-surface-hover-dark [&amp;_svg]:text-zinc-500 [&amp;_svg]:hover:text-zinc-900 [&amp;_svg]:dark:text-muted-dark [&amp;_svg]:dark:hover:text-fontdefault" aria-label="RSS Feed" onclick="window.location.href='/rss.xml'" data-umami-event="Button-RSS" type="button" data-astro-cid-l6lhmie6><span class="sr-only" data-astro-cid-l6lhmie6>RSS Feed</span><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-rss size-4" aria-hidden="true" data-astro-cid-l6lhmie6="true"><path d="M4 11a9 9 0 0 1 9 9"></path><path d="M4 4a16 16 0 0 1 16 16"></path><circle cx="5" cy="19" r="1"></circle></svg></button><button class="inline-flex items-center rounded-md border p-1 transition-colors hover:bg-zinc-50 dark:border-border-dark dark:hover:bg-surface-hover-dark [&amp;_svg]:text-zinc-500 [&amp;_svg]:hover:text-zinc-900 [&amp;_svg]:dark:text-muted-dark [&amp;_svg]:dark:hover:text-fontdefault" aria-label="Douban" onclick="window.open('https://douban.com/people/141874159/', '_blank')" data-umami-event="Button-Douban" type="button" data-astro-cid-l6lhmie6><span class="sr-only" data-astro-cid-l6lhmie6>Douban</span><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-book-open size-4" aria-hidden="true" data-astro-cid-l6lhmie6="true"><path d="M12 5v16"></path><path d="M20.001 19A2 2 0 0022 17V5a2 2 0 00-1.999-2L16 3.002A5 5 0 0012 5a5 5 0 00-4-2H4a2 2 0 00-2 2v12a2 2 0 001.999 2H8a5 5 0 014 2 5 5 0 014-2z"></path></svg></button><button class="inline-flex items-center rounded-md border p-1 transition-colors hover:bg-zinc-50 dark:border-border-dark dark:hover:bg-surface-hover-dark [&amp;_svg]:text-zinc-500 [&amp;_svg]:hover:text-zinc-900 [&amp;_svg]:dark:text-muted-dark [&amp;_svg]:dark:hover:text-fontdefault" aria-label="GitHub" onclick="window.open('https://github.com/ZindexYG/z-index.me', '_blank')" data-umami-event="Button-GitHub" type="button" data-astro-cid-l6lhmie6><span class="sr-only" data-astro-cid-l6lhmie6>GitHub</span><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-code-xml lucide-code-2 size-4" aria-hidden="true" data-astro-cid-l6lhmie6="true"><path d="m18 16 4-4-4-4"></path><path d="m6 8-4 4 4 4"></path><path d="m14.5 4-5 16"></path></svg></button><button class="theme-toggle inline-flex items-center rounded-md border p-1 transition-colors hover:bg-zinc-50 dark:border-border-dark dark:hover:bg-surface-hover-dark [&amp;_svg]:text-zinc-500 [&amp;_svg]:hover:text-zinc-900 [&amp;_svg]:dark:text-muted-dark [&amp;_svg]:dark:hover:text-fontdefault disabled:cursor-wait" aria-label="Switch to dark theme" aria-pressed="false" data-theme-toggle data-umami-event="Button-Theme" type="button" data-astro-cid-l6lhmie6><span class="sr-only" data-theme-label data-astro-cid-l6lhmie6>Switch to dark theme</span><span class="theme-icon-stage grid size-4" aria-hidden="true" data-astro-cid-l6lhmie6><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-sun theme-icon theme-icon-sun size-4" aria-hidden="true" data-astro-cid-l6lhmie6="true"><circle cx="12" cy="12" r="4"></circle><path d="M12 2v2"></path><path d="M12 20v2"></path><path d="m4.93 4.93 1.41 1.41"></path><path d="m17.66 17.66 1.41 1.41"></path><path d="M2 12h2"></path><path d="M20 12h2"></path><path d="m6.34 17.66-1.41 1.41"></path><path d="m19.07 4.93-1.41 1.41"></path></svg><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-moon theme-icon theme-icon-moon size-4" aria-hidden="true" data-astro-cid-l6lhmie6="true"><path d="M20.985 12.486a9 9 0 1 1-9.473-9.472c.405-.022.617.46.402.803a6 6 0 0 0 8.268 8.268c.344-.215.825-.004.803.401"></path></svg></span></button></div></div></div></header><main><div class="mb-5 flex items-center justify-between"><h1 class="text-xl font-heading font-bold text-zinc-900 dark:text-zinc-100">webpack学习笔记</h1><p class="ml-4 text-sm font-medium text-zinc-500">2017-12-21</p></div><div class="mb-5" data-pagefind-ignore="all"><ul class="flex flex-wrap gap-2"><li><a href="/tags/webpack/" class="group flex justify-between gap-3 rounded px-2 py-1 text-sm bg-bgdefault text-fontdefault dark:bg-fontdefault dark:text-bgdefault"># webpack</a></li><li><a href="/tags/javascript/" class="group flex justify-between gap-3 rounded px-2 py-1 text-sm bg-bgdefault text-fontdefault dark:bg-fontdefault dark:text-bgdefault"># javascript</a></li><li><a href="/tags/node/" class="group flex justify-between gap-3 rounded px-2 py-1 text-sm bg-bgdefault text-fontdefault dark:bg-fontdefault dark:text-bgdefault"># node</a></li></ul></div><div class="toc-root" data-astro-cid-7k3pnqyz><nav class="toc toc-inline" aria-label="Table Of Contents" data-astro-cid-7k3pnqyz><details open data-astro-cid-7k3pnqyz><summary class="text-sm font-semibold" data-astro-cid-7k3pnqyz>Table of Contents</summary><div class="mt-4 ml-4" data-astro-cid-7k3pnqyz>
+    <ul class="space-y-1 pl-4">
+      
+        <li class="text-sm leading-tight">
+          <a href="#理解-webpack" class="toc-link toc-h2" data-depth="2">
+            理解 WebPack
+          </a>
+          
+        </li>
+      
+        <li class="text-sm leading-tight">
+          <a href="#packagejson-文件" class="toc-link toc-h2" data-depth="2">
+            package.json 文件
+          </a>
+          
+    <ul class="space-y-1 pl-4">
+      
+        <li class="text-sm leading-tight">
+          <a href="#常见字段解析" class="toc-link toc-h3" data-depth="3">
+            常见字段解析
+          </a>
+          
+        </li>
+      
+    </ul>
+  
+        </li>
+      
+        <li class="text-sm leading-tight">
+          <a href="#主要配置" class="toc-link toc-h2" data-depth="2">
+            主要配置
+          </a>
+          
+        </li>
+      
+        <li class="text-sm leading-tight">
+          <a href="#plugins-常用插件" class="toc-link toc-h2" data-depth="2">
+            plugins 常用插件
+          </a>
+          
+    <ul class="space-y-1 pl-4">
+      
+        <li class="text-sm leading-tight">
+          <a href="#对代码处理的插件" class="toc-link toc-h3" data-depth="3">
+            对代码处理的插件
+          </a>
+          
+        </li>
+      
+        <li class="text-sm leading-tight">
+          <a href="#辅助打包后的代码" class="toc-link toc-h3" data-depth="3">
+            辅助打包后的代码
+          </a>
+          
+        </li>
+      
+    </ul>
+  
+        </li>
+      
+        <li class="text-sm leading-tight">
+          <a href="#辅助开发的相关属性" class="toc-link toc-h2" data-depth="2">
+            辅助开发的相关属性
+          </a>
+          
+        </li>
+      
+        <li class="text-sm leading-tight">
+          <a href="#精细的相关属性配置" class="toc-link toc-h2" data-depth="2">
+            精细的相关属性配置
+          </a>
+          
+        </li>
+      
+        <li class="text-sm leading-tight">
+          <a href="#结语" class="toc-link toc-h2" data-depth="2">
+            结语
+          </a>
+          
+        </li>
+      
+    </ul>
+  </div></details></nav><aside class="toc-float" data-astro-cid-7k3pnqyz><nav class="toc" aria-label="Table Of Contents" data-astro-cid-7k3pnqyz><details open data-astro-cid-7k3pnqyz><summary class="text-sm font-semibold" data-astro-cid-7k3pnqyz>Table of Contents</summary><div class="mt-2" data-astro-cid-7k3pnqyz>
+    <ul class="space-y-1 pl-4">
+      
+        <li class="text-sm leading-tight">
+          <a href="#理解-webpack" class="toc-link toc-h2" data-depth="2">
+            理解 WebPack
+          </a>
+          
+        </li>
+      
+        <li class="text-sm leading-tight">
+          <a href="#packagejson-文件" class="toc-link toc-h2" data-depth="2">
+            package.json 文件
+          </a>
+          
+    <ul class="space-y-1 pl-4">
+      
+        <li class="text-sm leading-tight">
+          <a href="#常见字段解析" class="toc-link toc-h3" data-depth="3">
+            常见字段解析
+          </a>
+          
+        </li>
+      
+    </ul>
+  
+        </li>
+      
+        <li class="text-sm leading-tight">
+          <a href="#主要配置" class="toc-link toc-h2" data-depth="2">
+            主要配置
+          </a>
+          
+        </li>
+      
+        <li class="text-sm leading-tight">
+          <a href="#plugins-常用插件" class="toc-link toc-h2" data-depth="2">
+            plugins 常用插件
+          </a>
+          
+    <ul class="space-y-1 pl-4">
+      
+        <li class="text-sm leading-tight">
+          <a href="#对代码处理的插件" class="toc-link toc-h3" data-depth="3">
+            对代码处理的插件
+          </a>
+          
+        </li>
+      
+        <li class="text-sm leading-tight">
+          <a href="#辅助打包后的代码" class="toc-link toc-h3" data-depth="3">
+            辅助打包后的代码
+          </a>
+          
+        </li>
+      
+    </ul>
+  
+        </li>
+      
+        <li class="text-sm leading-tight">
+          <a href="#辅助开发的相关属性" class="toc-link toc-h2" data-depth="2">
+            辅助开发的相关属性
+          </a>
+          
+        </li>
+      
+        <li class="text-sm leading-tight">
+          <a href="#精细的相关属性配置" class="toc-link toc-h2" data-depth="2">
+            精细的相关属性配置
+          </a>
+          
+        </li>
+      
+        <li class="text-sm leading-tight">
+          <a href="#结语" class="toc-link toc-h2" data-depth="2">
+            结语
+          </a>
+          
+        </li>
+      
+    </ul>
+  </div></details></nav></aside></div><script data-astro-rerun>
+  ;(() => {
+    const ready = fn => {
+      if (document.readyState === 'loading')
+        document.addEventListener('DOMContentLoaded', fn, { once: true })
+      else fn()
+    }
+
+    function boot() {
+      const root = document.querySelector('.toc-root')
+      if (!root) return
+
+      const float = root.querySelector('.toc-float')
+      const atTop = () => window.scrollY <= 2
+      const onScroll = () => {
+        float?.classList.toggle('at-top', atTop())
+      }
+      onScroll()
+      window.addEventListener('scroll', onScroll, { passive: true })
+
+      const article = document.querySelector('article[data-pagefind-body]')
+      if (!article) return
+
+      // 更新选择器：支持 h1 到 h5
+      const heads = [
+        ...article.querySelectorAll('h1[id], h2[id], h3[id], h4[id], h5[id]'),
+      ]
+      if (!heads.length) return
+
+      const allLinks = [...root.querySelectorAll('.toc a.toc-link')]
+      const map = new Map()
+      for (const a of allLinks) {
+        const href = a.getAttribute('href') || ''
+        if (!href.startsWith('#')) continue
+        const id = href.slice(1)
+        if (!map.has(id)) map.set(id, [])
+        map.get(id).push(a)
+      }
+
+      let activeId = null
+      const setActive = id => {
+        if (activeId === id) return
+        if (activeId && map.has(activeId))
+          map.get(activeId).forEach(el => el.classList.remove('is-active'))
+        activeId = id
+        if (activeId && map.has(activeId))
+          map.get(activeId).forEach(el => el.classList.add('is-active'))
+      }
+
+      const io = new IntersectionObserver(
+        entries => {
+          const visible = entries
+            .filter(e => e.isIntersecting)
+            .sort((a, b) => a.boundingClientRect.top - b.boundingClientRect.top)
+          if (visible.length) {
+            setActive(visible[0].target.id)
+          } else {
+            const nearest = heads
+              .map(h => ({
+                id: h.id,
+                top: Math.abs(h.getBoundingClientRect().top),
+              }))
+              .sort((a, b) => a.top - b.top)[0]
+            if (nearest) setActive(nearest.id)
+          }
+        },
+        { root: null, threshold: [0, 1], rootMargin: '-96px 0px -60% 0px' },
+      )
+
+      heads.forEach(h => io.observe(h))
+
+      const onClick = e => {
+        const a = e.target.closest('.toc a.toc-link')
+        if (!a) return
+        const href = a.getAttribute('href') || ''
+        if (!href.startsWith('#')) return
+        const id = href.slice(1)
+        const el = document.getElementById(id)
+        if (!el) return
+        e.preventDefault()
+        el.scrollIntoView({ behavior: 'smooth', block: 'start' })
+      }
+      root.addEventListener('click', onClick)
+
+      const cleanup = () => {
+        window.removeEventListener('scroll', onScroll)
+        io.disconnect()
+        root.removeEventListener('click', onClick)
+      }
+      document.addEventListener('astro:before-swap', cleanup, { once: true })
+    }
+
+    ready(boot)
+    document.addEventListener('astro:page-load', boot)
+  })()
+</script><article data-pagefind-body><img src="/posts/webpack-banner.jpg" alt="">
+<blockquote>
+<p>这是一份学习笔记，仅此记录一个学习过程</p>
+</blockquote>
+<!-- more -->
+<h2 id="理解-webpack">理解 WebPack</h2>
+<p>学习 WebPack 最好是从服务端的角度出发，或者说从 node 角度出发，到程序的角度，再到用户的角度；</p>
+<p>反过来，一部分用户是不需要一些渲染的页面的，那么从服务端开始，编写用户需要的页面；</p>
+<h2 id="packagejson-文件">package.json 文件</h2>
+<p>package.json 是一个 node 生成的目录文件，下面 vue-cli 生成的一个 package.json；</p>
+<div class="expressive-code"><link rel="stylesheet" href="/_astro/ec.pee2k.css"><script type="module" src="/_astro/ec.0vx5m.js"></script><figure class="frame"><figcaption class="header"></figcaption><pre data-language="javascript"><code><div class="ec-line"><div class="code"><span style="--0:#D5CED9;--1:#F8F8F2">{</span></div></div><div class="ec-line"><div class="code"><span class="indent">  </span><span style="--0:#96E072;--1:#E9F284">"</span><span style="--0:#96E072;--1:#F1FA8C">name</span><span style="--0:#96E072;--1:#E9F284">"</span><span style="--0:#D5CED9;--1:#F8F8F2">: </span><span style="--0:#96E072;--1:#E9F284">"</span><span style="--0:#96E072;--1:#F1FA8C">vue-test</span><span style="--0:#96E072;--1:#E9F284">"</span><span style="--0:#D5CED9;--1:#F8F8F2">,</span></div></div><div class="ec-line"><div class="code"><span class="indent">  </span><span style="--0:#96E072;--1:#E9F284">"</span><span style="--0:#96E072;--1:#F1FA8C">version</span><span style="--0:#96E072;--1:#E9F284">"</span><span style="--0:#D5CED9;--1:#F8F8F2">: </span><span style="--0:#96E072;--1:#E9F284">"</span><span style="--0:#96E072;--1:#F1FA8C">1.0.0</span><span style="--0:#96E072;--1:#E9F284">"</span><span style="--0:#D5CED9;--1:#F8F8F2">,</span></div></div><div class="ec-line"><div class="code"><span class="indent">  </span><span style="--0:#96E072;--1:#E9F284">"</span><span style="--0:#96E072;--1:#F1FA8C">description</span><span style="--0:#96E072;--1:#E9F284">"</span><span style="--0:#D5CED9;--1:#F8F8F2">: </span><span style="--0:#96E072;--1:#E9F284">"</span><span style="--0:#96E072;--1:#F1FA8C">A Vue.js project</span><span style="--0:#96E072;--1:#E9F284">"</span><span style="--0:#D5CED9;--1:#F8F8F2">,</span></div></div><div class="ec-line"><div class="code"><span class="indent">  </span><span style="--0:#96E072;--1:#E9F284">"</span><span style="--0:#96E072;--1:#F1FA8C">author</span><span style="--0:#96E072;--1:#E9F284">"</span><span style="--0:#D5CED9;--1:#F8F8F2">: </span><span style="--0:#96E072;--1:#E9F284">"</span><span style="--0:#96E072;--1:#F1FA8C">yg_zinger</span><span style="--0:#96E072;--1:#E9F284">"</span><span style="--0:#D5CED9;--1:#F8F8F2">,</span></div></div><div class="ec-line"><div class="code"><span class="indent">  </span><span style="--0:#96E072;--1:#E9F284">"</span><span style="--0:#96E072;--1:#F1FA8C">private</span><span style="--0:#96E072;--1:#E9F284">"</span><span style="--0:#D5CED9;--1:#F8F8F2">: </span><span style="--0:#F17963;--1:#BD93F9">true</span><span style="--0:#D5CED9;--1:#F8F8F2">,</span></div></div><div class="ec-line"><div class="code"><span class="indent">  </span><span style="--0:#96E072;--1:#E9F284">"</span><span style="--0:#96E072;--1:#F1FA8C">scripts</span><span style="--0:#96E072;--1:#E9F284">"</span><span style="--0:#D5CED9;--1:#F8F8F2">: {</span></div></div><div class="ec-line"><div class="code"><span class="indent">    </span><span style="--0:#A0A1A7F4;--1:#96A1C2">//more</span></div></div><div class="ec-line"><div class="code"><span class="indent"><span style="--0:#D5CED9;--1:#F8F8F2">  </span></span><span style="--0:#D5CED9;--1:#F8F8F2">},</span></div></div><div class="ec-line"><div class="code"><span class="indent">  </span><span style="--0:#96E072;--1:#E9F284">"</span><span style="--0:#96E072;--1:#F1FA8C">dependencies</span><span style="--0:#96E072;--1:#E9F284">"</span><span style="--0:#D5CED9;--1:#F8F8F2">: {</span></div></div><div class="ec-line"><div class="code"><span class="indent">    </span><span style="--0:#96E072;--1:#E9F284">"</span><span style="--0:#96E072;--1:#F1FA8C">vue</span><span style="--0:#96E072;--1:#E9F284">"</span><span style="--0:#D5CED9;--1:#FF79C6">:</span><span style="--0:#D5CED9;--1:#F8F8F2"> </span><span style="--0:#96E072;--1:#E9F284">"</span><span style="--0:#96E072;--1:#F1FA8C">^2.5.2</span><span style="--0:#96E072;--1:#E9F284">"</span><span style="--0:#D5CED9;--1:#F8F8F2">,</span></div></div><div class="ec-line"><div class="code"><span class="indent">    </span><span style="--0:#96E072;--1:#E9F284">"</span><span style="--0:#96E072;--1:#F1FA8C">vue-router</span><span style="--0:#96E072;--1:#E9F284">"</span><span style="--0:#D5CED9;--1:#FF79C6">:</span><span style="--0:#D5CED9;--1:#F8F8F2"> </span><span style="--0:#96E072;--1:#E9F284">"</span><span style="--0:#96E072;--1:#F1FA8C">^3.0.1</span><span style="--0:#96E072;--1:#E9F284">"</span></div></div><div class="ec-line"><div class="code"><span class="indent"><span style="--0:#D5CED9;--1:#F8F8F2">  </span></span><span style="--0:#D5CED9;--1:#F8F8F2">},</span></div></div><div class="ec-line"><div class="code"><span class="indent">  </span><span style="--0:#96E072;--1:#E9F284">"</span><span style="--0:#96E072;--1:#F1FA8C">devDependencies</span><span style="--0:#96E072;--1:#E9F284">"</span><span style="--0:#D5CED9;--1:#F8F8F2">: {</span></div></div><div class="ec-line"><div class="code"><span class="indent">    </span><span style="--0:#A0A1A7F4;--1:#96A1C2">// more ...</span></div></div><div class="ec-line"><div class="code"><span class="indent">    </span><span style="--0:#96E072;--1:#E9F284">"</span><span style="--0:#96E072;--1:#F1FA8C">url-loader</span><span style="--0:#96E072;--1:#E9F284">"</span><span style="--0:#D5CED9;--1:#FF79C6">:</span><span style="--0:#D5CED9;--1:#F8F8F2"> </span><span style="--0:#96E072;--1:#E9F284">"</span><span style="--0:#96E072;--1:#F1FA8C">^0.5.8</span><span style="--0:#96E072;--1:#E9F284">"</span><span style="--0:#D5CED9;--1:#F8F8F2">,</span></div></div><div class="ec-line"><div class="code"><span class="indent">    </span><span style="--0:#96E072;--1:#E9F284">"</span><span style="--0:#96E072;--1:#F1FA8C">vue-jest</span><span style="--0:#96E072;--1:#E9F284">"</span><span style="--0:#D5CED9;--1:#FF79C6">:</span><span style="--0:#D5CED9;--1:#F8F8F2"> </span><span style="--0:#96E072;--1:#E9F284">"</span><span style="--0:#96E072;--1:#F1FA8C">^1.0.2</span><span style="--0:#96E072;--1:#E9F284">"</span><span style="--0:#D5CED9;--1:#F8F8F2">,</span></div></div><div class="ec-line"><div class="code"><span class="indent">    </span><span style="--0:#96E072;--1:#E9F284">"</span><span style="--0:#96E072;--1:#F1FA8C">vue-loader</span><span style="--0:#96E072;--1:#E9F284">"</span><span style="--0:#D5CED9;--1:#FF79C6">:</span><span style="--0:#D5CED9;--1:#F8F8F2"> </span><span style="--0:#96E072;--1:#E9F284">"</span><span style="--0:#96E072;--1:#F1FA8C">^13.3.0</span><span style="--0:#96E072;--1:#E9F284">"</span><span style="--0:#D5CED9;--1:#F8F8F2">,</span></div></div><div class="ec-line"><div class="code"><span class="indent">    </span><span style="--0:#96E072;--1:#E9F284">"</span><span style="--0:#96E072;--1:#F1FA8C">vue-style-loader</span><span style="--0:#96E072;--1:#E9F284">"</span><span style="--0:#D5CED9;--1:#FF79C6">:</span><span style="--0:#D5CED9;--1:#F8F8F2"> </span><span style="--0:#96E072;--1:#E9F284">"</span><span style="--0:#96E072;--1:#F1FA8C">^3.0.1</span><span style="--0:#96E072;--1:#E9F284">"</span><span style="--0:#D5CED9;--1:#F8F8F2">,</span></div></div><div class="ec-line"><div class="code"><span class="indent">    </span><span style="--0:#96E072;--1:#E9F284">"</span><span style="--0:#96E072;--1:#F1FA8C">vue-template-compiler</span><span style="--0:#96E072;--1:#E9F284">"</span><span style="--0:#D5CED9;--1:#FF79C6">:</span><span style="--0:#D5CED9;--1:#F8F8F2"> </span><span style="--0:#96E072;--1:#E9F284">"</span><span style="--0:#96E072;--1:#F1FA8C">^2.5.2</span><span style="--0:#96E072;--1:#E9F284">"</span><span style="--0:#D5CED9;--1:#F8F8F2">,</span></div></div><div class="ec-line"><div class="code"><span class="indent">    </span><span style="--0:#96E072;--1:#E9F284">"</span><span style="--0:#96E072;--1:#F1FA8C">webpack</span><span style="--0:#96E072;--1:#E9F284">"</span><span style="--0:#D5CED9;--1:#FF79C6">:</span><span style="--0:#D5CED9;--1:#F8F8F2"> </span><span style="--0:#96E072;--1:#E9F284">"</span><span style="--0:#96E072;--1:#F1FA8C">^3.6.0</span><span style="--0:#96E072;--1:#E9F284">"</span><span style="--0:#D5CED9;--1:#F8F8F2">,</span></div></div><div class="ec-line"><div class="code"><span class="indent">    </span><span style="--0:#96E072;--1:#E9F284">"</span><span style="--0:#96E072;--1:#F1FA8C">webpack-bundle-analyzer</span><span style="--0:#96E072;--1:#E9F284">"</span><span style="--0:#D5CED9;--1:#FF79C6">:</span><span style="--0:#D5CED9;--1:#F8F8F2"> </span><span style="--0:#96E072;--1:#E9F284">"</span><span style="--0:#96E072;--1:#F1FA8C">^2.9.0</span><span style="--0:#96E072;--1:#E9F284">"</span><span style="--0:#D5CED9;--1:#F8F8F2">,</span></div></div><div class="ec-line"><div class="code"><span class="indent">    </span><span style="--0:#96E072;--1:#E9F284">"</span><span style="--0:#96E072;--1:#F1FA8C">webpack-dev-server</span><span style="--0:#96E072;--1:#E9F284">"</span><span style="--0:#D5CED9;--1:#FF79C6">:</span><span style="--0:#D5CED9;--1:#F8F8F2"> </span><span style="--0:#96E072;--1:#E9F284">"</span><span style="--0:#96E072;--1:#F1FA8C">^2.9.1</span><span style="--0:#96E072;--1:#E9F284">"</span><span style="--0:#D5CED9;--1:#F8F8F2">,</span></div></div><div class="ec-line"><div class="code"><span class="indent">    </span><span style="--0:#96E072;--1:#E9F284">"</span><span style="--0:#96E072;--1:#F1FA8C">webpack-merge</span><span style="--0:#96E072;--1:#E9F284">"</span><span style="--0:#D5CED9;--1:#FF79C6">:</span><span style="--0:#D5CED9;--1:#F8F8F2"> </span><span style="--0:#96E072;--1:#E9F284">"</span><span style="--0:#96E072;--1:#F1FA8C">^4.1.0</span><span style="--0:#96E072;--1:#E9F284">"</span></div></div><div class="ec-line"><div class="code"><span class="indent"><span style="--0:#D5CED9;--1:#F8F8F2">  </span></span><span style="--0:#D5CED9;--1:#F8F8F2">},</span></div></div><div class="ec-line"><div class="code"><span class="indent">  </span><span style="--0:#96E072;--1:#E9F284">"</span><span style="--0:#96E072;--1:#F1FA8C">engines</span><span style="--0:#96E072;--1:#E9F284">"</span><span style="--0:#D5CED9;--1:#F8F8F2">: {</span></div></div><div class="ec-line"><div class="code"><span class="indent">    </span><span style="--0:#96E072;--1:#E9F284">"</span><span style="--0:#96E072;--1:#F1FA8C">node</span><span style="--0:#96E072;--1:#E9F284">"</span><span style="--0:#D5CED9;--1:#FF79C6">:</span><span style="--0:#D5CED9;--1:#F8F8F2"> </span><span style="--0:#96E072;--1:#E9F284">"</span><span style="--0:#96E072;--1:#F1FA8C">>= 4.0.0</span><span style="--0:#96E072;--1:#E9F284">"</span><span style="--0:#D5CED9;--1:#F8F8F2">,</span></div></div><div class="ec-line"><div class="code"><span class="indent">    </span><span style="--0:#96E072;--1:#E9F284">"</span><span style="--0:#96E072;--1:#F1FA8C">npm</span><span style="--0:#96E072;--1:#E9F284">"</span><span style="--0:#D5CED9;--1:#FF79C6">:</span><span style="--0:#D5CED9;--1:#F8F8F2"> </span><span style="--0:#96E072;--1:#E9F284">"</span><span style="--0:#96E072;--1:#F1FA8C">>= 3.0.0</span><span style="--0:#96E072;--1:#E9F284">"</span></div></div><div class="ec-line"><div class="code"><span class="indent"><span style="--0:#D5CED9;--1:#F8F8F2">  </span></span><span style="--0:#D5CED9;--1:#F8F8F2">},</span></div></div><div class="ec-line"><div class="code"><span class="indent">  </span><span style="--0:#96E072;--1:#E9F284">"</span><span style="--0:#96E072;--1:#F1FA8C">browserslist</span><span style="--0:#96E072;--1:#E9F284">"</span><span style="--0:#D5CED9;--1:#F8F8F2">: [</span></div></div><div class="ec-line"><div class="code"><span class="indent">    </span><span style="--0:#96E072;--1:#E9F284">"</span><span style="--0:#96E072;--1:#F1FA8C">> 1%</span><span style="--0:#96E072;--1:#E9F284">"</span><span style="--0:#D5CED9;--1:#F8F8F2">,</span></div></div><div class="ec-line"><div class="code"><span class="indent">    </span><span style="--0:#96E072;--1:#E9F284">"</span><span style="--0:#96E072;--1:#F1FA8C">last 2 versions</span><span style="--0:#96E072;--1:#E9F284">"</span><span style="--0:#D5CED9;--1:#F8F8F2">,</span></div></div><div class="ec-line"><div class="code"><span class="indent">    </span><span style="--0:#96E072;--1:#E9F284">"</span><span style="--0:#96E072;--1:#F1FA8C">not ie &#x3C;= 8</span><span style="--0:#96E072;--1:#E9F284">"</span></div></div><div class="ec-line"><div class="code"><span class="indent"><span style="--0:#D5CED9;--1:#F8F8F2">  </span></span><span style="--0:#D5CED9;--1:#F8F8F2">]</span></div></div><div class="ec-line"><div class="code"><span style="--0:#D5CED9;--1:#F8F8F2">}</span></div></div></code></pre><div class="copy"><div aria-live="polite"></div><button title="Copy to clipboard" data-copied="Copied!" data-code="{  &#x22;name&#x22;: &#x22;vue-test&#x22;,  &#x22;version&#x22;: &#x22;1.0.0&#x22;,  &#x22;description&#x22;: &#x22;A Vue.js project&#x22;,  &#x22;author&#x22;: &#x22;yg_zinger&#x22;,  &#x22;private&#x22;: true,  &#x22;scripts&#x22;: {    //more  },  &#x22;dependencies&#x22;: {    &#x22;vue&#x22;: &#x22;^2.5.2&#x22;,    &#x22;vue-router&#x22;: &#x22;^3.0.1&#x22;  },  &#x22;devDependencies&#x22;: {    // more ...    &#x22;url-loader&#x22;: &#x22;^0.5.8&#x22;,    &#x22;vue-jest&#x22;: &#x22;^1.0.2&#x22;,    &#x22;vue-loader&#x22;: &#x22;^13.3.0&#x22;,    &#x22;vue-style-loader&#x22;: &#x22;^3.0.1&#x22;,    &#x22;vue-template-compiler&#x22;: &#x22;^2.5.2&#x22;,    &#x22;webpack&#x22;: &#x22;^3.6.0&#x22;,    &#x22;webpack-bundle-analyzer&#x22;: &#x22;^2.9.0&#x22;,    &#x22;webpack-dev-server&#x22;: &#x22;^2.9.1&#x22;,    &#x22;webpack-merge&#x22;: &#x22;^4.1.0&#x22;  },  &#x22;engines&#x22;: {    &#x22;node&#x22;: &#x22;>= 4.0.0&#x22;,    &#x22;npm&#x22;: &#x22;>= 3.0.0&#x22;  },  &#x22;browserslist&#x22;: [    &#x22;> 1%&#x22;,    &#x22;last 2 versions&#x22;,    &#x22;not ie <= 8&#x22;  ]}"><div></div></button></div></figure></div>
+<h3 id="常见字段解析">常见字段解析</h3>
+<table>
+<thead>
+<tr>
+<th>字段</th>
+<th>解析</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>name</td>
+<td>项目名</td>
+</tr>
+<tr>
+<td>version</td>
+<td>项目版本号，（大改，次改，小改）</td>
+</tr>
+<tr>
+<td>author</td>
+<td>作者名字</td>
+</tr>
+<tr>
+<td>script</td>
+<td>调用命令脚本，封装功能用</td>
+</tr>
+<tr>
+<td>dependencies</td>
+<td>项目运行所需的依赖包</td>
+</tr>
+<tr>
+<td>devDependencies</td>
+<td>项目开发所需的依赖包</td>
+</tr>
+<tr>
+<td>engines</td>
+<td>制定包的运行环境</td>
+</tr>
+<tr>
+<td>browserlist</td>
+<td>浏览器兼容性问题</td>
+</tr>
+<tr>
+<td>config</td>
+<td>用于添加命令行的环境变量</td>
+</tr>
+<tr>
+<td>private</td>
+<td>设置为ture 表示不发布到 npm 平台下</td>
+</tr>
+</tbody>
+</table>
+<h2 id="主要配置">主要配置</h2>
+<p>如果是个人配置，大可不必使用脚手架，以及前端框架，把 webpack 当作一个打包工具即可；</p>
+<p>个人配置上面不需要太复杂，就拿一个 webpack.config.js 来看即可</p>
+<div class="expressive-code"><figure class="frame"><figcaption class="header"></figcaption><pre data-language="javascript"><code><div class="ec-line"><div class="code"><span style="--0:#A0A1A7F4;--1:#96A1C2">//导入所需的依赖</span></div></div><div class="ec-line"><div class="code"><span style="--0:#D477F1;--1:#FF79C6">var</span><span style="--1:#F8F8F2"><span style="--0:#D5CED9"> </span><span style="--0:#00E8C6">FriendlyErrorsWebpackPlugin</span><span style="--0:#D5CED9"> </span></span><span style="--0:#F17963;--1:#FF79C6">=</span><span style="--0:#D5CED9;--1:#F8F8F2"> </span><span style="--0:#FFE66D;--1:#50FA7B">require</span><span style="--0:#D5CED9;--1:#F8F8F2">(</span><span style="--0:#96E072;--1:#E9F284">'</span><span style="--0:#96E072;--1:#F1FA8C">friendly-errors-webpack-plugin</span><span style="--0:#96E072;--1:#E9F284">'</span><span style="--0:#D5CED9;--1:#F8F8F2">);</span></div></div><div class="ec-line"><div class="code"><span style="--0:#D477F1;--1:#FF79C6">var</span><span style="--1:#F8F8F2"><span style="--0:#D5CED9"> </span><span style="--0:#00E8C6">ExtractTextPlugin</span><span style="--0:#D5CED9"> </span></span><span style="--0:#F17963;--1:#FF79C6">=</span><span style="--0:#D5CED9;--1:#F8F8F2"> </span><span style="--0:#FFE66D;--1:#50FA7B">require</span><span style="--0:#D5CED9;--1:#F8F8F2">(</span><span style="--0:#96E072;--1:#E9F284">'</span><span style="--0:#96E072;--1:#F1FA8C">extract-text-webpack-plugin</span><span style="--0:#96E072;--1:#E9F284">'</span><span style="--0:#D5CED9;--1:#F8F8F2">)</span></div></div><div class="ec-line"><div class="code"><span style="--0:#D477F1;--1:#FF79C6">var</span><span style="--1:#F8F8F2"><span style="--0:#D5CED9"> </span><span style="--0:#00E8C6">webpack</span><span style="--0:#D5CED9"> </span></span><span style="--0:#F17963;--1:#FF79C6">=</span><span style="--0:#D5CED9;--1:#F8F8F2"> </span><span style="--0:#FFE66D;--1:#50FA7B">require</span><span style="--0:#D5CED9;--1:#F8F8F2">(</span><span style="--0:#96E072;--1:#E9F284">'</span><span style="--0:#96E072;--1:#F1FA8C">webpack</span><span style="--0:#96E072;--1:#E9F284">'</span><span style="--0:#D5CED9;--1:#F8F8F2">)</span></div></div><div class="ec-line"><div class="code"><span style="--0:#D477F1;--1:#FF79C6">var</span><span style="--1:#F8F8F2"><span style="--0:#D5CED9"> </span><span style="--0:#00E8C6">path</span><span style="--0:#D5CED9"> </span></span><span style="--0:#F17963;--1:#FF79C6">=</span><span style="--0:#D5CED9;--1:#F8F8F2"> </span><span style="--0:#FFE66D;--1:#50FA7B">require</span><span style="--0:#D5CED9;--1:#F8F8F2">(</span><span style="--0:#96E072;--1:#E9F284">"</span><span style="--0:#96E072;--1:#F1FA8C">path</span><span style="--0:#96E072;--1:#E9F284">"</span><span style="--0:#D5CED9;--1:#F8F8F2">)</span></div></div><div class="ec-line"><div class="code">
+</div></div><div class="ec-line"><div class="code"><span style="--0:#A0A1A7F4;--1:#96A1C2">//模块输出</span></div></div><div class="ec-line"><div class="code"><span style="--0:#D477F1;--1:#8BE9FD;--1fs:italic">module</span><span style="--0:#D5CED9;--1:#F8F8F2">.</span><span style="--0:#D477F1;--1:#8BE9FD;--1fs:italic">exports</span><span style="--0:#D5CED9;--1:#F8F8F2"> </span><span style="--0:#F17963;--1:#FF79C6">=</span><span style="--0:#D5CED9;--1:#F8F8F2"> {</span></div></div><div class="ec-line"><div class="code"><span class="indent">  </span><span style="--0:#A0A1A7F4;--1:#96A1C2">// 入口， 可以是字符串，数组，对象</span></div></div><div class="ec-line"><div class="code"><span class="indent"><span style="--0:#D5CED9;--1:#F8F8F2">  </span></span><span style="--0:#D5CED9;--1:#F8F8F2">entry</span><span style="--0:#D5CED9;--1:#FF79C6">:</span><span style="--0:#D5CED9;--1:#F8F8F2"> </span><span style="--0:#96E072;--1:#E9F284">'</span><span style="--0:#96E072;--1:#F1FA8C">./src/mian.js</span><span style="--0:#96E072;--1:#E9F284">'</span><span style="--0:#D5CED9;--1:#F8F8F2">,</span></div></div><div class="ec-line"><div class="code"><span class="indent">  </span><span style="--0:#A0A1A7F4;--1:#96A1C2">// 输出配置， 一般有 filenema=输出名字, path=输出地址, publicPath=输出公共资源的路径 字段</span></div></div><div class="ec-line"><div class="code"><span class="indent"><span style="--0:#D5CED9;--1:#F8F8F2">  </span></span><span style="--0:#D5CED9;--1:#F8F8F2">output</span><span style="--0:#D5CED9;--1:#FF79C6">:</span><span style="--0:#D5CED9;--1:#F8F8F2"> {</span></div></div><div class="ec-line"><div class="code"><span class="indent"><span style="--0:#D5CED9;--1:#F8F8F2">    </span></span><span style="--0:#D5CED9;--1:#F8F8F2">path</span><span style="--0:#D5CED9;--1:#FF79C6">:</span><span style="--1:#F8F8F2"><span style="--0:#D5CED9"> </span><span style="--0:#00E8C6">__dirname</span><span style="--0:#D5CED9"> </span></span><span style="--0:#F17963;--1:#FF79C6">+</span><span style="--0:#D5CED9;--1:#F8F8F2"> </span><span style="--0:#96E072;--1:#E9F284">'</span><span style="--0:#96E072;--1:#F1FA8C">/dist</span><span style="--0:#96E072;--1:#E9F284">'</span><span style="--0:#D5CED9;--1:#F8F8F2">,</span></div></div><div class="ec-line"><div class="code"><span class="indent"><span style="--0:#D5CED9;--1:#F8F8F2">    </span></span><span style="--0:#D5CED9;--1:#F8F8F2">publicPath</span><span style="--0:#D5CED9;--1:#FF79C6">:</span><span style="--0:#D5CED9;--1:#F8F8F2"> </span><span style="--0:#96E072;--1:#E9F284">'</span><span style="--0:#96E072;--1:#F1FA8C">/static/</span><span style="--0:#96E072;--1:#E9F284">'</span><span style="--0:#D5CED9;--1:#F8F8F2">,</span></div></div><div class="ec-line"><div class="code"><span class="indent"><span style="--0:#D5CED9;--1:#F8F8F2">    </span></span><span style="--0:#D5CED9;--1:#F8F8F2">filename</span><span style="--0:#D5CED9;--1:#FF79C6">:</span><span style="--0:#D5CED9;--1:#F8F8F2"> </span><span style="--0:#96E072;--1:#E9F284">'</span><span style="--0:#96E072;--1:#F1FA8C">build.js</span><span style="--0:#96E072;--1:#E9F284">'</span></div></div><div class="ec-line"><div class="code"><span class="indent"><span style="--0:#D5CED9;--1:#F8F8F2">  </span></span><span style="--0:#D5CED9;--1:#F8F8F2">},</span></div></div><div class="ec-line"><div class="code"><span class="indent">  </span><span style="--0:#A0A1A7F4;--1:#96A1C2">// 插件</span></div></div><div class="ec-line"><div class="code"><span class="indent"><span style="--0:#D5CED9;--1:#F8F8F2">  </span></span><span style="--0:#D5CED9;--1:#F8F8F2">plugins</span><span style="--0:#D5CED9;--1:#FF79C6">:</span><span style="--0:#D5CED9;--1:#F8F8F2"> [</span></div></div><div class="ec-line"><div class="code"><span class="indent">    </span><span style="--0:#F17963;--1:#FF79C6;--1fw:bold">new</span><span style="--1:#F8F8F2"><span style="--0:#D5CED9"> </span><span style="--0:#F39C12">webpack</span><span style="--0:#D5CED9">.</span></span><span style="--0:#FFE66D;--1:#50FA7B">ProgressPlugin</span><span style="--0:#D5CED9;--1:#F8F8F2">(),</span></div></div><div class="ec-line"><div class="code"><span class="indent">    </span><span style="--0:#F17963;--1:#FF79C6;--1fw:bold">new</span><span style="--0:#D5CED9;--1:#F8F8F2"> </span><span style="--0:#FFE66D;--1:#50FA7B">FriendlyErrorsWebpackPlugin</span><span style="--0:#D5CED9;--1:#F8F8F2">()</span></div></div><div class="ec-line"><div class="code"><span class="indent"><span style="--0:#D5CED9;--1:#F8F8F2">  </span></span><span style="--0:#D5CED9;--1:#F8F8F2">],</span></div></div><div class="ec-line"><div class="code"><span class="indent">  </span><span style="--0:#A0A1A7F4;--1:#96A1C2">// 模块处理</span></div></div><div class="ec-line"><div class="code"><span class="indent"><span style="--0:#D5CED9;--1:#F8F8F2">  </span></span><span style="--0:#D5CED9;--1:#F8F8F2">module</span><span style="--0:#D5CED9;--1:#FF79C6">:</span><span style="--0:#D5CED9;--1:#F8F8F2"> {</span></div></div><div class="ec-line"><div class="code"><span class="indent">    </span><span style="--0:#A0A1A7F4;--1:#96A1C2">// 字段配置</span></div></div><div class="ec-line"><div class="code"><span class="indent"><span style="--0:#D5CED9;--1:#F8F8F2">    </span></span><span style="--0:#D5CED9;--1:#F8F8F2">rules</span><span style="--0:#D5CED9;--1:#FF79C6">:</span><span style="--0:#D5CED9;--1:#F8F8F2"> [{</span></div></div><div class="ec-line"><div class="code"><span class="indent">      </span><span style="--0:#A0A1A7F4;--1:#96A1C2">//test = 正则匹配规则， use = 匹配对应 loader or 对象 options</span></div></div><div class="ec-line"><div class="code"><span class="indent"><span style="--0:#D5CED9;--1:#F8F8F2">      </span></span><span style="--0:#D5CED9;--1:#F8F8F2">test</span><span style="--0:#D5CED9;--1:#FF79C6">:</span><span style="--0:#7CB7FF;--1:#F1FA8C"> </span><span style="--0:#96E072;--1:#FF7777">/</span><span style="--1:#F1FA8C"><span style="--0:#F17963">\.</span><span style="--0:#7CB7FF">vue</span></span><span style="--0:#D477F1;--1:#FF79C6">$</span><span style="--0:#96E072;--1:#FF7777">/</span><span style="--0:#D5CED9;--1:#F8F8F2">,</span></div></div><div class="ec-line"><div class="code"><span class="indent"><span style="--0:#D5CED9;--1:#F8F8F2">      </span></span><span style="--0:#D5CED9;--1:#F8F8F2">use</span><span style="--0:#D5CED9;--1:#FF79C6">:</span><span style="--0:#D5CED9;--1:#F8F8F2"> {</span></div></div><div class="ec-line"><div class="code"><span class="indent"><span style="--0:#D5CED9;--1:#F8F8F2">        </span></span><span style="--0:#D5CED9;--1:#F8F8F2">loader</span><span style="--0:#D5CED9;--1:#FF79C6">:</span><span style="--0:#D5CED9;--1:#F8F8F2"> </span><span style="--0:#96E072;--1:#E9F284">"</span><span style="--0:#96E072;--1:#F1FA8C">vue-loader</span><span style="--0:#96E072;--1:#E9F284">"</span><span style="--0:#D5CED9;--1:#F8F8F2">,</span></div></div><div class="ec-line"><div class="code"><span class="indent"><span style="--0:#D5CED9;--1:#F8F8F2">        </span></span><span style="--0:#D5CED9;--1:#F8F8F2">options</span><span style="--0:#D5CED9;--1:#FF79C6">:</span><span style="--0:#D5CED9;--1:#F8F8F2"> {</span></div></div><div class="ec-line"><div class="code"><span class="indent"><span style="--0:#D5CED9;--1:#F8F8F2">          </span></span><span style="--0:#D5CED9;--1:#F8F8F2">loaders</span><span style="--0:#D5CED9;--1:#FF79C6">:</span><span style="--0:#D5CED9;--1:#F8F8F2"> {</span></div></div><div class="ec-line"><div class="code"><span class="indent"><span style="--0:#D5CED9;--1:#F8F8F2">            </span></span><span style="--0:#D5CED9;--1:#F8F8F2">css</span><span style="--0:#D5CED9;--1:#FF79C6">:</span><span style="--1:#F8F8F2"><span style="--0:#D5CED9"> </span><span style="--0:#F39C12">ExtractTextPlugin</span><span style="--0:#D5CED9">.</span></span><span style="--0:#FFE66D;--1:#50FA7B">extract</span><span style="--0:#D5CED9;--1:#F8F8F2">({</span></div></div><div class="ec-line"><div class="code"><span class="indent"><span style="--0:#D5CED9;--1:#F8F8F2">              </span></span><span style="--0:#D5CED9;--1:#F8F8F2">use</span><span style="--0:#D5CED9;--1:#FF79C6">:</span><span style="--0:#D5CED9;--1:#F8F8F2"> </span><span style="--0:#96E072;--1:#E9F284">'</span><span style="--0:#96E072;--1:#F1FA8C">css-loader</span><span style="--0:#96E072;--1:#E9F284">'</span></div></div><div class="ec-line"><div class="code"><span class="indent"><span style="--0:#D5CED9;--1:#F8F8F2">            </span></span><span style="--0:#D5CED9;--1:#F8F8F2">}),</span></div></div><div class="ec-line"><div class="code"><span class="indent"><span style="--0:#D5CED9;--1:#F8F8F2">            </span></span><span style="--0:#D5CED9;--1:#F8F8F2">stylus</span><span style="--0:#D5CED9;--1:#FF79C6">:</span><span style="--1:#F8F8F2"><span style="--0:#D5CED9"> </span><span style="--0:#F39C12">ExtractTextPlugin</span><span style="--0:#D5CED9">.</span></span><span style="--0:#FFE66D;--1:#50FA7B">extract</span><span style="--0:#D5CED9;--1:#F8F8F2">({</span></div></div><div class="ec-line"><div class="code"><span class="indent"><span style="--0:#D5CED9;--1:#F8F8F2">              </span></span><span style="--0:#D5CED9;--1:#F8F8F2">use</span><span style="--0:#D5CED9;--1:#FF79C6">:</span><span style="--0:#D5CED9;--1:#F8F8F2"> [</span><span style="--0:#96E072;--1:#E9F284">"</span><span style="--0:#96E072;--1:#F1FA8C">css-loader</span><span style="--0:#96E072;--1:#E9F284">"</span><span style="--0:#D5CED9;--1:#F8F8F2">, </span><span style="--0:#96E072;--1:#E9F284">"</span><span style="--0:#96E072;--1:#F1FA8C">scss-loader</span><span style="--0:#96E072;--1:#E9F284">"</span><span style="--0:#D5CED9;--1:#F8F8F2">]</span></div></div><div class="ec-line"><div class="code"><span class="indent"><span style="--0:#D5CED9;--1:#F8F8F2">            </span></span><span style="--0:#D5CED9;--1:#F8F8F2">})</span></div></div><div class="ec-line"><div class="code"><span class="indent"><span style="--0:#D5CED9;--1:#F8F8F2">          </span></span><span style="--0:#D5CED9;--1:#F8F8F2">}</span></div></div><div class="ec-line"><div class="code"><span class="indent"><span style="--0:#D5CED9;--1:#F8F8F2">        </span></span><span style="--0:#D5CED9;--1:#F8F8F2">}</span></div></div><div class="ec-line"><div class="code"><span class="indent"><span style="--0:#D5CED9;--1:#F8F8F2">      </span></span><span style="--0:#D5CED9;--1:#F8F8F2">}</span></div></div><div class="ec-line"><div class="code"><span class="indent"><span style="--0:#D5CED9;--1:#F8F8F2">    </span></span><span style="--0:#D5CED9;--1:#F8F8F2">}, {</span></div></div><div class="ec-line"><div class="code"><span class="indent"><span style="--0:#D5CED9;--1:#F8F8F2">      </span></span><span style="--0:#D5CED9;--1:#F8F8F2">test</span><span style="--0:#D5CED9;--1:#FF79C6">:</span><span style="--0:#7CB7FF;--1:#F1FA8C"> </span><span style="--0:#96E072;--1:#FF7777">/</span><span style="--1:#F1FA8C"><span style="--0:#F17963">\.</span><span style="--0:#7CB7FF">css</span></span><span style="--0:#D477F1;--1:#FF79C6">$</span><span style="--0:#96E072;--1:#FF7777">/</span><span style="--0:#D5CED9;--1:#F8F8F2">,</span></div></div><div class="ec-line"><div class="code"><span class="indent"><span style="--0:#D5CED9;--1:#F8F8F2">      </span></span><span style="--0:#D5CED9;--1:#F8F8F2">use</span><span style="--0:#D5CED9;--1:#FF79C6">:</span><span style="--0:#D5CED9;--1:#F8F8F2"> [</span><span style="--0:#96E072;--1:#E9F284">'</span><span style="--0:#96E072;--1:#F1FA8C">vue-style-loader</span><span style="--0:#96E072;--1:#E9F284">'</span><span style="--0:#D5CED9;--1:#F8F8F2">, </span><span style="--0:#96E072;--1:#E9F284">'</span><span style="--0:#96E072;--1:#F1FA8C">css-loader</span><span style="--0:#96E072;--1:#E9F284">'</span><span style="--0:#D5CED9;--1:#F8F8F2">, </span><span style="--0:#96E072;--1:#E9F284">'</span><span style="--0:#96E072;--1:#F1FA8C">scss-loader</span><span style="--0:#96E072;--1:#E9F284">'</span><span style="--0:#D5CED9;--1:#F8F8F2">]</span></div></div><div class="ec-line"><div class="code"><span class="indent"><span style="--0:#D5CED9;--1:#F8F8F2">    </span></span><span style="--0:#D5CED9;--1:#F8F8F2">}, {</span></div></div><div class="ec-line"><div class="code"><span class="indent"><span style="--0:#D5CED9;--1:#F8F8F2">      </span></span><span style="--0:#D5CED9;--1:#F8F8F2">test</span><span style="--0:#D5CED9;--1:#FF79C6">:</span><span style="--0:#7CB7FF;--1:#F1FA8C"> </span><span style="--0:#96E072;--1:#FF7777">/</span><span style="--0:#F17963;--1:#F1FA8C">\.</span><span style="--0:#F39C12;--1:#FFB86C">(</span><span style="--0:#F39C12;--1:#F1FA8C">png</span><span style="--0:#F17963;--1:#FF79C6">|</span><span style="--0:#F39C12;--1:#F1FA8C">jpe</span><span style="--0:#F17963;--1:#FF79C6">?</span><span style="--0:#F39C12;--1:#F1FA8C">g</span><span style="--0:#F17963;--1:#FF79C6">|</span><span style="--0:#F39C12;--1:#F1FA8C">gif</span><span style="--0:#F17963;--1:#FF79C6">|</span><span style="--0:#F39C12;--1:#F1FA8C">svg</span><span style="--0:#F39C12;--1:#FFB86C">)(</span><span style="--0:#F17963;--1:#F1FA8C">\?</span><span style="--0:#F17963;--1:#BD93F9">.</span><span style="--0:#F17963;--1:#FF79C6">*</span><span style="--0:#F39C12;--1:#FFB86C">)</span><span style="--1:#FF79C6"><span style="--0:#F17963">?</span><span style="--0:#D477F1">$</span></span><span style="--0:#96E072;--1:#FF7777">/</span><span style="--0:#D5CED9;--1:#F8F8F2">,</span></div></div><div class="ec-line"><div class="code"><span class="indent"><span style="--0:#D5CED9;--1:#F8F8F2">      </span></span><span style="--0:#D5CED9;--1:#F8F8F2">use</span><span style="--0:#D5CED9;--1:#FF79C6">:</span><span style="--0:#D5CED9;--1:#F8F8F2"> [{</span></div></div><div class="ec-line"><div class="code"><span class="indent"><span style="--0:#D5CED9;--1:#F8F8F2">        </span></span><span style="--0:#D5CED9;--1:#F8F8F2">loader</span><span style="--0:#D5CED9;--1:#FF79C6">:</span><span style="--0:#D5CED9;--1:#F8F8F2"> </span><span style="--0:#96E072;--1:#E9F284">"</span><span style="--0:#96E072;--1:#F1FA8C">url-loader</span><span style="--0:#96E072;--1:#E9F284">"</span><span style="--0:#D5CED9;--1:#F8F8F2">,</span></div></div><div class="ec-line"><div class="code"><span class="indent"><span style="--0:#D5CED9;--1:#F8F8F2">        </span></span><span style="--0:#D5CED9;--1:#F8F8F2">options</span><span style="--0:#D5CED9;--1:#FF79C6">:</span><span style="--0:#D5CED9;--1:#F8F8F2"> {</span></div></div><div class="ec-line"><div class="code"><span class="indent"><span style="--0:#D5CED9;--1:#F8F8F2">          </span></span><span style="--0:#D5CED9;--1:#F8F8F2">limit</span><span style="--0:#D5CED9;--1:#FF79C6">:</span><span style="--0:#D5CED9;--1:#F8F8F2"> </span><span style="--0:#F39C12;--1:#BD93F9">10000</span><span style="--0:#D5CED9;--1:#F8F8F2">,</span></div></div><div class="ec-line"><div class="code"><span class="indent"><span style="--0:#D5CED9;--1:#F8F8F2">          </span></span><span style="--0:#D5CED9;--1:#F8F8F2">name</span><span style="--0:#D5CED9;--1:#FF79C6">:</span><span style="--0:#D5CED9;--1:#F8F8F2"> </span><span style="--0:#96E072;--1:#E9F284">'</span><span style="--0:#96E072;--1:#F1FA8C">images/[name].[hash:7].[ext]</span><span style="--0:#96E072;--1:#E9F284">'</span><span style="--0:#D5CED9;--1:#F8F8F2"> </span><span style="--0:#A0A1A7F4;--1:#96A1C2">// 将图片都放入images文件夹下，[hash:7]防缓存</span></div></div><div class="ec-line"><div class="code"><span class="indent"><span style="--0:#D5CED9;--1:#F8F8F2">        </span></span><span style="--0:#D5CED9;--1:#F8F8F2">}</span></div></div><div class="ec-line"><div class="code"><span class="indent"><span style="--0:#D5CED9;--1:#F8F8F2">      </span></span><span style="--0:#D5CED9;--1:#F8F8F2">}]</span></div></div><div class="ec-line"><div class="code"><span class="indent"><span style="--0:#D5CED9;--1:#F8F8F2">    </span></span><span style="--0:#D5CED9;--1:#F8F8F2">}, {</span></div></div><div class="ec-line"><div class="code"><span class="indent"><span style="--0:#D5CED9;--1:#F8F8F2">      </span></span><span style="--0:#D5CED9;--1:#F8F8F2">test</span><span style="--0:#D5CED9;--1:#FF79C6">:</span><span style="--0:#7CB7FF;--1:#F1FA8C"> </span><span style="--0:#96E072;--1:#FF7777">/</span><span style="--0:#F17963;--1:#F1FA8C">\.</span><span style="--0:#F39C12;--1:#FFB86C">(</span><span style="--0:#F39C12;--1:#F1FA8C">woff2</span><span style="--0:#F17963;--1:#FF79C6">?|</span><span style="--0:#F39C12;--1:#F1FA8C">eot</span><span style="--0:#F17963;--1:#FF79C6">|</span><span style="--0:#F39C12;--1:#F1FA8C">ttf</span><span style="--0:#F17963;--1:#FF79C6">|</span><span style="--0:#F39C12;--1:#F1FA8C">otf</span><span style="--0:#F39C12;--1:#FFB86C">)(</span><span style="--0:#F17963;--1:#F1FA8C">\?</span><span style="--0:#F17963;--1:#BD93F9">.</span><span style="--0:#F17963;--1:#FF79C6">*</span><span style="--0:#F39C12;--1:#FFB86C">)</span><span style="--1:#FF79C6"><span style="--0:#F17963">?</span><span style="--0:#D477F1">$</span></span><span style="--0:#96E072;--1:#FF7777">/</span><span style="--0:#D5CED9;--1:#F8F8F2">,</span></div></div><div class="ec-line"><div class="code"><span class="indent"><span style="--0:#D5CED9;--1:#F8F8F2">      </span></span><span style="--0:#D5CED9;--1:#F8F8F2">use</span><span style="--0:#D5CED9;--1:#FF79C6">:</span><span style="--0:#D5CED9;--1:#F8F8F2"> [{</span></div></div><div class="ec-line"><div class="code"><span class="indent"><span style="--0:#D5CED9;--1:#F8F8F2">        </span></span><span style="--0:#D5CED9;--1:#F8F8F2">loader</span><span style="--0:#D5CED9;--1:#FF79C6">:</span><span style="--0:#D5CED9;--1:#F8F8F2"> </span><span style="--0:#96E072;--1:#E9F284">"</span><span style="--0:#96E072;--1:#F1FA8C">url-loader</span><span style="--0:#96E072;--1:#E9F284">"</span><span style="--0:#D5CED9;--1:#F8F8F2">,</span></div></div><div class="ec-line"><div class="code"><span class="indent"><span style="--0:#D5CED9;--1:#F8F8F2">        </span></span><span style="--0:#D5CED9;--1:#F8F8F2">options</span><span style="--0:#D5CED9;--1:#FF79C6">:</span><span style="--0:#D5CED9;--1:#F8F8F2"> {</span></div></div><div class="ec-line"><div class="code"><span class="indent"><span style="--0:#D5CED9;--1:#F8F8F2">          </span></span><span style="--0:#D5CED9;--1:#F8F8F2">limit</span><span style="--0:#D5CED9;--1:#FF79C6">:</span><span style="--0:#D5CED9;--1:#F8F8F2"> </span><span style="--0:#F39C12;--1:#BD93F9">10000</span><span style="--0:#D5CED9;--1:#F8F8F2">,</span></div></div><div class="ec-line"><div class="code"><span class="indent"><span style="--0:#D5CED9;--1:#F8F8F2">          </span></span><span style="--0:#D5CED9;--1:#F8F8F2">name</span><span style="--0:#D5CED9;--1:#FF79C6">:</span><span style="--0:#D5CED9;--1:#F8F8F2"> </span><span style="--0:#96E072;--1:#E9F284">'</span><span style="--0:#96E072;--1:#F1FA8C">fonts/[name].[hash:7].[ext]</span><span style="--0:#96E072;--1:#E9F284">'</span><span style="--0:#D5CED9;--1:#F8F8F2"> </span><span style="--0:#A0A1A7F4;--1:#96A1C2">// 将字体放入fonts文件夹下</span></div></div><div class="ec-line"><div class="code"><span class="indent"><span style="--0:#D5CED9;--1:#F8F8F2">        </span></span><span style="--0:#D5CED9;--1:#F8F8F2">}</span></div></div><div class="ec-line"><div class="code"><span class="indent"><span style="--0:#D5CED9;--1:#F8F8F2">      </span></span><span style="--0:#D5CED9;--1:#F8F8F2">}]</span></div></div><div class="ec-line"><div class="code"><span class="indent"><span style="--0:#D5CED9;--1:#F8F8F2">    </span></span><span style="--0:#D5CED9;--1:#F8F8F2">}, {</span></div></div><div class="ec-line"><div class="code"><span class="indent"><span style="--0:#D5CED9;--1:#F8F8F2">      </span></span><span style="--0:#D5CED9;--1:#F8F8F2">test</span><span style="--0:#D5CED9;--1:#FF79C6">:</span><span style="--0:#7CB7FF;--1:#F1FA8C"> </span><span style="--0:#96E072;--1:#FF7777">/</span><span style="--1:#F1FA8C"><span style="--0:#F17963">\.</span><span style="--0:#7CB7FF">js</span></span><span style="--0:#D477F1;--1:#FF79C6">$</span><span style="--0:#96E072;--1:#FF7777">/</span><span style="--0:#D5CED9;--1:#F8F8F2">,</span></div></div><div class="ec-line"><div class="code"><span class="indent"><span style="--0:#D5CED9;--1:#F8F8F2">      </span></span><span style="--0:#D5CED9;--1:#F8F8F2">use</span><span style="--0:#D5CED9;--1:#FF79C6">:</span><span style="--0:#D5CED9;--1:#F8F8F2"> </span><span style="--0:#96E072;--1:#E9F284">"</span><span style="--0:#96E072;--1:#F1FA8C">babel-loader</span><span style="--0:#96E072;--1:#E9F284">"</span><span style="--0:#D5CED9;--1:#F8F8F2">,</span></div></div><div class="ec-line"><div class="code"><span class="indent"><span style="--0:#D5CED9;--1:#F8F8F2">      </span></span><span style="--0:#D5CED9;--1:#F8F8F2">include</span><span style="--0:#D5CED9;--1:#FF79C6">:</span><span style="--1:#F8F8F2"><span style="--0:#D5CED9"> [</span><span style="--0:#F39C12">path</span><span style="--0:#D5CED9">.</span></span><span style="--0:#FFE66D;--1:#50FA7B">resolve</span><span style="--1:#F8F8F2"><span style="--0:#D5CED9">(</span><span style="--0:#00E8C6">__dirname</span><span style="--0:#D5CED9">, </span></span><span style="--0:#96E072;--1:#E9F284">'</span><span style="--0:#96E072;--1:#F1FA8C">src</span><span style="--0:#96E072;--1:#E9F284">'</span><span style="--0:#D5CED9;--1:#F8F8F2">)]</span></div></div><div class="ec-line"><div class="code"><span class="indent"><span style="--0:#D5CED9;--1:#F8F8F2">    </span></span><span style="--0:#D5CED9;--1:#F8F8F2">}]</span></div></div><div class="ec-line"><div class="code"><span class="indent"><span style="--0:#D5CED9;--1:#F8F8F2">  </span></span><span style="--0:#D5CED9;--1:#F8F8F2">}</span></div></div><div class="ec-line"><div class="code"><span style="--0:#D5CED9;--1:#F8F8F2">}</span></div></div><div class="ec-line"><div class="code"><span style="--0:#A0A1A7F4;--1:#96A1C2">// 压缩 javascript 的插件</span></div></div><div class="ec-line"><div class="code"><span style="--0:#F17963;--1:#FF79C6;--1fw:bold">new</span><span style="--1:#F8F8F2"><span style="--0:#D5CED9"> </span><span style="--0:#F39C12">webpack</span><span style="--0:#D5CED9">.</span><span style="--0:#00E8C6">optimize</span><span style="--0:#D5CED9">.</span></span><span style="--0:#FFE66D;--1:#50FA7B">UglifyJsPlugin</span><span style="--0:#D5CED9;--1:#F8F8F2">()</span></div></div><div class="ec-line"><div class="code"><span style="--0:#A0A1A7F4;--1:#96A1C2">// 抽离 css 到css 文件</span></div></div><div class="ec-line"><div class="code"><span style="--0:#F17963;--1:#FF79C6;--1fw:bold">new</span><span style="--0:#D5CED9;--1:#F8F8F2"> </span><span style="--0:#FFE66D;--1:#50FA7B">ExtractTextPlugin</span><span style="--0:#D5CED9;--1:#F8F8F2">({</span></div></div><div class="ec-line"><div class="code"><span class="indent"><span style="--0:#D5CED9;--1:#F8F8F2">  </span></span><span style="--0:#D5CED9;--1:#F8F8F2">filename</span><span style="--0:#D5CED9;--1:#FF79C6">:</span><span style="--0:#D5CED9;--1:#F8F8F2"> </span><span style="--0:#96E072;--1:#E9F284">"</span><span style="--0:#96E072;--1:#F1FA8C">css/style.css</span><span style="--0:#96E072;--1:#E9F284">"</span></div></div><div class="ec-line"><div class="code"><span style="--0:#D5CED9;--1:#F8F8F2">})</span></div></div></code></pre><div class="copy"><div aria-live="polite"></div><button title="Copy to clipboard" data-copied="Copied!" data-code="//导入所需的依赖var FriendlyErrorsWebpackPlugin = require(&#x27;friendly-errors-webpack-plugin&#x27;);var ExtractTextPlugin = require(&#x27;extract-text-webpack-plugin&#x27;)var webpack = require(&#x27;webpack&#x27;)var path = require(&#x22;path&#x22;)//模块输出module.exports = {  // 入口， 可以是字符串，数组，对象  entry: &#x27;./src/mian.js&#x27;,  // 输出配置， 一般有 filenema=输出名字, path=输出地址, publicPath=输出公共资源的路径 字段  output: {    path: __dirname + &#x27;/dist&#x27;,    publicPath: &#x27;/static/&#x27;,    filename: &#x27;build.js&#x27;  },  // 插件  plugins: [    new webpack.ProgressPlugin(),    new FriendlyErrorsWebpackPlugin()  ],  // 模块处理  module: {    // 字段配置    rules: [{      //test = 正则匹配规则， use = 匹配对应 loader or 对象 options      test: /\.vue$/,      use: {        loader: &#x22;vue-loader&#x22;,        options: {          loaders: {            css: ExtractTextPlugin.extract({              use: &#x27;css-loader&#x27;            }),            stylus: ExtractTextPlugin.extract({              use: [&#x22;css-loader&#x22;, &#x22;scss-loader&#x22;]            })          }        }      }    }, {      test: /\.css$/,      use: [&#x27;vue-style-loader&#x27;, &#x27;css-loader&#x27;, &#x27;scss-loader&#x27;]    }, {      test: /\.(png|jpe?g|gif|svg)(\?.*)?$/,      use: [{        loader: &#x22;url-loader&#x22;,        options: {          limit: 10000,          name: &#x27;images/[name].[hash:7].[ext]&#x27; // 将图片都放入images文件夹下，[hash:7]防缓存        }      }]    }, {      test: /\.(woff2?|eot|ttf|otf)(\?.*)?$/,      use: [{        loader: &#x22;url-loader&#x22;,        options: {          limit: 10000,          name: &#x27;fonts/[name].[hash:7].[ext]&#x27; // 将字体放入fonts文件夹下        }      }]    }, {      test: /\.js$/,      use: &#x22;babel-loader&#x22;,      include: [path.resolve(__dirname, &#x27;src&#x27;)]    }]  }}// 压缩 javascript 的插件new webpack.optimize.UglifyJsPlugin()// 抽离 css 到css 文件new ExtractTextPlugin({  filename: &#x22;css/style.css&#x22;})"><div></div></button></div></figure></div>
+<h2 id="plugins-常用插件">plugins 常用插件</h2>
+<p>现在大部分插件都会在 webpack 上面集成好，所以 <a href="https://doc.webpack-china.org/plugins/">webpack文档</a> 就很关键了，多看文档多成长;</p>
+<p>下面介绍部分常用的，也是使用一些脚手架常见的插件，与个人理解；</p>
+<h3 id="对代码处理的插件">对代码处理的插件</h3>
+<table>
+<thead>
+<tr>
+<th>插件</th>
+<th>用处</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>BannerPlugin</td>
+<td>给代码添加版权信息</td>
+</tr>
+<tr>
+<td>CommonsChunkPlugin</td>
+<td>用于共享抽离代码，整个项目的第三方；多个子 chunk 共用打包进入 父 chunk；Mainfest 每次打包都有变化</td>
+</tr>
+<tr>
+<td>CompressionWebpackPlugin</td>
+<td>使用配置算法</td>
+</tr>
+<tr>
+<td>DefinePlugin</td>
+<td>允许在编译时(compile time)配置的全局常量</td>
+</tr>
+<tr>
+<td>EnvionmetPlugin</td>
+<td>通过 DefinePlugin 来设置 process.env 环境变量的快捷方式</td>
+</tr>
+<tr>
+<td>ProvidePlugin</td>
+<td>自动加载模块，不需要 import 或者 require</td>
+</tr>
+<tr>
+<td>UglifyJsPlugin</td>
+<td>自动压缩 JS 代码(需要安装，不自带)</td>
+</tr>
+</tbody>
+</table>
+<h3 id="辅助打包后的代码">辅助打包后的代码</h3>
+<table>
+<thead>
+<tr>
+<th>插件</th>
+<th>用处</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>HtmlWebpackPlugin</td>
+<td>自动依据 entry 的配置引入依赖（需要安装，不自带）</td>
+</tr>
+<tr>
+<td>cleanWebpackPlugin</td>
+<td>每次打包，清空配置的文件夹，包名保持不一致 （需要安装，不自带）</td>
+</tr>
+</tbody>
+</table>
+<h2 id="辅助开发的相关属性">辅助开发的相关属性</h2>
+<table>
+<thead>
+<tr>
+<th>属性</th>
+<th>用处</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>devtool</td>
+<td>打包后的代码与原始代码不同，控制是否生成 &#x26; 如何生成</td>
+</tr>
+<tr>
+<td>devServer</td>
+<td>打开本地服务器，需要配置</td>
+</tr>
+<tr>
+<td>watch</td>
+<td>持续监听文件的更改，重新构建文件，开发时期使用</td>
+</tr>
+<tr>
+<td>watchOptions</td>
+<td>定制 watch 模式</td>
+</tr>
+<tr>
+<td>performance</td>
+<td>展示性能提示</td>
+</tr>
+<tr>
+<td>stats</td>
+<td>配置打包过程输出的内容，值：none，norml，rerbese，errors-only</td>
+</tr>
+</tbody>
+</table>
+<h2 id="精细的相关属性配置">精细的相关属性配置</h2>
+<table>
+<thead>
+<tr>
+<th>属性</th>
+<th>用处</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>content</td>
+<td>设置基础路径，默认当前</td>
+</tr>
+<tr>
+<td>resolve</td>
+<td>确定某块如何被解析，有默认值，可自定义</td>
+</tr>
+<tr>
+<td>target</td>
+<td>打包之后代码所执行的环境</td>
+</tr>
+<tr>
+<td>extemals</td>
+<td>控制某个依赖，不打包，直接从用户环境获取</td>
+</tr>
+</tbody>
+</table>
+<h2 id="结语">结语</h2>
+<p>基本上到这里了，这里大部分东西都在 <a href="https://doc.webpack-china.org/">Webpack社区</a> 里可以查得到，习惯用了脚手架，会让突然出现的错误，措手不及，所以我们需要学习，和记录；</p>
+<p>当然，最近出了个 <a href="https://parceljs.org/">Parcel </a>，貌似更好用…有机会试一下</p></article></main><div class="random"><div class="w-full h-1 bg-gray-600 mb-4 dark:bg-gray-300"></div><h1 class="mb-4 text-xl font-heading font-bold text-zinc-900 dark:text-zinc-100">Random Read</h1><ul class="flex flex-col gap-1.5"><li><a href="/posts/2026-04-04" class="group flex justify-between gap-3 text-sm" data-umami-event="Random-article"><span class="group-hover:underline">淅沥沥滴嗒嗒的随想</span><span class="text-nowrap text-zinc-500 font-mono">2026-04-04</span></a></li><li><a href="/posts/you-dont-know-bootstrap" class="group flex justify-between gap-3 text-sm" data-umami-event="Random-article"><span class="group-hover:underline">你不知道的bootstrap中文网</span><span class="text-nowrap text-zinc-500 font-mono">2017-12-19</span></a></li><li><a href="/posts/2026-01-07-from-wordpress-to-astro" class="group flex justify-between gap-3 text-sm" data-umami-event="Random-article"><span class="group-hover:underline">博客成长史 to Astro</span><span class="text-nowrap text-zinc-500 font-mono">2026-01-07</span></a></li></ul></div><script data-astro-rerun>
+    (() => {
+      if (window.__lightboxInstalled) return;
+      window.__lightboxInstalled = true;
+
+      const prefersReduced = window.matchMedia?.("(prefers-reduced-motion: reduce)")?.matches;
+      const D = prefersReduced ? 0 : 180;
+      const state = { overlay: null };
+
+      const close = () => {
+        const overlay = state.overlay;
+        if (!overlay) return;
+        const img = overlay.querySelector(".lightbox-img");
+
+        const fade = overlay.animate([{ opacity: 1 }, { opacity: 0 }], { duration: D, easing: "ease-in", fill: "forwards" });
+        const shrink = img?.animate([{ transform: "scale(1)" }, { transform: "scale(0.96)" }], { duration: D, easing: "ease-in", fill: "forwards" });
+
+        Promise.allSettled([fade?.finished ?? Promise.resolve(), shrink?.finished ?? Promise.resolve()]).finally(() => {
+          overlay.remove();
+          state.overlay = null;
+          document.body.style.overflow = "";
+          document.body.style.paddingRight = "";
+          document.removeEventListener("keydown", onKeydown);
+        });
+      };
+
+      const onKeydown = (e) => { if (e.key === "Escape") close(); };
+
+      const openFrom = (thumb) => {
+        if (state.overlay) return;
+
+        const overlay = document.createElement("div");
+        overlay.className = "lightbox-overlay";
+        overlay.dataset.armed = "0";
+        setTimeout(() => { if (overlay.isConnected) overlay.dataset.armed = "1"; }, D || 120);
+
+        const big = thumb.cloneNode(true);
+        big.classList.add("lightbox-img");
+        big.removeAttribute("width");
+        big.removeAttribute("height");
+        big.style.maxWidth = "";
+        big.style.maxHeight = "";
+        big.draggable = false;
+
+        overlay.appendChild(big);
+        document.body.appendChild(overlay);
+        state.overlay = overlay;
+
+        const pad = window.innerWidth - document.documentElement.clientWidth;
+        if (pad > 0) document.body.style.paddingRight = pad + "px";
+        document.body.style.overflow = "hidden";
+
+        overlay.animate([{ opacity: 0 }, { opacity: 1 }], { duration: D, easing: "ease-out", fill: "forwards" });
+        big.animate([{ transform: "scale(0.96)" }, { transform: "scale(1)" }], { duration: D, easing: "ease-out", fill: "forwards" });
+
+        overlay.addEventListener("click", () => { if (overlay?.dataset.armed === "1") close(); });
+        document.addEventListener("keydown", onKeydown);
+      };
+
+      const onDocClick = (e) => {
+        const target = e.target;
+        if (!(target instanceof Element)) return;
+        const article = target.closest("article[data-pagefind-body]");
+        if (!article) return;
+        const img = target.closest("img");
+        if (!img) return;
+        if (e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
+
+        e.preventDefault();
+        e.stopPropagation();
+        openFrom(img);
+      };
+
+      document.addEventListener("click", onDocClick, { passive: false });
+      document.addEventListener("astro:before-swap", close);
+    })();
+  </script></div></body></html>
